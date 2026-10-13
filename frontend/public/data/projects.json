@@ -1,0 +1,43 @@
+[
+  {
+    "id": "wimo",
+    "name": "WIMO",
+    "summary": "Application de transfert d'argent.",
+    "context": "b-her",
+    "roles": ["Backend", "Frontend", "QA"],
+    "technologies": ["Spring Boot", "PostgreSQL", "Angular", "Docker"],
+    "status": "in-progress",
+    "repositoryUrl": "https://gitlab.com/christian-dev1/WIMO",
+    "visible": true
+  },
+  {
+    "id": "vesty-shop",
+    "name": "Vesty Shop",
+    "summary": "Plateforme de vente de vêtements en ligne, avec possibilité de passer des commandes sur mesure.",
+    "context": "b-her",
+    "roles": ["Backend", "Frontend", "QA"],
+    "technologies": ["Spring Boot", "PostgreSQL", "Angular", "Docker"],
+    "status": "in-progress",
+    "visible": true
+  },
+  {
+    "id": "Sekouh",
+    "name": "Sekouh",
+    "summary": "Application de gestion scolaire.",
+    "context": "collaboration",
+    "roles": ["QA"],
+    "technologies": [],
+    "status": "A_COMPLETER",
+    "visible": true
+  },
+  {
+    "id": "superapp",
+    "name": "SuperApp",
+    "summary": "Application de mise en relation.",
+    "context": "collaboration",
+    "roles": ["QA", "Backend"],
+    "technologies": ["Spring Boot", "PostgreSQL"],
+    "status": "A_COMPLETER",
+    "visible": true
+  }
+]
