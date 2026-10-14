@@ -1,0 +1,40 @@
+<article class="project-card">
+  <div class="project-card__thumbnail">
+    @if (project().imageUrl; as imageUrl) {
+      <img [src]="imageUrl" [alt]="'Logo du projet ' + project().name" />
+    } @else {
+      <span aria-hidden="true">{{ initials() }}</span>
+    }
+  </div>
+
+  <div class="project-card__body">
+    <p class="project-card__context">{{ contextLabels[project().context] }}</p>
+    <h2 class="project-card__name">{{ project().name }}</h2>
+    <p class="project-card__status">{{ statusLabels[project().status] }}</p>
+    <p class="project-card__summary">{{ project().summary }}</p>
+
+    <p class="project-card__label">Mon rôle</p>
+    <ul class="project-card__tags">
+      @for (role of project().roles; track role) {
+        <li>{{ role }}</li>
+      }
+    </ul>
+
+    @if (project().technologies.length > 0) {
+      <p class="project-card__label">Technologies</p>
+      <ul class="project-card__tags">
+        @for (technology of project().technologies; track technology) {
+          <li>{{ technology }}</li>
+        }
+      </ul>
+    }
+
+    @if (project().repositoryUrl; as url) {
+      <a class="project-card__link" [href]="url" target="_blank" rel="noopener noreferrer">
+        Voir le code
+      </a>
+    } @else if (project().context === 'collaboration') {
+      <p class="project-card__note">Code non public (projet en équipe)</p>
+    }
+  </div>
+</article>
