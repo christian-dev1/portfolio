@@ -1,0 +1,19 @@
+[
+  { "id": "java", "name": "Java", "category": "languages", "usedIn": ["WIMO", "Vesty Shop", "SuperApp"], "visible": true },
+  { "id": "typescript", "name": "TypeScript", "category": "languages", "usedIn": ["WIMO", "Vesty Shop", "Portfolio"], "visible": true },
+  { "id": "spring-boot", "name": "Spring Boot", "category": "backend", "usedIn": ["WIMO", "Vesty Shop", "SuperApp"], "visible": true },
+  { "id": "swagger", "name": "Swagger", "category": "backend", "usedIn": ["WIMO", "Vesty Shop", "Sekouh", "SuperApp"], "visible": true },
+  { "id": "angular", "name": "Angular", "category": "frontend", "usedIn": ["WIMO", "Vesty Shop", "Portfolio"], "visible": true },
+  { "id": "postgresql", "name": "PostgreSQL", "category": "database", "usedIn": ["WIMO", "Vesty Shop", "SuperApp"], "visible": true },
+  { "id": "junit", "name": "JUnit", "category": "testing", "usedIn": ["WIMO", "Vesty Shop", "SuperApp"], "visible": true },
+  { "id": "vitest", "name": "Vitest", "category": "testing", "usedIn": ["Portfolio"], "visible": true },
+  { "id": "manual-testing", "name": "Tests manuels & cahiers de test", "category": "testing", "usedIn": ["Sekouh", "SuperApp"], "visible": true },
+  { "id": "squash-tm", "name": "Squash TM", "category": "testing", "usedIn": ["Sekouh", "SuperApp"], "visible": true },
+  { "id": "postman", "name": "Postman", "category": "testing", "usedIn": ["SuperApp", "Sekouh"], "visible": true },
+  { "id": "playwright", "name": "Playwright", "category": "testing", "usedIn": ["Projets d'apprentissage"], "visible": true },
+  { "id": "cypress", "name": "Cypress", "category": "testing", "usedIn": ["Projets d'apprentissage"], "visible": true },
+  { "id": "docker", "name": "Docker", "category": "environment", "usedIn": ["WIMO", "Vesty Shop", "Sekouh", "SuperApp"], "visible": true },
+  { "id": "git", "name": "Git, GitHub, GitLab", "category": "environment", "usedIn": ["Usage quotidien"], "visible": true },
+  { "id": "linux", "name": "Linux", "category": "environment", "usedIn": ["Usage quotidien"], "visible": true },
+  { "id": "ides", "name": "VS Code, IntelliJ IDEA", "category": "environment", "usedIn": ["Usage quotidien"], "visible": true }
+]

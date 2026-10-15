@@ -11,6 +11,11 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/projects/projects.routes').then((m) => m.PROJECTS_ROUTES),
   },
+    {
+    path: 'outils',
+    loadChildren: () =>
+      import('./features/tools/tools.routes').then((m) => m.TOOLS_ROUTES),
+  },
   {
     path: '**',
     redirectTo: '',

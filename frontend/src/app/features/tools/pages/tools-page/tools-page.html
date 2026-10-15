@@ -1,0 +1,27 @@
+<section class="tools">
+  <h1>Boîte à outils</h1>
+  <p class="tools__intro">
+    Les technologies que j'utilise au quotidien, et les projets où je les ai mises en pratique.
+  </p>
+
+  @if (groups(); as groupList) {
+    @for (group of groupList; track group.category) {
+      <section class="tools__group">
+        <h2 class="tools__group-title">{{ group.label }}</h2>
+
+        <ul class="tools__list">
+          @for (tool of group.tools; track tool.id) {
+            <li class="tools__item">
+              <strong class="tools__name">{{ tool.name }}</strong>
+              <span class="tools__used-in">{{ tool.usedIn.join(', ') }}</span>
+            </li>
+          }
+        </ul>
+      </section>
+    } @empty {
+      <p>Aucune technologie à afficher pour le moment.</p>
+    }
+  } @else {
+    <p>Chargement de la boîte à outils…</p>
+  }
+</section>
