@@ -1,5 +1,7 @@
 :root {
+  color-scheme: light;
   --color-primary: #1e3a8a;
+  --color-heading: #1e3a8a;
   --color-accent: #dc2626;
   --color-accent-soft: #fee2e2;
   --color-on-primary: #ffffff;
@@ -8,6 +10,20 @@
   --color-text: #111827;
   --color-text-muted: #4b5563;
   --color-border: #e5e7eb;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-primary: #1e3a8a;
+  --color-heading: #ffffff;
+  --color-accent: #f87171;
+  --color-accent-soft: #3b1d2e;
+  --color-on-primary: #ffffff;
+  --color-background: #0a1230;
+  --color-surface: #131c45;
+  --color-text: #f1f5f9;
+  --color-text-muted: #cbd5e1;
+  --color-border: #2a3563;
 }
 
 *,

@@ -1,0 +1,44 @@
+.tools {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+
+  &__intro {
+    max-width: 40rem;
+    color: var(--color-text-muted);
+  }
+
+  &__group {
+    margin-top: 2.5rem;
+  }
+
+  &__group-title {
+    margin: 0 0 1rem;
+    font-size: 1.25rem;
+    color: var(--color-primary);
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    background-color: var(--color-background);
+  }
+
+  &__used-in {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+}

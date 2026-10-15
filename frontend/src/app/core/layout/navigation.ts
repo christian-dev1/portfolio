@@ -5,4 +5,5 @@ export interface NavItem{
 export const NAV_ITEMS: NavItem[] = [
     { label: 'Acceuil', path: '/'},
     { label: 'Projets', path: '/projets' },
+    { label: 'Outils', path: '/outils' },
 ]

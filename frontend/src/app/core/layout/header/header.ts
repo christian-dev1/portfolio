@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NAV_ITEMS } from '../navigation';
+import { ThemeService } from '../../theme/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -9,5 +10,15 @@ import { NAV_ITEMS } from '../navigation';
   styleUrl: './header.scss',
 })
 export class Header {
-  protected readonly NavItems = NAV_ITEMS;
+  private readonly themeService = inject(ThemeService);
+
+  protected readonly navItems = NAV_ITEMS;
+  protected readonly isDark = computed(() => this.themeService.theme() === 'dark');
+  protected readonly themeLabel = computed(() =>
+    this.isDark() ? 'Activer le mode clair' : 'Activer le mode sombre',
+  );
+
+  protected toggleTheme(): void {
+    this.themeService.toggle();
+  }
 }
