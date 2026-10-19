@@ -66,7 +66,10 @@ describe('ToolsPage', () => {
 
     const compiled = await setup(of([java]));
 
-    const usedIn = compiled.querySelector('.tools__used-in')!.textContent!.replace(/\s+/g, ' ').trim();
+    const usedIn = compiled
+      .querySelector('.tools__used-in')!
+      .textContent!.replace(/\s+/g, ' ')
+      .trim();
     expect(usedIn).toBe('WIMO, Usage quotidien');
   });
 

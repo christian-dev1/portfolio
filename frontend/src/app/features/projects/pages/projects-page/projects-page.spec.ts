@@ -35,9 +35,7 @@ async function setup(
 ): Promise<HTMLElement> {
   TestBed.configureTestingModule({
     imports: [ProjectsPage, provideTranslocoForTests()],
-    providers: [
-      { provide: ProjectService, useValue: { getPublicProjects: () => projects$ } },
-    ],
+    providers: [{ provide: ProjectService, useValue: { getPublicProjects: () => projects$ } }],
   });
 
   TestBed.inject(LanguageService).lang.set(lang);

@@ -34,29 +34,29 @@
       text-decoration: underline;
       text-underline-offset: 0.4em;
     }
-      &__actions {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-   &__icon-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border: 1px solid var(--color-border);
-    border-radius: 50%;
-    background: transparent;
-    color: inherit;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    cursor: pointer;
-
-    &:hover {
-      color: var(--color-accent);
+    &__actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
     }
-  }
+
+    &__icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.75rem;
+      height: 2.75rem;
+      border: 1px solid var(--color-border);
+      border-radius: 50%;
+      background: transparent;
+      color: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--color-accent);
+      }
+    }
   }
 }

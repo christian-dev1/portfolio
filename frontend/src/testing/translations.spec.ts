@@ -6,9 +6,7 @@ function keysOf(obj: object, prefix = ''): string[] {
   return Object.entries(obj)
     .flatMap(([key, value]) => {
       const path = prefix ? `${prefix}.${key}` : key;
-      return typeof value === 'object' && value !== null
-        ? keysOf(value, path)
-        : [path];
+      return typeof value === 'object' && value !== null ? keysOf(value, path) : [path];
     })
     .sort();
 }

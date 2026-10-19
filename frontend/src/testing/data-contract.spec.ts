@@ -1,9 +1,6 @@
 import projects from '../../public/data/projects.json';
 import tools from '../../public/data/tools.json';
-import {
-  PROJECT_CONTEXTS,
-  PROJECT_STATUSES,
-} from '../app/features/projects/models/project.model';
+import { PROJECT_CONTEXTS, PROJECT_STATUSES } from '../app/features/projects/models/project.model';
 import { TOOL_CATEGORIES } from '../app/features/tools/models/tool.model';
 
 /**
