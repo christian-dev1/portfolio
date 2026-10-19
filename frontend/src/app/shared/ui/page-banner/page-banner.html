@@ -1,0 +1,17 @@
+<div class="page-banner brand-pattern">
+  <div class="page-banner__inner">
+    <div class="page-banner__text">
+      <p class="page-banner__eyebrow glass glass--on-brand">{{ eyebrowKey() | transloco }}</p>
+      <h1 class="page-banner__title">{{ titleKey() | transloco }}</h1>
+      <p class="page-banner__intro">{{ introKey() | transloco }}</p>
+    </div>
+
+    @if (paddedCount(); as paddedCount) {
+      <div class="page-banner__counter" aria-hidden="true">
+        <span class="page-banner__count">{{ paddedCount }}</span>
+        <span class="page-banner__count-label">{{ countLabelKey() | transloco }}</span>
+      </div>
+    }
+  </div>
+</div>
+<div class="page-banner__band" aria-hidden="true"></div>
