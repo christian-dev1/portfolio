@@ -1,9 +1,9 @@
 @if (profile(); as profile) {
   <section class="hero">
-    <div class="hero__banner">
+    <div class="hero__banner brand-pattern">
       <div class="hero__banner-inner">
         <p class="hero__founder glass glass--on-brand">{{ 'home.founder' | transloco }}</p>
-        <app-social-links [profile]="profile" />
+        <app-social-links [links]="profile.socialLinks" />
       </div>
     </div>
 

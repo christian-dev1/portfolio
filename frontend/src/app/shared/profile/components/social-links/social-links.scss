@@ -4,6 +4,7 @@
 
 .social-links {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.625rem;
   margin: 0;
   padding: 0;
@@ -16,10 +17,23 @@
     width: 2.75rem;
     height: 2.75rem;
     border-radius: 50%;
-    transition: transform 0.2s ease;
+    color: var(--color-on-brand);
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease;
 
-    &:hover {
+    /* Au survol / focus : le rond prend la couleur officielle du réseau. */
+    &:hover,
+    &:focus-visible {
+      border-color: var(--brand-hex);
+      background: var(--brand-hex);
       transform: translateY(-2px);
+    }
+
+    &--dark-ink:hover,
+    &--dark-ink:focus-visible {
+      color: var(--color-brand-ink);
     }
   }
 }

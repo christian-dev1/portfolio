@@ -3,6 +3,8 @@ import tools from '../../public/data/tools.json';
 import profile from '../../public/data/profile.json';
 import { PROJECT_CONTEXTS, PROJECT_STATUSES } from '../app/shared/projects/models/project.model';
 import { TOOL_CATEGORIES } from '../app/features/tools/models/tool.model';
+import { SOCIAL_NETWORKS } from '../app/shared/profile/models/profile.model';
+import { isBrandIconSlug } from '../app/shared/ui/brand-icons';
 
 /**
  * Les types TypeScript ne vérifient pas les fichiers JSON chargés au runtime :
@@ -10,6 +12,9 @@ import { TOOL_CATEGORIES } from '../app/features/tools/models/tool.model';
  */
 
 const KEBAB_CASE_ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const HTTPS_URL = /^https:\/\//;
+const PROJECT_IMAGE = /^\/images\/projects\/[a-z0-9-]+\.(png|jpe?g|webp|svg)$/;
 
 function expectUniqueKebabCaseIds(items: { id: string }[]): void {
   const ids = items.map((item) => item.id);
@@ -47,9 +52,21 @@ describe('Data contract', () => {
       }
     });
 
-    it('should have a summary in French and English', () => {
+    it('should have a summary and a cover tagline in French and English', () => {
       for (const project of projects) {
         expectLocalizedText(project.summary, `${project.id}.summary`);
+        expectLocalizedText(project.coverTagline, `${project.id}.coverTagline`);
+      }
+    });
+
+    it('should serve covers and logos from the project images folder', () => {
+      for (const project of projects) {
+        const { coverUrl, logoUrl } = project as { coverUrl?: string; logoUrl?: string };
+        for (const [field, url] of Object.entries({ coverUrl, logoUrl })) {
+          if (url !== undefined) {
+            expect(url, `${project.id}.${field}`).toMatch(PROJECT_IMAGE);
+          }
+        }
       }
     });
 
@@ -57,7 +74,7 @@ describe('Data contract', () => {
       for (const project of projects) {
         const url = (project as { repositoryUrl?: string }).repositoryUrl;
         if (url !== undefined) {
-          expect(url, `${project.id}.repositoryUrl`).toMatch(/^https:\/\//);
+          expect(url, `${project.id}.repositoryUrl`).toMatch(HTTPS_URL);
         }
       }
     });
@@ -90,6 +107,24 @@ describe('Data contract', () => {
       }
     });
 
+    it('should have either a known brand icon or a monogram', () => {
+      for (const tool of tools) {
+        const { icon, monogram } = tool as { icon?: string; monogram?: string };
+        expect(
+          (icon === undefined) !== (monogram === undefined),
+          `${tool.id} must have exactly one of icon and monogram`,
+        ).toBe(true);
+        if (icon !== undefined) {
+          expect(isBrandIconSlug(icon), `${tool.id}.icon "${icon}" is not in brand-icons.ts`).toBe(
+            true,
+          );
+        }
+        if (monogram !== undefined) {
+          expect(monogram, `${tool.id}.monogram`).toMatch(/^[A-Z0-9]{2,3}$/);
+        }
+      }
+    });
+
     it('should have a boolean visible flag', () => {
       for (const tool of tools) {
         expect(typeof tool.visible, `${tool.id}.visible`).toBe('boolean');
@@ -108,14 +143,24 @@ describe('Data contract', () => {
       expectLocalizedText(profile.description, 'profile.description');
     });
 
-    it('should only use https links', () => {
-      for (const [name, url] of Object.entries(profile.links)) {
-        expect(url, `profile.links.${name}`).toMatch(/^https:\/\//);
+    it('should only use known social networks, each at most once', () => {
+      const networks = profile.socialLinks.map((link) => link.network);
+
+      for (const network of networks) {
+        expectOneOf(network, SOCIAL_NETWORKS, 'profile.socialLinks.network');
       }
+      expect(new Set(networks).size, 'social networks must be unique').toBe(networks.length);
     });
 
-    it('should have a valid email address', () => {
-      expect(profile.email).toMatch(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    it('should have empty, https or valid email social links', () => {
+      for (const { network, url } of profile.socialLinks) {
+        if (url === '') {
+          continue;
+        }
+        expect(url, `profile.socialLinks.${network}`).toMatch(
+          network === 'email' ? EMAIL : HTTPS_URL,
+        );
+      }
     });
 
     it('should serve the photo from the images folder', () => {

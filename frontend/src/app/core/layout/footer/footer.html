@@ -13,7 +13,7 @@
   <div class="footer__content">
     @if (profile(); as profile) {
       <p class="footer__copyright">© {{ year }} {{ profile.fullName }} — {{ profile.brand }}</p>
-      <app-social-links [profile]="profile" />
+      <app-social-links [links]="profile.socialLinks" />
     }
   </div>
 </footer>

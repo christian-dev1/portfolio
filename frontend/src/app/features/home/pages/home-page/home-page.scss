@@ -9,9 +9,6 @@
   --color-focus: var(--color-focus-on-brand);
   min-height: 13.75rem;
   padding-top: 1.25rem;
-  background-color: var(--color-brand-blue);
-  background-image: radial-gradient(var(--pattern-dot) 1.2px, transparent 1.6px);
-  background-size: 18px 18px;
 }
 
 .hero__banner-inner {
@@ -19,7 +16,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.75rem;
-  max-width: 72rem;
+  max-width: 70rem;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
@@ -139,7 +136,7 @@
 
 /* 5. Projets mis en avant */
 .featured {
-  max-width: 72rem;
+  max-width: 70rem;
   margin: 4rem auto 0;
   padding: 0 1.5rem;
 }
@@ -151,8 +148,8 @@
 
 .featured__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+  gap: 2rem 1.5rem;
 }
 
 .featured__see-all {

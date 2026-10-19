@@ -2,11 +2,36 @@
   "fullName": "Noutchom Noumbiap Christian Luther",
   "brand": "LUCHRIST",
   "photoUrl": "/images/photo-luchrist.jpg",
-  "email": "nouchrist773@gmail.com",
-  "links": {
-    "gitlab": "https://gitlab.com/christian-dev1",
-    "github": "https://github.com/christian-dev1"
-  },
+  "socialLinks": [
+    {
+      "network": "github",
+      "url": "https://github.com/christian-dev1"
+    },
+    {
+      "network": "gitlab",
+      "url": "https://gitlab.com/christian-dev1"
+    },
+    {
+      "network": "linkedin",
+      "url": ""
+    },
+    {
+      "network": "facebook",
+      "url": ""
+    },
+    {
+      "network": "youtube",
+      "url": ""
+    },
+    {
+      "network": "tiktok",
+      "url": ""
+    },
+    {
+      "network": "email",
+      "url": "nouchrist773@gmail.com"
+    }
+  ],
   "slogan": {
     "fr": "Je donne vie à ce qui n'existe pas encore, et je bonifie ce qui existe déjà.",
     "en": "I bring to life what doesn't exist yet, and improve what already does."
