@@ -1,0 +1,18 @@
+{
+  "fullName": "Noutchom Noumbiap Christian Luther",
+  "brand": "LUCHRIST",
+  "photoUrl": "/images/photo-luchrist.jpg",
+  "email": "nouchrist773@gmail.com",
+  "links": {
+    "gitlab": "https://gitlab.com/christian-dev1",
+    "github": "https://github.com/christian-dev1"
+  },
+  "slogan": {
+    "fr": "Je donne vie à ce qui n'existe pas encore, et je bonifie ce qui existe déjà.",
+    "en": "I bring to life what doesn't exist yet, and improve what already does."
+  },
+  "description": {
+    "fr": "Je conçois, développe et teste des applications, du backend Spring Boot jusqu'aux tests de bout en bout.",
+    "en": "I design, build and test applications, from the Spring Boot backend to end-to-end tests."
+  }
+}
