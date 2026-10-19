@@ -1,4 +1,63 @@
-<section class="hero">
-  <h1>LUCHRIST</h1>
-  <p>{{ 'home.jobTitle' | transloco }}</p>
+@if (profile(); as profile) {
+  <section class="hero">
+    <div class="hero__banner">
+      <div class="hero__banner-inner">
+        <p class="hero__founder glass glass--on-brand">{{ 'home.founder' | transloco }}</p>
+        <app-social-links [profile]="profile" />
+      </div>
+    </div>
+
+    <div class="hero__band" aria-hidden="true"></div>
+
+    <div class="hero__identity">
+      <div class="hero__photo">
+        @if (photoFailed()) {
+          <span class="hero__initials" role="img" [attr.aria-label]="'home.photoAlt' | transloco">
+            {{ initials() }}
+          </span>
+        } @else {
+          <img
+            [src]="profile.photoUrl"
+            [alt]="'home.photoAlt' | transloco"
+            width="184"
+            height="184"
+            (error)="photoFailed.set(true)"
+          />
+        }
+      </div>
+
+      <h1 class="hero__brand">{{ profile.brand }}</h1>
+      <p class="hero__full-name">{{ profile.fullName }}</p>
+      <p class="hero__badge">{{ 'home.jobTitle' | transloco }}</p>
+
+      <p class="hero__slogan">
+        <span class="hero__quote" aria-hidden="true">“</span>{{ profile.slogan | localize }}
+      </p>
+      <p class="hero__description">{{ profile.description | localize }}</p>
+
+      <a class="button button--primary hero__cta" routerLink="/projets">
+        {{ 'home.ctaProjects' | transloco }}
+      </a>
+    </div>
+  </section>
+} @else {
+  <p class="home__status">{{ 'home.loading' | transloco }}</p>
+}
+
+<section class="featured" aria-labelledby="featured-title">
+  <h2 id="featured-title" class="featured__title">{{ 'home.featured.title' | transloco }}</h2>
+
+  @if (featuredProjects(); as projects) {
+    <div class="featured__grid">
+      @for (project of projects; track project.id) {
+        <app-project-card [project]="project" [headingLevel]="3" />
+      } @empty {
+        <p>{{ 'home.featured.empty' | transloco }}</p>
+      }
+    </div>
+  } @else {
+    <p>{{ 'home.featured.loading' | transloco }}</p>
+  }
+
+  <a class="featured__see-all" routerLink="/projets">{{ 'home.featured.seeAll' | transloco }}</a>
 </section>
