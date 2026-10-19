@@ -6,6 +6,9 @@
   --color-brand-red: #dc2626;
   --color-brand-red-hover: #b91c1c;
   --color-on-brand: #ffffff;
+  --color-on-brand-muted: rgba(255, 255, 255, 0.85);
+  /* Encre foncée sur un fond de marque clair (ex. survol GitLab). */
+  --color-brand-ink: #0a1230;
 
   --color-primary: #1e3a8a;
   --color-heading: #1e3a8a;
@@ -37,6 +40,8 @@
   --halo-red: rgba(220, 38, 38, 0.08);
   --pattern-dot: rgba(255, 255, 255, 0.16);
   --shadow-red: 0 10px 30px rgba(220, 38, 38, 0.35);
+  --shadow-lift: 0 16px 40px rgba(15, 23, 42, 0.14);
+  --color-tile-bg: rgba(30, 58, 138, 0.06);
 
   /* Typographie */
   --font-heading: 'Space Grotesk', system-ui, sans-serif;
@@ -68,6 +73,8 @@
 
   --halo-blue: rgba(37, 99, 235, 0.32);
   --halo-red: rgba(220, 38, 38, 0.2);
+  --shadow-lift: 0 16px 40px rgba(0, 0, 0, 0.45);
+  --color-tile-bg: rgba(255, 255, 255, 0.06);
 }
 
 *,
@@ -123,6 +130,15 @@ h3 {
     -webkit-backdrop-filter: blur(18px) saturate(1.4);
     backdrop-filter: blur(18px) saturate(1.4);
   }
+}
+
+/* Aplat bleu de marque avec trame de points (accueil, bannières, couvertures de projet). */
+.brand-pattern {
+  --color-focus: var(--color-focus-on-brand);
+  background-color: var(--color-brand-blue);
+  background-image: radial-gradient(var(--pattern-dot) 1.2px, transparent 1.6px);
+  background-size: 18px 18px;
+  color: var(--color-on-brand);
 }
 
 /* Verre posé sur un aplat de marque (zone bleue, footer) : mêmes règles, autres tokens. */
