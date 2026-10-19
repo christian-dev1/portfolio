@@ -19,7 +19,23 @@
     "tools": "LUCHRIST — Toolbox"
   },
   "home": {
-    "jobTitle": "Backend Developer & QA"
+    "jobTitle": "Backend Developer & QA",
+    "founder": "Founder · B-HER EMPIRE",
+    "photoAlt": "Photo of Christian Luther",
+    "ctaProjects": "See my projects",
+    "loading": "Loading profile…",
+    "featured": {
+      "title": "Featured projects",
+      "seeAll": "See all projects",
+      "loading": "Loading projects…",
+      "empty": "No featured projects yet."
+    }
+  },
+  "social": {
+    "label": "Social links and contact",
+    "gitlab": "GitLab (opens in a new tab)",
+    "github": "GitHub (opens in a new tab)",
+    "email": "Send an email"
   },
   "projects": {
     "title": "Projects",
