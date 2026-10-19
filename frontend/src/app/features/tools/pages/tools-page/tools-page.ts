@@ -1,22 +1,19 @@
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { LocalizePipe } from '../../../../shared/i18n/localize.pipe';
 import { ToolService } from '../../data-access/tool.service';
-import {
-  Tool,
-  ToolCategory,
-  TOOL_CATEGORY_LABELS,
-  TOOL_CATEGORY_ORDER,
-} from '../../models/tool.model';
+import { Tool, ToolCategory, TOOL_CATEGORIES } from '../../models/tool.model';
 
 interface ToolGroup {
   category: ToolCategory;
-  label: string;
+  labelKey: string;
   tools: Tool[];
 }
 
 @Component({
   selector: 'app-tools-page',
-  imports: [],
+  imports: [TranslocoPipe, LocalizePipe],
   templateUrl: './tools-page.html',
   styleUrl: './tools-page.scss',
 })
@@ -31,9 +28,9 @@ export class ToolsPage {
       return undefined;
     }
 
-    return TOOL_CATEGORY_ORDER.map((category) => ({
+    return TOOL_CATEGORIES.map((category) => ({
       category,
-      label: TOOL_CATEGORY_LABELS[category],
+      labelKey: `tools.category.${category}`,
       tools: tools.filter((tool) => tool.category === category),
     })).filter((group) => group.tools.length > 0);
   });

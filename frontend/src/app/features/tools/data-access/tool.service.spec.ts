@@ -10,8 +10,20 @@ describe('ToolService', () => {
   let httpTesting: HttpTestingController;
 
   const tools: Tool[] = [
-    { id: 'java', name: 'Java', category: 'languages', usedIn: ['WIMO'], visible: true },
-    { id: 'hidden-tool', name: 'Outil masqué', category: 'testing', usedIn: [], visible: false },
+    {
+      id: 'java',
+      name: { fr: 'Java', en: 'Java' },
+      category: 'languages',
+      usedIn: [{ fr: 'WIMO', en: 'WIMO' }],
+      visible: true,
+    },
+    {
+      id: 'hidden-tool',
+      name: { fr: 'Outil masqué', en: 'Hidden tool' },
+      category: 'testing',
+      usedIn: [],
+      visible: false,
+    },
   ];
 
   beforeEach(() => {

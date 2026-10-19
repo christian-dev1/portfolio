@@ -1,33 +1,20 @@
-export type ToolCategory =
-  | 'languages'
-  | 'backend'
-  | 'frontend'
-  | 'database'
-  | 'testing'
-  | 'environment';
+import { LocalizedText } from '../../../shared/i18n/localized-text';
 
-export interface Tool {
-  id: string;
-  name: string;
-  category: ToolCategory;
-  usedIn: string[];
-  visible: boolean;
-}
-
-export const TOOL_CATEGORY_ORDER: ToolCategory[] = [
+/** Ordre d'affichage des catégories sur la page Boîte à outils. */
+export const TOOL_CATEGORIES = [
   'languages',
   'backend',
   'frontend',
   'database',
   'testing',
   'environment',
-];
+] as const;
+export type ToolCategory = (typeof TOOL_CATEGORIES)[number];
 
-export const TOOL_CATEGORY_LABELS: Record<ToolCategory, string> = {
-  languages: 'Langages',
-  backend: 'Backend',
-  frontend: 'Frontend',
-  database: 'Base de données',
-  testing: 'Tests & QA',
-  environment: 'Environnement & outils',
-};
+export interface Tool {
+  id: string;
+  name: LocalizedText;
+  category: ToolCategory;
+  usedIn: LocalizedText[];
+  visible: boolean;
+}
