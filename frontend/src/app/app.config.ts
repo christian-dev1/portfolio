@@ -1,15 +1,17 @@
 import { ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
-import { provideRouter } from '@angular/router';
+import { TitleStrategy, provideRouter } from '@angular/router';
 import { provideTransloco } from '@jsverse/transloco';
 
 import { routes } from './app.routes';
 import { TranslocoHttpLoader } from './core/i18n/transloco-loader';
+import { TranslatedTitleStrategy } from './core/i18n/translated-title.strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
+    { provide: TitleStrategy, useClass: TranslatedTitleStrategy },
     provideHttpClient(),
     provideTransloco({
       config: {

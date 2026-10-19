@@ -5,6 +5,6 @@ export const TOOLS_ROUTES: Routes = [
   {
     path: '',
     component: ToolsPage,
-    title: 'LUCHRIST — Boîte à outils',
+    title: 'titles.tools',
   },
 ];

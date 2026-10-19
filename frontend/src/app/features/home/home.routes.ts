@@ -5,6 +5,6 @@ export const HOME_ROUTES: Routes = [
   {
     path: '',
     component: HomePage,
-    title: 'LUCHRIST — Accueil',
+    title: 'titles.home',
   },
 ];

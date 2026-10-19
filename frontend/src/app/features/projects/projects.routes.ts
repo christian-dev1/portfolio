@@ -5,6 +5,6 @@ export const PROJECTS_ROUTES: Routes = [
   {
     path: '',
     component: ProjectsPage,
-    title: 'LUCHRIST — Projets',
+    title: 'titles.projects',
   },
 ];
