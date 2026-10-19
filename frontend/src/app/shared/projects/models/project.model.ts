@@ -1,4 +1,4 @@
-import { LocalizedText } from '../../../shared/i18n/localized-text';
+import { LocalizedText } from '../../i18n/localized-text';
 
 export const PROJECT_CONTEXTS = ['b-her', 'collaboration'] as const;
 export type ProjectContext = (typeof PROJECT_CONTEXTS)[number];
@@ -17,4 +17,5 @@ export interface Project {
   repositoryUrl?: string;
   imageUrl?: string;
   visible: boolean;
+  featured: boolean;
 }

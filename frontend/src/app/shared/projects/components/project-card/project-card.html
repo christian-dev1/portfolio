@@ -1,4 +1,4 @@
-<article class="project-card">
+<article class="project-card glass">
   <div class="project-card__thumbnail">
     @if (project().imageUrl; as imageUrl) {
       <img [src]="imageUrl" [alt]="'projects.logoAlt' | transloco: { name: project().name }" />
@@ -9,7 +9,11 @@
 
   <div class="project-card__body">
     <p class="project-card__context">{{ contextKey() | transloco }}</p>
-    <h2 class="project-card__name">{{ project().name }}</h2>
+    @if (headingLevel() === 3) {
+      <h3 class="project-card__name">{{ project().name }}</h3>
+    } @else {
+      <h2 class="project-card__name">{{ project().name }}</h2>
+    }
     <p class="project-card__status">{{ statusKey() | transloco }}</p>
     <p class="project-card__summary">{{ project().summary | localize }}</p>
 

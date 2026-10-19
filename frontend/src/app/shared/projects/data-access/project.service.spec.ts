@@ -19,6 +19,7 @@ describe('ProjectService', () => {
       technologies: [],
       status: 'in-progress',
       visible: true,
+      featured: false,
     },
     {
       id: 'private-project',
@@ -29,6 +30,29 @@ describe('ProjectService', () => {
       technologies: [],
       status: 'concept',
       visible: false,
+      featured: false,
+    },
+    {
+      id: 'featured-project',
+      name: 'Featured',
+      summary: { fr: 'Projet mis en avant', en: 'Featured project' },
+      context: 'b-her',
+      roles: [],
+      technologies: [],
+      status: 'in-progress',
+      visible: true,
+      featured: true,
+    },
+    {
+      id: 'hidden-featured-project',
+      name: 'Hidden featured',
+      summary: { fr: 'Projet masqué mis en avant', en: 'Hidden featured project' },
+      context: 'b-her',
+      roles: [],
+      technologies: [],
+      status: 'concept',
+      visible: false,
+      featured: true,
     },
   ];
 
@@ -61,6 +85,18 @@ describe('ProjectService', () => {
     httpTesting.expectOne('/data/projects.json').flush(projects);
 
     const visibleProjects = await result;
-    expect(visibleProjects.map((project) => project.id)).toEqual(['public-project']);
+    expect(visibleProjects.map((project) => project.id)).toEqual([
+      'public-project',
+      'featured-project',
+    ]);
+  });
+
+  it('should return only projects that are both visible and featured', async () => {
+    const result = firstValueFrom(service.getFeaturedProjects());
+
+    httpTesting.expectOne('/data/projects.json').flush(projects);
+
+    const featuredProjects = await result;
+    expect(featuredProjects.map((project) => project.id)).toEqual(['featured-project']);
   });
 });

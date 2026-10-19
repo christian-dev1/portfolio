@@ -11,7 +11,8 @@
     "technologies": ["Spring Boot", "PostgreSQL", "Angular", "Docker"],
     "status": "in-progress",
     "repositoryUrl": "https://gitlab.com/christian-dev1/WIMO",
-    "visible": true
+    "visible": true,
+    "featured": true
   },
   {
     "id": "vesty-shop",
@@ -24,7 +25,8 @@
     "roles": ["Backend", "Frontend", "QA"],
     "technologies": ["Spring Boot", "PostgreSQL", "Angular", "Docker"],
     "status": "in-progress",
-    "visible": true
+    "visible": true,
+    "featured": true
   },
   {
     "id": "sekouh",
@@ -37,7 +39,8 @@
     "roles": ["QA"],
     "technologies": [],
     "status": "pilot",
-    "visible": true
+    "visible": true,
+    "featured": false
   },
   {
     "id": "superapp",
@@ -50,6 +53,7 @@
     "roles": ["QA", "Backend"],
     "technologies": ["Spring Boot", "PostgreSQL"],
     "status": "pilot",
-    "visible": true
+    "visible": true,
+    "featured": false
   }
 ]

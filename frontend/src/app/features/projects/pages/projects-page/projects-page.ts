@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { ProjectService } from '../../data-access/project.service';
-import { ProjectCard } from '../../components/project-card/project-card';
+import { ProjectService } from '../../../../shared/projects/data-access/project.service';
+import { ProjectCard } from '../../../../shared/projects/components/project-card/project-card';
 
 @Component({
   selector: 'app-projects-page',

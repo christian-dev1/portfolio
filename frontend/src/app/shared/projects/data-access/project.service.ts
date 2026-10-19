@@ -13,4 +13,10 @@ export class ProjectService {
       .get<Project[]>(this.url)
       .pipe(map((projects) => projects.filter((project) => project.visible)));
   }
+
+  getFeaturedProjects(): Observable<Project[]> {
+    return this.getPublicProjects().pipe(
+      map((projects) => projects.filter((project) => project.featured)),
+    );
+  }
 }

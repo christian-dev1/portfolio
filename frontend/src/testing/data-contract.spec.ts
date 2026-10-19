@@ -1,6 +1,7 @@
 import projects from '../../public/data/projects.json';
 import tools from '../../public/data/tools.json';
-import { PROJECT_CONTEXTS, PROJECT_STATUSES } from '../app/features/projects/models/project.model';
+import profile from '../../public/data/profile.json';
+import { PROJECT_CONTEXTS, PROJECT_STATUSES } from '../app/shared/projects/models/project.model';
 import { TOOL_CATEGORIES } from '../app/features/tools/models/tool.model';
 
 /**
@@ -61,9 +62,10 @@ describe('Data contract', () => {
       }
     });
 
-    it('should have a boolean visible flag', () => {
+    it('should have boolean visible and featured flags', () => {
       for (const project of projects) {
         expect(typeof project.visible, `${project.id}.visible`).toBe('boolean');
+        expect(typeof project.featured, `${project.id}.featured`).toBe('boolean');
       }
     });
   });
@@ -92,6 +94,32 @@ describe('Data contract', () => {
       for (const tool of tools) {
         expect(typeof tool.visible, `${tool.id}.visible`).toBe('boolean');
       }
+    });
+  });
+
+  describe('profile.json', () => {
+    it('should have a non-empty full name and brand', () => {
+      expect(profile.fullName.trim()).not.toBe('');
+      expect(profile.brand.trim()).not.toBe('');
+    });
+
+    it('should have a slogan and a description in French and English', () => {
+      expectLocalizedText(profile.slogan, 'profile.slogan');
+      expectLocalizedText(profile.description, 'profile.description');
+    });
+
+    it('should only use https links', () => {
+      for (const [name, url] of Object.entries(profile.links)) {
+        expect(url, `profile.links.${name}`).toMatch(/^https:\/\//);
+      }
+    });
+
+    it('should have a valid email address', () => {
+      expect(profile.email).toMatch(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    });
+
+    it('should serve the photo from the images folder', () => {
+      expect(profile.photoUrl).toMatch(/^\/images\//);
     });
   });
 });

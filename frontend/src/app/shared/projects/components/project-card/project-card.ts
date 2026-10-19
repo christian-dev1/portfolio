@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { LocalizePipe } from '../../../../shared/i18n/localize.pipe';
+import { LocalizePipe } from '../../../i18n/localize.pipe';
 import { Project } from '../../models/project.model';
 
 @Component({
@@ -11,6 +11,9 @@ import { Project } from '../../models/project.model';
 })
 export class ProjectCard {
   readonly project = input.required<Project>();
+
+  /** Niveau du titre de la carte : 2 sous le h1 d'une page, 3 sous une section en h2. */
+  readonly headingLevel = input<2 | 3>(2);
 
   protected readonly initials = computed(() =>
     this.project()

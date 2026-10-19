@@ -3,8 +3,8 @@ import { NEVER, Observable, of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
 import { LanguageService } from '../../../../core/i18n/language.service';
 import { ProjectsPage } from './projects-page';
-import { ProjectService } from '../../data-access/project.service';
-import { Project } from '../../models/project.model';
+import { ProjectService } from '../../../../shared/projects/data-access/project.service';
+import { Project } from '../../../../shared/projects/models/project.model';
 
 const projects: Project[] = [
   {
@@ -16,6 +16,7 @@ const projects: Project[] = [
     technologies: ['Spring Boot'],
     status: 'in-progress',
     visible: true,
+    featured: false,
   },
   {
     id: 'sekouh',
@@ -26,6 +27,7 @@ const projects: Project[] = [
     technologies: [],
     status: 'in-progress',
     visible: true,
+    featured: false,
   },
 ];
 

@@ -13,6 +13,7 @@ const baseProject: Project = {
   technologies: ['Spring Boot', 'Angular'],
   status: 'in-progress',
   visible: true,
+  featured: false,
 };
 
 describe('ProjectCard', () => {
@@ -43,6 +44,17 @@ describe('ProjectCard', () => {
     expect(name).not.toBeNull();
     expect(name!.textContent).toContain('Vesty Shop');
     expect(compiled.textContent).toContain('Boutique de vêtements en ligne.');
+  });
+
+  it('should use a level 3 heading when asked to', async () => {
+    fixture = TestBed.createComponent(ProjectCard);
+    fixture.componentRef.setInput('project', baseProject);
+    fixture.componentRef.setInput('headingLevel', 3);
+    compiled = fixture.nativeElement as HTMLElement;
+    await fixture.whenStable();
+
+    expect(compiled.querySelector('h2')).toBeNull();
+    expect(compiled.querySelector('h3')!.textContent).toContain('Vesty Shop');
   });
 
   it('should display the initials when there is no image', async () => {
