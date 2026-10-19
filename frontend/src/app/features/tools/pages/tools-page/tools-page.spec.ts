@@ -101,4 +101,54 @@ describe('ToolsPage', () => {
 
     expect(compiled.textContent).toContain('Chargement de la boîte à outils');
   });
+
+  it('should display the official logo of a tool that has an icon', async () => {
+    const docker: Tool = { ...tool('docker', 'environment'), icon: 'docker' };
+
+    const compiled = await setup(of([docker]));
+
+    const logo = compiled.querySelector<HTMLElement>('.tools__logo')!;
+    expect(logo.querySelector('svg[aria-hidden="true"] path')).not.toBeNull();
+    expect(logo.style.color).not.toBe('');
+    expect(compiled.querySelector('.tools__monogram')).toBeNull();
+  });
+
+  it('should inherit the text color for a logo too dark for the dark theme', async () => {
+    const java: Tool = { ...tool('java', 'languages'), icon: 'openjdk' };
+
+    const compiled = await setup(of([java]));
+
+    expect(compiled.querySelector<HTMLElement>('.tools__logo')!.style.color).toBe('');
+  });
+
+  it('should display the monogram of a tool without icon', async () => {
+    const squash: Tool = { ...tool('squash-tm', 'testing'), monogram: 'SQ' };
+
+    const compiled = await setup(of([squash]));
+
+    expect(compiled.querySelector('.tools__monogram')!.textContent!.trim()).toBe('SQ');
+    expect(compiled.querySelector('.tools__logo svg')).toBeNull();
+  });
+
+  it('should display the number of tools of each category on two digits', async () => {
+    const compiled = await setup(
+      of([
+        tool('java', 'languages'),
+        tool('typescript', 'languages'),
+        tool('docker', 'environment'),
+      ]),
+    );
+
+    const counts = Array.from(compiled.querySelectorAll('.tools__rail-count')).map((count) =>
+      count.textContent!.trim(),
+    );
+    expect(counts).toEqual(['02', '01']);
+  });
+
+  it('should count all displayed tools in the banner, which holds the only h1', async () => {
+    const compiled = await setup(of([tool('java', 'languages'), tool('docker', 'environment')]));
+
+    expect(compiled.querySelectorAll('h1').length).toBe(1);
+    expect(compiled.querySelector('.page-banner__count')!.textContent).toBe('02');
+  });
 });

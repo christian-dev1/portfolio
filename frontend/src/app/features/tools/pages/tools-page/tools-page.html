@@ -1,20 +1,39 @@
-<section class="tools">
-  <h1>{{ 'tools.title' | transloco }}</h1>
-  <p class="tools__intro">{{ 'tools.intro' | transloco }}</p>
+<app-page-banner
+  eyebrowKey="tools.eyebrow"
+  titleKey="tools.title"
+  introKey="tools.intro"
+  countLabelKey="tools.countLabel"
+  [count]="toolCount()"
+/>
 
+<div class="tools">
   @if (groups(); as groupList) {
     @for (group of groupList; track group.category) {
-      <section class="tools__group">
-        <h2 class="tools__group-title">{{ group.labelKey | transloco }}</h2>
+      <section class="tools__rail" [attr.aria-labelledby]="'tools-' + group.category">
+        <div class="tools__rail-head">
+          <span class="tools__rail-count" aria-hidden="true">{{ group.count }}</span>
+          <h2 class="tools__rail-title" [id]="'tools-' + group.category">
+            {{ group.labelKey | transloco }}
+          </h2>
+        </div>
 
-        <ul class="tools__list">
-          @for (tool of group.tools; track tool.id) {
-            <li class="tools__item glass">
-              <strong class="tools__name">{{ tool.name | localize }}</strong>
-              <span class="tools__used-in">
-                @for (place of tool.usedIn; track $index) {
-                  {{ place | localize }}{{ $last ? '' : ', ' }}
+        <ul class="tools__grid">
+          @for (tile of group.tiles; track tile.tool.id) {
+            <li class="tools__tile glass">
+              <span class="tools__logo" [style.color]="tile.icon?.color">
+                @if (tile.icon; as icon) {
+                  <app-brand-icon [icon]="icon" [size]="24" />
+                } @else {
+                  <span class="tools__monogram" aria-hidden="true">{{ tile.tool.monogram }}</span>
                 }
+              </span>
+              <span class="tools__text">
+                <strong class="tools__name">{{ tile.tool.name | localize }}</strong>
+                <span class="tools__used-in">
+                  @for (place of tile.tool.usedIn; track $index) {
+                    {{ place | localize }}{{ $last ? '' : ', ' }}
+                  }
+                </span>
               </span>
             </li>
           }
@@ -26,4 +45,4 @@
   } @else {
     <p>{{ 'tools.loading' | transloco }}</p>
   }
-</section>
+</div>

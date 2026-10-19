@@ -1,164 +1,358 @@
 [
   {
     "id": "java",
-    "name": { "fr": "Java", "en": "Java" },
+    "name": {
+      "fr": "Java",
+      "en": "Java"
+    },
+    "icon": "openjdk",
     "category": "languages",
     "usedIn": [
-      { "fr": "WIMO", "en": "WIMO" },
-      { "fr": "Vesty Shop", "en": "Vesty Shop" },
-      { "fr": "SuperApp", "en": "SuperApp" }
+      {
+        "fr": "WIMO",
+        "en": "WIMO"
+      },
+      {
+        "fr": "Vesty Shop",
+        "en": "Vesty Shop"
+      },
+      {
+        "fr": "SuperApp",
+        "en": "SuperApp"
+      }
     ],
     "visible": true
   },
   {
     "id": "typescript",
-    "name": { "fr": "TypeScript", "en": "TypeScript" },
+    "name": {
+      "fr": "TypeScript",
+      "en": "TypeScript"
+    },
+    "icon": "typescript",
     "category": "languages",
     "usedIn": [
-      { "fr": "WIMO", "en": "WIMO" },
-      { "fr": "Vesty Shop", "en": "Vesty Shop" },
-      { "fr": "Portfolio", "en": "Portfolio" }
+      {
+        "fr": "WIMO",
+        "en": "WIMO"
+      },
+      {
+        "fr": "Vesty Shop",
+        "en": "Vesty Shop"
+      },
+      {
+        "fr": "Portfolio",
+        "en": "Portfolio"
+      }
     ],
     "visible": true
   },
   {
     "id": "spring-boot",
-    "name": { "fr": "Spring Boot", "en": "Spring Boot" },
+    "name": {
+      "fr": "Spring Boot",
+      "en": "Spring Boot"
+    },
+    "icon": "springboot",
     "category": "backend",
     "usedIn": [
-      { "fr": "WIMO", "en": "WIMO" },
-      { "fr": "Vesty Shop", "en": "Vesty Shop" },
-      { "fr": "SuperApp", "en": "SuperApp" }
+      {
+        "fr": "WIMO",
+        "en": "WIMO"
+      },
+      {
+        "fr": "Vesty Shop",
+        "en": "Vesty Shop"
+      },
+      {
+        "fr": "SuperApp",
+        "en": "SuperApp"
+      }
     ],
     "visible": true
   },
   {
     "id": "swagger",
-    "name": { "fr": "Swagger", "en": "Swagger" },
+    "name": {
+      "fr": "Swagger",
+      "en": "Swagger"
+    },
+    "icon": "swagger",
     "category": "backend",
     "usedIn": [
-      { "fr": "WIMO", "en": "WIMO" },
-      { "fr": "Vesty Shop", "en": "Vesty Shop" },
-      { "fr": "Sekouh", "en": "Sekouh" },
-      { "fr": "SuperApp", "en": "SuperApp" }
+      {
+        "fr": "WIMO",
+        "en": "WIMO"
+      },
+      {
+        "fr": "Vesty Shop",
+        "en": "Vesty Shop"
+      },
+      {
+        "fr": "Sekouh",
+        "en": "Sekouh"
+      },
+      {
+        "fr": "SuperApp",
+        "en": "SuperApp"
+      }
     ],
     "visible": true
   },
   {
     "id": "angular",
-    "name": { "fr": "Angular", "en": "Angular" },
+    "name": {
+      "fr": "Angular",
+      "en": "Angular"
+    },
+    "icon": "angular",
     "category": "frontend",
     "usedIn": [
-      { "fr": "WIMO", "en": "WIMO" },
-      { "fr": "Vesty Shop", "en": "Vesty Shop" },
-      { "fr": "Portfolio", "en": "Portfolio" }
+      {
+        "fr": "WIMO",
+        "en": "WIMO"
+      },
+      {
+        "fr": "Vesty Shop",
+        "en": "Vesty Shop"
+      },
+      {
+        "fr": "Portfolio",
+        "en": "Portfolio"
+      }
     ],
     "visible": true
   },
   {
     "id": "postgresql",
-    "name": { "fr": "PostgreSQL", "en": "PostgreSQL" },
+    "name": {
+      "fr": "PostgreSQL",
+      "en": "PostgreSQL"
+    },
+    "icon": "postgresql",
     "category": "database",
     "usedIn": [
-      { "fr": "WIMO", "en": "WIMO" },
-      { "fr": "Vesty Shop", "en": "Vesty Shop" },
-      { "fr": "SuperApp", "en": "SuperApp" }
+      {
+        "fr": "WIMO",
+        "en": "WIMO"
+      },
+      {
+        "fr": "Vesty Shop",
+        "en": "Vesty Shop"
+      },
+      {
+        "fr": "SuperApp",
+        "en": "SuperApp"
+      }
     ],
     "visible": true
   },
   {
     "id": "junit",
-    "name": { "fr": "JUnit", "en": "JUnit" },
+    "name": {
+      "fr": "JUnit",
+      "en": "JUnit"
+    },
+    "icon": "junit5",
     "category": "testing",
     "usedIn": [
-      { "fr": "WIMO", "en": "WIMO" },
-      { "fr": "Vesty Shop", "en": "Vesty Shop" },
-      { "fr": "SuperApp", "en": "SuperApp" }
+      {
+        "fr": "WIMO",
+        "en": "WIMO"
+      },
+      {
+        "fr": "Vesty Shop",
+        "en": "Vesty Shop"
+      },
+      {
+        "fr": "SuperApp",
+        "en": "SuperApp"
+      }
     ],
     "visible": true
   },
   {
     "id": "vitest",
-    "name": { "fr": "Vitest", "en": "Vitest" },
+    "name": {
+      "fr": "Vitest",
+      "en": "Vitest"
+    },
+    "icon": "vitest",
     "category": "testing",
-    "usedIn": [{ "fr": "Portfolio", "en": "Portfolio" }],
+    "usedIn": [
+      {
+        "fr": "Portfolio",
+        "en": "Portfolio"
+      }
+    ],
     "visible": true
   },
   {
     "id": "manual-testing",
-    "name": { "fr": "Tests manuels & cahiers de test", "en": "Manual testing & test plans" },
+    "name": {
+      "fr": "Tests manuels & cahiers de test",
+      "en": "Manual testing & test plans"
+    },
+    "monogram": "TM",
     "category": "testing",
     "usedIn": [
-      { "fr": "Sekouh", "en": "Sekouh" },
-      { "fr": "SuperApp", "en": "SuperApp" }
+      {
+        "fr": "Sekouh",
+        "en": "Sekouh"
+      },
+      {
+        "fr": "SuperApp",
+        "en": "SuperApp"
+      }
     ],
     "visible": true
   },
   {
     "id": "squash-tm",
-    "name": { "fr": "Squash TM", "en": "Squash TM" },
+    "name": {
+      "fr": "Squash TM",
+      "en": "Squash TM"
+    },
+    "monogram": "SQ",
     "category": "testing",
     "usedIn": [
-      { "fr": "Sekouh", "en": "Sekouh" },
-      { "fr": "SuperApp", "en": "SuperApp" }
+      {
+        "fr": "Sekouh",
+        "en": "Sekouh"
+      },
+      {
+        "fr": "SuperApp",
+        "en": "SuperApp"
+      }
     ],
     "visible": true
   },
   {
     "id": "postman",
-    "name": { "fr": "Postman", "en": "Postman" },
+    "name": {
+      "fr": "Postman",
+      "en": "Postman"
+    },
+    "icon": "postman",
     "category": "testing",
     "usedIn": [
-      { "fr": "SuperApp", "en": "SuperApp" },
-      { "fr": "Sekouh", "en": "Sekouh" }
+      {
+        "fr": "SuperApp",
+        "en": "SuperApp"
+      },
+      {
+        "fr": "Sekouh",
+        "en": "Sekouh"
+      }
     ],
     "visible": true
   },
   {
     "id": "playwright",
-    "name": { "fr": "Playwright", "en": "Playwright" },
+    "name": {
+      "fr": "Playwright",
+      "en": "Playwright"
+    },
+    "monogram": "PW",
     "category": "testing",
-    "usedIn": [{ "fr": "Projets d'apprentissage", "en": "Learning projects" }],
+    "usedIn": [
+      {
+        "fr": "Projets d'apprentissage",
+        "en": "Learning projects"
+      }
+    ],
     "visible": true
   },
   {
     "id": "cypress",
-    "name": { "fr": "Cypress", "en": "Cypress" },
+    "name": {
+      "fr": "Cypress",
+      "en": "Cypress"
+    },
+    "icon": "cypress",
     "category": "testing",
-    "usedIn": [{ "fr": "Projets d'apprentissage", "en": "Learning projects" }],
+    "usedIn": [
+      {
+        "fr": "Projets d'apprentissage",
+        "en": "Learning projects"
+      }
+    ],
     "visible": true
   },
   {
     "id": "docker",
-    "name": { "fr": "Docker", "en": "Docker" },
+    "name": {
+      "fr": "Docker",
+      "en": "Docker"
+    },
+    "icon": "docker",
     "category": "environment",
     "usedIn": [
-      { "fr": "WIMO", "en": "WIMO" },
-      { "fr": "Vesty Shop", "en": "Vesty Shop" },
-      { "fr": "Sekouh", "en": "Sekouh" },
-      { "fr": "SuperApp", "en": "SuperApp" }
+      {
+        "fr": "WIMO",
+        "en": "WIMO"
+      },
+      {
+        "fr": "Vesty Shop",
+        "en": "Vesty Shop"
+      },
+      {
+        "fr": "Sekouh",
+        "en": "Sekouh"
+      },
+      {
+        "fr": "SuperApp",
+        "en": "SuperApp"
+      }
     ],
     "visible": true
   },
   {
     "id": "git",
-    "name": { "fr": "Git, GitHub, GitLab", "en": "Git, GitHub, GitLab" },
+    "name": {
+      "fr": "Git, GitHub, GitLab",
+      "en": "Git, GitHub, GitLab"
+    },
+    "icon": "git",
     "category": "environment",
-    "usedIn": [{ "fr": "Usage quotidien", "en": "Daily use" }],
+    "usedIn": [
+      {
+        "fr": "Usage quotidien",
+        "en": "Daily use"
+      }
+    ],
     "visible": true
   },
   {
     "id": "linux",
-    "name": { "fr": "Linux", "en": "Linux" },
+    "name": {
+      "fr": "Linux",
+      "en": "Linux"
+    },
+    "icon": "linux",
     "category": "environment",
-    "usedIn": [{ "fr": "Usage quotidien", "en": "Daily use" }],
+    "usedIn": [
+      {
+        "fr": "Usage quotidien",
+        "en": "Daily use"
+      }
+    ],
     "visible": true
   },
   {
     "id": "ides",
-    "name": { "fr": "VS Code, IntelliJ IDEA", "en": "VS Code, IntelliJ IDEA" },
+    "name": {
+      "fr": "VS Code, IntelliJ IDEA",
+      "en": "VS Code, IntelliJ IDEA"
+    },
+    "icon": "intellijidea",
     "category": "environment",
-    "usedIn": [{ "fr": "Usage quotidien", "en": "Daily use" }],
+    "usedIn": [
+      {
+        "fr": "Usage quotidien",
+        "en": "Daily use"
+      }
+    ],
     "visible": true
   }
 ]
