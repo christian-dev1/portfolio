@@ -1,0 +1,25 @@
+:host {
+  --color-focus: var(--color-focus-on-brand);
+}
+
+.social-links {
+  display: flex;
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}

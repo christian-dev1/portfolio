@@ -1,7 +1,44 @@
-.footer {
-  padding: 1.5rem;
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
+:host {
+  --color-focus: var(--color-focus-on-brand);
+  display: block;
+  margin-top: 4rem;
+}
+
+.footer__edge {
+  display: block;
+  width: 100%;
+  height: clamp(2.5rem, 6vw, 5rem);
+}
+
+.footer__edge-red {
+  fill: var(--color-brand-red);
+}
+
+.footer__edge-blue {
+  fill: var(--color-brand-blue);
+}
+
+.footer__content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  /* -1px : recouvre la ligne d'anticrénelage entre le SVG et l'aplat. */
+  margin-top: -1px;
+  padding: 1rem max(1.5rem, calc((100% - 72rem) / 2)) 2rem;
+  background-color: var(--color-brand-blue);
+  color: var(--color-on-brand);
+}
+
+.footer__copyright {
+  margin: 0;
   font-size: 0.875rem;
-  text-align: center;
+}
+
+@media (max-width: 639.98px) {
+  .footer__content {
+    flex-direction: column;
+    text-align: center;
+  }
 }

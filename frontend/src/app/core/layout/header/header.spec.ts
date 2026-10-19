@@ -32,4 +32,16 @@ describe('Header', () => {
 
     expect(links.length).toBe(NAV_ITEMS.length);
   });
+
+  it('should display the menu inside a glass pill', () => {
+    expect(compiled.querySelector('.header__pill.glass')).not.toBeNull();
+  });
+
+  it('should keep accessible names on the language and theme buttons', () => {
+    const buttons = compiled.querySelectorAll('.header__icon-button');
+
+    expect(buttons.length).toBe(2);
+    expect(buttons[0].getAttribute('aria-label')?.trim()).toBeTruthy();
+    expect(buttons[1].getAttribute('aria-label')?.trim()).toBeTruthy();
+  });
 });
