@@ -1,15 +1,46 @@
 :root {
   color-scheme: light;
+
+  /* Couleurs de marque : identiques dans les deux thèmes (zone bleue, bande rouge, boutons). */
+  --color-brand-blue: #1e3a8a;
+  --color-brand-red: #dc2626;
+  --color-brand-red-hover: #b91c1c;
+  --color-on-brand: #ffffff;
+
   --color-primary: #1e3a8a;
   --color-heading: #1e3a8a;
   --color-accent: #dc2626;
   --color-accent-soft: #fee2e2;
+  --color-accent-text: #b91c1c;
   --color-on-primary: #ffffff;
-  --color-background: #ffffff;
+  --color-background: #eef2fb;
   --color-surface: #f3f4f6;
   --color-text: #111827;
   --color-text-muted: #4b5563;
-  --color-border: #e5e7eb;
+  --color-border: #d6deef;
+  --color-tag-bg: rgba(30, 58, 138, 0.08);
+  --color-status-bg: #fef3c7;
+  --color-status-text: #92400e;
+  --color-focus: #1e3a8a;
+  --color-focus-on-brand: #ffffff;
+
+  /* Verre (liquid glass) */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-bg-fallback: #ffffff;
+  --glass-border: rgba(30, 58, 138, 0.14);
+  --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
+  --glass-on-brand-bg: rgba(255, 255, 255, 0.14);
+  --glass-on-brand-border: rgba(255, 255, 255, 0.3);
+
+  /* Décor */
+  --halo-blue: rgba(59, 91, 219, 0.14);
+  --halo-red: rgba(220, 38, 38, 0.08);
+  --pattern-dot: rgba(255, 255, 255, 0.16);
+  --shadow-red: 0 10px 30px rgba(220, 38, 38, 0.35);
+
+  /* Typographie */
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
 }
 
 :root[data-theme='dark'] {
@@ -17,13 +48,26 @@
   --color-primary: #1e3a8a;
   --color-heading: #ffffff;
   --color-accent: #f87171;
-  --color-accent-soft: #3b1d2e;
+  --color-accent-soft: rgba(220, 38, 38, 0.18);
+  --color-accent-text: #fca5a5;
   --color-on-primary: #ffffff;
   --color-background: #0a1230;
   --color-surface: #131c45;
   --color-text: #f1f5f9;
   --color-text-muted: #cbd5e1;
   --color-border: #2a3563;
+  --color-tag-bg: rgba(255, 255, 255, 0.08);
+  --color-status-bg: rgba(251, 191, 36, 0.15);
+  --color-status-text: #fcd34d;
+  --color-focus: #93c5fd;
+
+  --glass-bg: rgba(19, 28, 69, 0.55);
+  --glass-bg-fallback: #131c45;
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+
+  --halo-blue: rgba(37, 99, 235, 0.32);
+  --halo-red: rgba(220, 38, 38, 0.2);
 }
 
 *,
@@ -33,14 +77,95 @@
 }
 
 body {
+  position: relative;
   margin: 0;
-  font-family:
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
+  overflow-x: clip;
+  font-family: var(--font-body);
   line-height: 1.5;
   color: var(--color-text);
   background-color: var(--color-background);
+}
+
+/* Halos décoratifs : un seul calque fixe qui ne dépasse jamais de la fenêtre. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 0% 0%, var(--halo-blue), transparent 45%),
+    radial-gradient(circle at 100% 100%, var(--halo-red), transparent 45%);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  color: var(--color-heading);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+/* Verre : fond opaque par défaut, verre flouté seulement si le navigateur sait le faire. */
+.glass {
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg-fallback);
+  box-shadow: var(--glass-shadow);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    backdrop-filter: blur(18px) saturate(1.4);
+  }
+}
+
+/* Verre posé sur un aplat de marque (zone bleue, footer) : mêmes règles, autres tokens. */
+.glass--on-brand {
+  --glass-bg: var(--glass-on-brand-bg);
+  --glass-bg-fallback: var(--glass-on-brand-bg);
+  --glass-border: var(--glass-on-brand-border);
+  --glass-shadow: none;
+  color: var(--color-on-brand);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.625rem 1.5rem;
+  border-radius: 999px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+
+  &--primary {
+    background-color: var(--color-brand-red);
+    color: var(--color-on-brand);
+    box-shadow: var(--shadow-red);
+
+    &:hover {
+      background-color: var(--color-brand-red-hover);
+      transform: translateY(-1px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
