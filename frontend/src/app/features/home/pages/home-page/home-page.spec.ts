@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
 import { HomePage } from './home-page';
 
 describe('HomePage', () => {
@@ -7,7 +8,7 @@ describe('HomePage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomePage],
+      imports: [HomePage, provideTranslocoForTests()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePage);

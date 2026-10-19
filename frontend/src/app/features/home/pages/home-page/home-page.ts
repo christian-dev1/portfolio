@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-home-page',
-  imports: [],
+  imports: [TranslocoPipe],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })

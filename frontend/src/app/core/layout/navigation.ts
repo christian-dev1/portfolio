@@ -1,9 +1,10 @@
-export interface NavItem{
-    label: string;
-    path: string;
+export interface NavItem {
+  labelKey: string;
+  path: string;
 }
+
 export const NAV_ITEMS: NavItem[] = [
-    { label: 'Acceuil', path: '/'},
-    { label: 'Projets', path: '/projets' },
-    { label: 'Outils', path: '/outils' },
-]
+  { labelKey: 'nav.home', path: '/' },
+  { labelKey: 'nav.projects', path: '/projets' },
+  { labelKey: 'nav.tools', path: '/outils' },
+];

@@ -2,7 +2,7 @@
   <a class="header__brand" routerLink="/">LUCHRIST</a>
 
   <div class="header__actions">
-    <nav class="header__nav" aria-label="Navigation principale">
+    <nav class="header__nav" [attr.aria-label]="'nav.mainLabel' | transloco">
       <ul>
         @for (item of navItems; track item.path) {
           <li>
@@ -11,7 +11,7 @@
               routerLinkActive="is-active"
               [routerLinkActiveOptions]="{ exact: true }"
             >
-              {{ item.label }}
+              {{ item.labelKey | transloco }}
             </a>
           </li>
         }
@@ -20,9 +20,18 @@
 
     <button
       type="button"
-      class="header__theme-toggle"
+      class="header__icon-button"
+      (click)="toggleLanguage()"
+      [attr.aria-label]="'language.switchLabel' | transloco"
+    >
+      {{ 'language.switchShort' | transloco }}
+    </button>
+
+    <button
+      type="button"
+      class="header__icon-button"
       (click)="toggleTheme()"
-      [attr.aria-label]="themeLabel()"
+      [attr.aria-label]="themeLabelKey() | transloco"
     >
       @if (isDark()) {
         <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">

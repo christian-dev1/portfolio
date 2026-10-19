@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTranslocoForTests } from '../../../../testing/transloco-testing';
 import { provideRouter } from '@angular/router';
 import { Header } from './header';
 import { NAV_ITEMS } from '../navigation';
@@ -9,7 +10,7 @@ describe('Header', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Header],
+      imports: [Header, provideTranslocoForTests()],
       providers: [provideRouter([])],
     }).compileComponents();
 
