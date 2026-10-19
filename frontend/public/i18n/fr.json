@@ -1,0 +1,19 @@
+{
+  "nav": {
+    "mainLabel": "Navigation principale",
+    "home": "Accueil",
+    "projects": "Projets",
+    "tools": "Outils"
+  },
+  "theme": {
+    "toLight": "Activer le mode clair",
+    "toDark": "Activer le mode sombre"
+  },
+  "language": {
+    "switchLabel": "Switch to English",
+    "switchShort": "EN"
+  },
+  "home": {
+    "jobTitle": "Développeur Backend & QA"
+  }
+}
