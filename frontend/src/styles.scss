@@ -41,6 +41,8 @@
   --pattern-dot: rgba(255, 255, 255, 0.16);
   --shadow-red: 0 10px 30px rgba(220, 38, 38, 0.35);
   --shadow-lift: 0 16px 40px rgba(15, 23, 42, 0.14);
+  /* Ombre neutre, courte et peu floue, sous les ronds à anneau rouge : aucun halo coloré. */
+  --shadow-ring: 0 2px 4px rgba(15, 23, 42, 0.16);
   --color-tile-bg: rgba(30, 58, 138, 0.06);
 
   /* Typographie */
@@ -74,6 +76,7 @@
   --halo-blue: rgba(37, 99, 235, 0.32);
   --halo-red: rgba(220, 38, 38, 0.2);
   --shadow-lift: 0 16px 40px rgba(0, 0, 0, 0.45);
+  --shadow-ring: 0 2px 4px rgba(0, 0, 0, 0.45);
   --color-tile-bg: rgba(255, 255, 255, 0.06);
 }
 
