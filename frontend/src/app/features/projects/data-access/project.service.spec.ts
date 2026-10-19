@@ -13,7 +13,7 @@ describe('ProjectService', () => {
     {
       id: 'public-project',
       name: 'Public',
-      summary: 'Projet visible',
+      summary: { fr: 'Projet visible', en: 'Visible project' },
       context: 'b-her',
       roles: [],
       technologies: [],
@@ -23,7 +23,7 @@ describe('ProjectService', () => {
     {
       id: 'private-project',
       name: 'Private',
-      summary: 'Projet masqué',
+      summary: { fr: 'Projet masqué', en: 'Hidden project' },
       context: 'b-her',
       roles: [],
       technologies: [],

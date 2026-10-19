@@ -1,11 +1,15 @@
-export type ProjectContext = 'b-her' | 'collaboration';
+import { LocalizedText } from '../../../shared/i18n/localized-text';
 
-export type ProjectStatus = 'in-progress' | 'completed' | 'concept';
+export const PROJECT_CONTEXTS = ['b-her', 'collaboration'] as const;
+export type ProjectContext = (typeof PROJECT_CONTEXTS)[number];
+
+export const PROJECT_STATUSES = ['in-progress', 'pilot', 'completed', 'concept'] as const;
+export type ProjectStatus = (typeof PROJECT_STATUSES)[number];
 
 export interface Project {
   id: string;
   name: string;
-  summary: string;
+  summary: LocalizedText;
   context: ProjectContext;
   roles: string[];
   technologies: string[];

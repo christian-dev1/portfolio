@@ -1,19 +1,19 @@
 <article class="project-card">
   <div class="project-card__thumbnail">
     @if (project().imageUrl; as imageUrl) {
-      <img [src]="imageUrl" [alt]="'Logo du projet ' + project().name" />
+      <img [src]="imageUrl" [alt]="'projects.logoAlt' | transloco: { name: project().name }" />
     } @else {
       <span aria-hidden="true">{{ initials() }}</span>
     }
   </div>
 
   <div class="project-card__body">
-    <p class="project-card__context">{{ contextLabels[project().context] }}</p>
+    <p class="project-card__context">{{ contextKey() | transloco }}</p>
     <h2 class="project-card__name">{{ project().name }}</h2>
-    <p class="project-card__status">{{ statusLabels[project().status] }}</p>
-    <p class="project-card__summary">{{ project().summary }}</p>
+    <p class="project-card__status">{{ statusKey() | transloco }}</p>
+    <p class="project-card__summary">{{ project().summary | localize }}</p>
 
-    <p class="project-card__label">Mon rôle</p>
+    <p class="project-card__label">{{ 'projects.roleLabel' | transloco }}</p>
     <ul class="project-card__tags">
       @for (role of project().roles; track role) {
         <li>{{ role }}</li>
@@ -21,7 +21,7 @@
     </ul>
 
     @if (project().technologies.length > 0) {
-      <p class="project-card__label">Technologies</p>
+      <p class="project-card__label">{{ 'projects.technologiesLabel' | transloco }}</p>
       <ul class="project-card__tags">
         @for (technology of project().technologies; track technology) {
           <li>{{ technology }}</li>
@@ -31,10 +31,10 @@
 
     @if (project().repositoryUrl; as url) {
       <a class="project-card__link" [href]="url" target="_blank" rel="noopener noreferrer">
-        Voir le code
+        {{ 'projects.repositoryLink' | transloco }}
       </a>
     } @else if (project().context === 'collaboration') {
-      <p class="project-card__note">Code non public (projet en équipe)</p>
+      <p class="project-card__note">{{ 'projects.privateCode' | transloco }}</p>
     }
   </div>
 </article>

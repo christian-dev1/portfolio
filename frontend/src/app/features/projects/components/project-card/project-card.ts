@@ -1,9 +1,11 @@
 import { Component, computed, input } from '@angular/core';
-import { Project, ProjectContext, ProjectStatus } from '../../models/project.model';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { LocalizePipe } from '../../../../shared/i18n/localize.pipe';
+import { Project } from '../../models/project.model';
 
 @Component({
   selector: 'app-project-card',
-  imports: [],
+  imports: [TranslocoPipe, LocalizePipe],
   templateUrl: './project-card.html',
   styleUrl: './project-card.scss',
 })
@@ -19,14 +21,7 @@ export class ProjectCard {
       .toUpperCase(),
   );
 
-  protected readonly statusLabels: Record<ProjectStatus, string> = {
-    'in-progress': 'En développement',
-    completed: 'Terminé',
-    concept: 'En conception',
-  };
+  protected readonly statusKey = computed(() => `projects.status.${this.project().status}`);
 
-  protected readonly contextLabels: Record<ProjectContext, string> = {
-    'b-her': 'Projet B-HER EMPIRE',
-    collaboration: 'Projet en équipe',
-  };
+  protected readonly contextKey = computed(() => `projects.context.${this.project().context}`);
 }

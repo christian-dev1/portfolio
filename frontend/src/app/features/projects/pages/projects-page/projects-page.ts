@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { ProjectService } from '../../data-access/project.service';
 import { ProjectCard } from '../../components/project-card/project-card';
 
 @Component({
   selector: 'app-projects-page',
-  imports: [ProjectCard],
+  imports: [ProjectCard, TranslocoPipe],
   templateUrl: './projects-page.html',
   styleUrl: './projects-page.scss',
 })

@@ -1,18 +1,16 @@
 <section class="projects">
-  <h1>Projets</h1>
-  <p class="projects__intro">
-    Les applications que je conçois, développe et teste, en solo sous la bannière B-HER EMPIRE ou en équipe.
-  </p>
+  <h1>{{ 'projects.title' | transloco }}</h1>
+  <p class="projects__intro">{{ 'projects.intro' | transloco }}</p>
 
   @if (projects(); as projectList) {
     <div class="projects__grid">
       @for (project of projectList; track project.id) {
         <app-project-card [project]="project" />
       } @empty {
-        <p>Aucun projet à afficher pour le moment.</p>
+        <p>{{ 'projects.empty' | transloco }}</p>
       }
     </div>
   } @else {
-    <p>Chargement des projets…</p>
+    <p>{{ 'projects.loading' | transloco }}</p>
   }
 </section>
