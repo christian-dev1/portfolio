@@ -13,7 +13,47 @@
     "switchLabel": "Switch to English",
     "switchShort": "EN"
   },
+  "titles": {
+    "home": "LUCHRIST — Accueil",
+    "projects": "LUCHRIST — Projets",
+    "tools": "LUCHRIST — Boîte à outils"
+  },
   "home": {
     "jobTitle": "Développeur Backend & QA"
+  },
+  "projects": {
+    "title": "Projets",
+    "intro": "Les applications que je conçois, développe et teste, en solo sous la bannière B-HER EMPIRE ou en équipe.",
+    "loading": "Chargement des projets…",
+    "empty": "Aucun projet à afficher pour le moment.",
+    "logoAlt": "Logo du projet {{ name }}",
+    "roleLabel": "Mon rôle",
+    "technologiesLabel": "Technologies",
+    "repositoryLink": "Voir le code",
+    "privateCode": "Code non public (projet en équipe)",
+    "status": {
+      "in-progress": "En développement",
+      "pilot": "En phase pilote",
+      "completed": "Terminé",
+      "concept": "En conception"
+    },
+    "context": {
+      "b-her": "Projet B-HER EMPIRE",
+      "collaboration": "Projet en équipe"
+    }
+  },
+  "tools": {
+    "title": "Boîte à outils",
+    "intro": "Les technologies que j'utilise au quotidien, et les projets où je les ai mises en pratique.",
+    "loading": "Chargement de la boîte à outils…",
+    "empty": "Aucune technologie à afficher pour le moment.",
+    "category": {
+      "languages": "Langages",
+      "backend": "Backend",
+      "frontend": "Frontend",
+      "database": "Base de données",
+      "testing": "Tests & QA",
+      "environment": "Environnement & outils"
+    }
   }
 }

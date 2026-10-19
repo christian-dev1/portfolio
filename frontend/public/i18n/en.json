@@ -13,7 +13,47 @@
     "switchLabel": "Passer en français",
     "switchShort": "FR"
   },
+  "titles": {
+    "home": "LUCHRIST — Home",
+    "projects": "LUCHRIST — Projects",
+    "tools": "LUCHRIST — Toolbox"
+  },
   "home": {
     "jobTitle": "Backend Developer & QA"
+  },
+  "projects": {
+    "title": "Projects",
+    "intro": "The applications I design, build and test, solo under the B-HER EMPIRE banner or as part of a team.",
+    "loading": "Loading projects…",
+    "empty": "No projects to display yet.",
+    "logoAlt": "{{ name }} project logo",
+    "roleLabel": "My role",
+    "technologiesLabel": "Technologies",
+    "repositoryLink": "View the code",
+    "privateCode": "Private code (team project)",
+    "status": {
+      "in-progress": "In development",
+      "pilot": "Pilot phase",
+      "completed": "Completed",
+      "concept": "In design"
+    },
+    "context": {
+      "b-her": "B-HER EMPIRE project",
+      "collaboration": "Team project"
+    }
+  },
+  "tools": {
+    "title": "Toolbox",
+    "intro": "The technologies I use every day, and the projects where I put them into practice.",
+    "loading": "Loading the toolbox…",
+    "empty": "No technologies to display yet.",
+    "category": {
+      "languages": "Languages",
+      "backend": "Backend",
+      "frontend": "Frontend",
+      "database": "Database",
+      "testing": "Testing & QA",
+      "environment": "Environment & tools"
+    }
   }
 }
