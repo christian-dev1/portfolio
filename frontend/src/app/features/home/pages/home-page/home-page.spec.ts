@@ -14,6 +14,7 @@ const featuredProject: Project = {
   id: 'wimo',
   name: 'WIMO',
   summary: { fr: 'Transfert d’argent.', en: 'Money transfer.' },
+  coverTagline: { fr: 'Accroche', en: 'Tagline' },
   context: 'b-her',
   roles: ['Backend'],
   technologies: ['Spring Boot'],

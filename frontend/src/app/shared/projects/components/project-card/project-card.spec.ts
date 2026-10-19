@@ -8,6 +8,7 @@ const baseProject: Project = {
   id: 'vesty-shop',
   name: 'Vesty Shop',
   summary: { fr: 'Boutique de vêtements en ligne.', en: 'Online clothing store.' },
+  coverTagline: { fr: 'Prêt-à-porter', en: 'Ready-to-wear' },
   context: 'b-her',
   roles: ['Backend', 'QA'],
   technologies: ['Spring Boot', 'Angular'],
@@ -21,11 +22,18 @@ describe('ProjectCard', () => {
   let compiled: HTMLElement;
   let language: LanguageService;
 
-  async function render(project: Project): Promise<void> {
+  async function render(project: Project, headingLevel?: 2 | 3): Promise<void> {
     fixture = TestBed.createComponent(ProjectCard);
     fixture.componentRef.setInput('project', project);
+    if (headingLevel) {
+      fixture.componentRef.setInput('headingLevel', headingLevel);
+    }
     compiled = fixture.nativeElement as HTMLElement;
     await fixture.whenStable();
+  }
+
+  function text(selector: string): string {
+    return compiled.querySelector(selector)?.textContent?.trim() ?? '';
   }
 
   beforeEach(async () => {
@@ -37,82 +45,136 @@ describe('ProjectCard', () => {
     language.lang.set('fr');
   });
 
-  it('should display the project name and summary', async () => {
-    await render(baseProject);
+  describe('folder tab', () => {
+    it('should show a red B-HER EMPIRE tab for a B-HER project', async () => {
+      await render(baseProject);
 
-    const name = compiled.querySelector('h2');
-    expect(name).not.toBeNull();
-    expect(name!.textContent).toContain('Vesty Shop');
-    expect(compiled.textContent).toContain('Boutique de vêtements en ligne.');
+      expect(text('.project-card__tab')).toBe('B-HER EMPIRE');
+      expect(compiled.querySelector('.project-card--team')).toBeNull();
+    });
+
+    it('should show a blue team tab for a collaboration project', async () => {
+      await render({ ...baseProject, context: 'collaboration' });
+
+      expect(text('.project-card__tab')).toBe('Projet en équipe');
+      expect(compiled.querySelector('.project-card--team')).not.toBeNull();
+    });
   });
 
-  it('should use a level 3 heading when asked to', async () => {
-    fixture = TestBed.createComponent(ProjectCard);
-    fixture.componentRef.setInput('project', baseProject);
-    fixture.componentRef.setInput('headingLevel', 3);
-    compiled = fixture.nativeElement as HTMLElement;
-    await fixture.whenStable();
+  describe('cover', () => {
+    it('should generate a decorative cover with the name and the tagline when there is no image', async () => {
+      await render(baseProject);
 
-    expect(compiled.querySelector('h2')).toBeNull();
-    expect(compiled.querySelector('h3')!.textContent).toContain('Vesty Shop');
+      const generated = compiled.querySelector('.project-card__cover-generated')!;
+      expect(generated.getAttribute('aria-hidden')).toBe('true');
+      expect(generated.textContent).toContain('Vesty Shop');
+      expect(generated.textContent).toContain('Prêt-à-porter');
+      expect(compiled.querySelector('.project-card__cover-image')).toBeNull();
+    });
+
+    it('should display the cover image with a translated alt text when there is one', async () => {
+      await render({ ...baseProject, coverUrl: '/images/projects/cover.jpg' });
+
+      const image = compiled.querySelector('.project-card__cover-image')!;
+      expect(image.getAttribute('src')).toBe('/images/projects/cover.jpg');
+      expect(image.getAttribute('alt')).toBe('Couverture du projet Vesty Shop');
+      expect(compiled.querySelector('.project-card__cover-generated')).toBeNull();
+    });
+
+    it('should translate the tagline', async () => {
+      language.lang.set('en');
+
+      await render(baseProject);
+
+      expect(text('.project-card__cover-tagline')).toBe('Ready-to-wear');
+    });
   });
 
-  it('should display the initials when there is no image', async () => {
-    await render(baseProject);
+  describe('emblem', () => {
+    it('should display the initials when there is no logo', async () => {
+      await render(baseProject);
 
-    const thumbnail = compiled.querySelector('.project-card__thumbnail');
-    expect(thumbnail!.textContent!.trim()).toBe('VS');
+      expect(text('.project-card__emblem')).toBe('VS');
+      expect(compiled.querySelector('.project-card__emblem img')).toBeNull();
+    });
+
+    it('should display the logo with the project name as alt text when there is one', async () => {
+      await render({ ...baseProject, logoUrl: '/images/projects/logo.png' });
+
+      const logo = compiled.querySelector('.project-card__emblem img')!;
+      expect(logo.getAttribute('src')).toBe('/images/projects/logo.png');
+      expect(logo.getAttribute('alt')).toBe('Vesty Shop');
+      expect(compiled.querySelector('.project-card__initials')).toBeNull();
+    });
   });
 
-  it('should display the status label in French', async () => {
-    await render(baseProject);
+  describe('header', () => {
+    it('should display the name in a level 2 heading by default', async () => {
+      await render(baseProject);
 
-    expect(compiled.textContent).toContain('En développement');
+      expect(compiled.querySelector('h2')!.textContent).toContain('Vesty Shop');
+      expect(compiled.querySelector('h3')).toBeNull();
+    });
+
+    it('should use a level 3 heading when asked to', async () => {
+      await render(baseProject, 3);
+
+      expect(compiled.querySelector('h2')).toBeNull();
+      expect(compiled.querySelector('h3')!.textContent).toContain('Vesty Shop');
+    });
+
+    it('should display the translated status', async () => {
+      await render({ ...baseProject, status: 'pilot' });
+
+      expect(text('.project-card__status')).toBe('En phase pilote');
+    });
   });
 
-  it('should display the pilot status label', async () => {
-    await render({ ...baseProject, status: 'pilot' });
+  describe('body', () => {
+    it('should display the summary in the current language', async () => {
+      language.lang.set('en');
 
-    expect(compiled.textContent).toContain('En phase pilote');
+      await render(baseProject);
+
+      expect(text('.project-card__summary')).toBe('Online clothing store.');
+    });
+
+    it('should list roles and stack as definitions', async () => {
+      await render(baseProject);
+
+      const terms = Array.from(compiled.querySelectorAll('dt')).map((dt) => dt.textContent!.trim());
+      expect(terms).toEqual(['Rôle', 'Stack']);
+      expect(compiled.querySelectorAll('.project-card__chips li').length).toBe(4);
+    });
+
+    it('should hide the stack when there is no technology', async () => {
+      await render({ ...baseProject, technologies: [] });
+
+      expect(compiled.querySelectorAll('dt').length).toBe(1);
+    });
   });
 
-  it('should display the context label', async () => {
-    await render(baseProject);
+  describe('footer', () => {
+    it('should link to the repository safely in a new tab', async () => {
+      await render({ ...baseProject, repositoryUrl: 'https://gitlab.com/exemple' });
 
-    expect(compiled.textContent).toContain('Projet B-HER EMPIRE');
-  });
+      const link = compiled.querySelector('.project-card__footer a')!;
+      expect(link.getAttribute('href')).toBe('https://gitlab.com/exemple');
+      expect(link.getAttribute('target')).toBe('_blank');
+      expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+      expect(link.textContent).toContain('Voir le code');
+    });
 
-  it('should display the summary, status and context in English when the language is English', async () => {
-    language.lang.set('en');
+    it('should mention private code for a team project without repository', async () => {
+      await render({ ...baseProject, context: 'collaboration' });
 
-    await render(baseProject);
+      expect(text('.project-card__footer')).toBe('Code non public (projet en équipe)');
+    });
 
-    expect(compiled.textContent).toContain('Online clothing store.');
-    expect(compiled.textContent).toContain('In development');
-    expect(compiled.textContent).toContain('B-HER EMPIRE project');
-    expect(compiled.textContent).toContain('My role');
-  });
+    it('should not display a footer for a B-HER project without repository', async () => {
+      await render(baseProject);
 
-  it('should hide the technologies section when the list is empty', async () => {
-    await render({ ...baseProject, technologies: [] });
-
-    expect(compiled.textContent).not.toContain('Technologies');
-  });
-
-  it('should open the repository link safely in a new tab', async () => {
-    await render({ ...baseProject, repositoryUrl: 'https://gitlab.com/exemple' });
-
-    const link = compiled.querySelector('a.project-card__link');
-    expect(link).not.toBeNull();
-    expect(link!.getAttribute('href')).toBe('https://gitlab.com/exemple');
-    expect(link!.getAttribute('target')).toBe('_blank');
-    expect(link!.getAttribute('rel')).toContain('noopener');
-    expect(link!.textContent).toContain('Voir le code');
-  });
-
-  it('should mention that the code is private for a team project without link', async () => {
-    await render({ ...baseProject, context: 'collaboration' });
-
-    expect(compiled.textContent).toContain('Code non public (projet en équipe)');
+      expect(compiled.querySelector('.project-card__footer')).toBeNull();
+    });
   });
 });

@@ -3,10 +3,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ProjectService } from '../../../../shared/projects/data-access/project.service';
 import { ProjectCard } from '../../../../shared/projects/components/project-card/project-card';
+import { PageBanner } from '../../../../shared/ui/page-banner/page-banner';
 
 @Component({
   selector: 'app-projects-page',
-  imports: [ProjectCard, TranslocoPipe],
+  imports: [PageBanner, ProjectCard, TranslocoPipe],
   templateUrl: './projects-page.html',
   styleUrl: './projects-page.scss',
 })

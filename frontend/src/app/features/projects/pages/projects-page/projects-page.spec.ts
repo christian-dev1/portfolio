@@ -11,6 +11,7 @@ const projects: Project[] = [
     id: 'wimo',
     name: 'WIMO',
     summary: { fr: 'Transfert d’argent.', en: 'Money transfer.' },
+    coverTagline: { fr: 'Accroche', en: 'Tagline' },
     context: 'b-her',
     roles: ['Backend'],
     technologies: ['Spring Boot'],
@@ -22,6 +23,7 @@ const projects: Project[] = [
     id: 'sekouh',
     name: 'Sekouh',
     summary: { fr: 'Gestion scolaire.', en: 'School management.' },
+    coverTagline: { fr: 'Accroche', en: 'Tagline' },
     context: 'collaboration',
     roles: ['QA'],
     technologies: [],
@@ -70,5 +72,19 @@ describe('ProjectsPage', () => {
 
     expect(compiled.querySelector('h1')!.textContent).toContain('Projects');
     expect(compiled.textContent).toContain('No projects to display yet.');
+  });
+
+  it('should have a single h1, in the page banner', async () => {
+    const compiled = await setup(of(projects));
+
+    const titles = compiled.querySelectorAll('h1');
+    expect(titles.length).toBe(1);
+    expect(titles[0].closest('app-page-banner')).not.toBeNull();
+  });
+
+  it('should count the displayed projects in the banner', async () => {
+    const compiled = await setup(of(projects));
+
+    expect(compiled.querySelector('.page-banner__count')!.textContent).toBe('02');
   });
 });

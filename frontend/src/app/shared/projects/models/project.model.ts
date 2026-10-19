@@ -15,7 +15,11 @@ export interface Project {
   technologies: string[];
   status: ProjectStatus;
   repositoryUrl?: string;
-  imageUrl?: string;
+  coverTagline: LocalizedText;
+  /** Image de couverture ; sinon une couverture est générée (nom + accroche). */
+  coverUrl?: string;
+  /** Logo affiché dans l'emblème ; sinon les initiales. */
+  logoUrl?: string;
   visible: boolean;
   featured: boolean;
 }

@@ -6,6 +6,10 @@
       "fr": "Application de transfert d'argent.",
       "en": "Money transfer application."
     },
+    "coverTagline": {
+      "fr": "Transfert d'argent",
+      "en": "Money transfer"
+    },
     "context": "b-her",
     "roles": ["Backend", "Frontend", "QA"],
     "technologies": ["Spring Boot", "PostgreSQL", "Angular", "Docker"],
@@ -21,10 +25,15 @@
       "fr": "Plateforme de vente de vêtements en ligne, avec possibilité de passer des commandes sur mesure.",
       "en": "Online clothing store, with the option to place made-to-measure orders."
     },
+    "coverTagline": {
+      "fr": "Prêt-à-porter · Sur mesure",
+      "en": "Ready-to-wear · Made to measure"
+    },
     "context": "b-her",
     "roles": ["Backend", "Frontend", "QA"],
     "technologies": ["Spring Boot", "PostgreSQL", "Angular", "Docker"],
     "status": "in-progress",
+    "logoUrl": "/images/projects/vesty-shop-logo.png",
     "visible": true,
     "featured": true
   },
@@ -34,6 +43,10 @@
     "summary": {
       "fr": "Application de gestion scolaire : inscription des élèves, création des classes, édition des bulletins et suivi des frais de scolarité.",
       "en": "School management application: student enrolment, class management, report cards and school fee tracking."
+    },
+    "coverTagline": {
+      "fr": "Gestion scolaire",
+      "en": "School management"
     },
     "context": "collaboration",
     "roles": ["QA"],
@@ -48,6 +61,10 @@
     "summary": {
       "fr": "Application de mise en relation entre clients et prestataires de services (plomberie, dépannage d'urgence, etc.).",
       "en": "Platform connecting clients with service providers (plumbing, emergency repairs and more)."
+    },
+    "coverTagline": {
+      "fr": "Clients ↔ prestataires",
+      "en": "Clients ↔ providers"
     },
     "context": "collaboration",
     "roles": ["QA", "Backend"],

@@ -35,16 +35,19 @@
     "label": "Réseaux et contact",
     "gitlab": "GitLab (nouvel onglet)",
     "github": "GitHub (nouvel onglet)",
-    "email": "Envoyer un e-mail"
+    "email": "Envoyer un e-mail",
+    "linkedin": "LinkedIn (nouvel onglet)",
+    "facebook": "Facebook (nouvel onglet)",
+    "youtube": "YouTube (nouvel onglet)",
+    "tiktok": "TikTok (nouvel onglet)"
   },
   "projects": {
     "title": "Projets",
     "intro": "Les applications que je conçois, développe et teste, en solo sous la bannière B-HER EMPIRE ou en équipe.",
     "loading": "Chargement des projets…",
     "empty": "Aucun projet à afficher pour le moment.",
-    "logoAlt": "Logo du projet {{ name }}",
-    "roleLabel": "Mon rôle",
-    "technologiesLabel": "Technologies",
+    "roleLabel": "Rôle",
+    "technologiesLabel": "Stack",
     "repositoryLink": "Voir le code",
     "privateCode": "Code non public (projet en équipe)",
     "status": {
@@ -53,8 +56,11 @@
       "completed": "Terminé",
       "concept": "En conception"
     },
-    "context": {
-      "b-her": "Projet B-HER EMPIRE",
+    "eyebrow": "Réalisations",
+    "countLabel": "projets",
+    "coverAlt": "Couverture du projet {{ name }}",
+    "tab": {
+      "b-her": "B-HER EMPIRE",
       "collaboration": "Projet en équipe"
     }
   },
@@ -70,6 +76,8 @@
       "database": "Base de données",
       "testing": "Tests & QA",
       "environment": "Environnement & outils"
-    }
+    },
+    "eyebrow": "Stack technique & QA",
+    "countLabel": "technologies"
   }
 }

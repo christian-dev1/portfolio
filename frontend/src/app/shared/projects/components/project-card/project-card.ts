@@ -26,5 +26,5 @@ export class ProjectCard {
 
   protected readonly statusKey = computed(() => `projects.status.${this.project().status}`);
 
-  protected readonly contextKey = computed(() => `projects.context.${this.project().context}`);
+  protected readonly tabKey = computed(() => `projects.tab.${this.project().context}`);
 }

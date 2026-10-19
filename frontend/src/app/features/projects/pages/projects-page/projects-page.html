@@ -1,7 +1,12 @@
-<section class="projects">
-  <h1>{{ 'projects.title' | transloco }}</h1>
-  <p class="projects__intro">{{ 'projects.intro' | transloco }}</p>
+<app-page-banner
+  eyebrowKey="projects.eyebrow"
+  titleKey="projects.title"
+  introKey="projects.intro"
+  countLabelKey="projects.countLabel"
+  [count]="projects()?.length"
+/>
 
+<section class="projects">
   @if (projects(); as projectList) {
     <div class="projects__grid">
       @for (project of projectList; track project.id) {

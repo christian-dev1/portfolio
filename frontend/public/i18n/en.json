@@ -35,16 +35,19 @@
     "label": "Social links and contact",
     "gitlab": "GitLab (opens in a new tab)",
     "github": "GitHub (opens in a new tab)",
-    "email": "Send an email"
+    "email": "Send an email",
+    "linkedin": "LinkedIn (opens in a new tab)",
+    "facebook": "Facebook (opens in a new tab)",
+    "youtube": "YouTube (opens in a new tab)",
+    "tiktok": "TikTok (opens in a new tab)"
   },
   "projects": {
     "title": "Projects",
     "intro": "The applications I design, build and test, solo under the B-HER EMPIRE banner or as part of a team.",
     "loading": "Loading projects…",
     "empty": "No projects to display yet.",
-    "logoAlt": "{{ name }} project logo",
-    "roleLabel": "My role",
-    "technologiesLabel": "Technologies",
+    "roleLabel": "Role",
+    "technologiesLabel": "Stack",
     "repositoryLink": "View the code",
     "privateCode": "Private code (team project)",
     "status": {
@@ -53,8 +56,11 @@
       "completed": "Completed",
       "concept": "In design"
     },
-    "context": {
-      "b-her": "B-HER EMPIRE project",
+    "eyebrow": "Work",
+    "countLabel": "projects",
+    "coverAlt": "{{ name }} project cover",
+    "tab": {
+      "b-her": "B-HER EMPIRE",
       "collaboration": "Team project"
     }
   },
@@ -70,6 +76,8 @@
       "database": "Database",
       "testing": "Testing & QA",
       "environment": "Environment & tools"
-    }
+    },
+    "eyebrow": "Tech stack & QA",
+    "countLabel": "technologies"
   }
 }

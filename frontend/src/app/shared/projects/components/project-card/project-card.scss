@@ -1,89 +1,244 @@
+:host {
+  --emblem-size: 84px;
+  --emblem-ring: 6px;
+  --band-height: 8px;
+  display: block;
+  height: 100%;
+}
+
 .project-card {
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
-  border-radius: 1.25rem;
+}
 
-  &__thumbnail {
+/* 1. Onglet de dossier */
+.project-card__tab {
+  align-self: flex-start;
+  margin: 0;
+  padding: 0.375rem 1rem;
+  border-radius: 12px 12px 0 0;
+  background-color: var(--color-brand-red);
+  color: var(--color-on-brand);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-card--team .project-card__tab {
+  background-color: var(--color-brand-blue);
+}
+
+.project-card__panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border-radius: 4px 20px 20px 20px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* 2. Couverture 16/10 (image ou générée) */
+.project-card__cover {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 3px 19px 0 0;
+}
+
+.project-card__cover-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-card__cover-generated {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  height: 100%;
+  padding: 1rem 1rem calc(var(--emblem-size) / 2);
+  text-align: center;
+}
+
+.project-card__cover-name {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.project-card__cover-tagline {
+  padding: 0.25rem 0.875rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+/* 3. Bande rouge */
+.project-card__band {
+  height: var(--band-height);
+  background-color: var(--color-brand-red);
+}
+
+/* 4. Emblème centré sur la bande : on remonte de la moitié de l'emblème + la moitié de la bande. */
+.project-card__emblem {
+  position: relative;
+  z-index: 1;
+  width: var(--emblem-size);
+  height: var(--emblem-size);
+  margin: calc(-1 * (var(--emblem-size) / 2 + var(--band-height) / 2)) auto 0;
+  padding: 3px;
+  border: var(--emblem-ring) solid var(--color-brand-red);
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-red);
+  transition: transform 0.2s ease;
+
+  img,
+  .project-card__initials {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 8rem;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .project-card__initials {
     background-color: var(--color-brand-blue);
     color: var(--color-on-brand);
     font-family: var(--font-heading);
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     font-weight: 700;
+  }
+}
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+.project-card:hover,
+.project-card:focus-within {
+  .project-card__panel {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .project-card__emblem {
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card:hover,
+  .project-card:focus-within {
+    .project-card__panel,
+    .project-card__emblem {
+      transform: none;
     }
   }
+}
 
-  &__body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1.25rem;
-  }
+/* 5. Nom et statut centrés */
+.project-card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem 0;
+  text-align: center;
+}
 
-  &__context,
-  &__label {
-    margin: 0;
+.project-card__name {
+  margin: 0;
+  font-size: 1.375rem;
+  letter-spacing: 0.04em;
+}
+
+.project-card__status {
+  margin: 0;
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  background-color: var(--color-status-bg);
+  color: var(--color-status-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* 6. Résumé, faits, pied */
+.project-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.project-card__summary {
+  margin: 0;
+}
+
+.project-card__facts {
+  display: grid;
+  gap: 0.625rem;
+  margin: 0;
+}
+
+.project-card__fact {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  align-items: start;
+  gap: 0.75rem;
+
+  dt {
+    padding-top: 0.2rem;
     font-size: 0.75rem;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  &__name {
-    margin: 0;
-    font-size: 1.25rem;
-  }
-
-  &__status {
-    align-self: flex-start;
-    margin: 0;
-    padding: 0.125rem 0.5rem;
-    border-radius: 999px;
-    background-color: var(--color-status-bg);
-    color: var(--color-status-text);
-    font-size: 0.75rem;
-  }
-
-  &__summary {
-    margin: 0;
-  }
-
-  &__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.375rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-
-    li {
-      padding: 0.125rem 0.5rem;
-      border-radius: 0.375rem;
-      background-color: var(--color-tag-bg);
-      font-size: 0.8125rem;
-    }
-  }
-
-  &__link {
-    margin-top: auto;
     font-weight: 600;
-    color: var(--color-accent-text);
-  }
-
-  &__note {
-    margin: auto 0 0;
-    font-size: 0.8125rem;
-    font-style: italic;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: var(--color-text-muted);
   }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.project-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.375rem;
+    background-color: var(--color-tag-bg);
+    font-size: 0.8125rem;
+  }
+}
+
+.project-card__footer {
+  margin-top: auto;
+  padding-top: 0.875rem;
+  border-top: 1px dashed var(--color-border);
+}
+
+.project-card__link {
+  font-weight: 600;
+  color: var(--color-accent-text);
+}
+
+.project-card__note {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-style: italic;
+  color: var(--color-text-muted);
 }
