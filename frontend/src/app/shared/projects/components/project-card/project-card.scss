@@ -124,24 +124,28 @@
   }
 }
 
-.project-card:hover,
-.project-card:focus-within {
-  .project-card__panel {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lift);
-  }
-
-  .project-card__emblem {
-    transform: translateY(-2px);
-  }
+/* Logo : il remplit le rond jusqu'à l'anneau, sans liseré clair. Le fond rouge absorbe
+   l'anticrénelage du bord de l'image, qui se fond ainsi dans l'anneau. */
+.project-card__emblem--logo {
+  padding: 0;
+  background-color: var(--color-brand-red);
 }
 
-@media (prefers-reduced-motion: reduce) {
+.project-card:hover .project-card__panel,
+.project-card:focus-within .project-card__panel {
+  box-shadow: var(--shadow-lift);
+}
+
+/* Le mouvement au survol n'existe que si l'utilisateur n'a pas demandé à le réduire. */
+@media (prefers-reduced-motion: no-preference) {
   .project-card:hover,
   .project-card:focus-within {
-    .project-card__panel,
+    .project-card__panel {
+      transform: translateY(-3px);
+    }
+
     .project-card__emblem {
-      transform: none;
+      transform: translateY(-2px);
     }
   }
 }

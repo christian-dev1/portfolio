@@ -58,7 +58,7 @@
     },
     "eyebrow": "Réalisations",
     "countLabel": "projets",
-    "coverAlt": "Couverture du projet {{ name }}",
+    "coverAlt": "Page d'accueil de {{ name }}",
     "tab": {
       "b-her": "B-HER EMPIRE",
       "collaboration": "Projet en équipe"

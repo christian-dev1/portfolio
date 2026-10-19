@@ -20,7 +20,7 @@
     </div>
     <div class="project-card__band" aria-hidden="true"></div>
 
-    <div class="project-card__emblem">
+    <div class="project-card__emblem" [class.project-card__emblem--logo]="!!project().logoUrl">
       @if (project().logoUrl; as logoUrl) {
         <img [src]="logoUrl" [alt]="project().name" width="72" height="72" />
       } @else {

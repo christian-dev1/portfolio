@@ -58,7 +58,7 @@
     },
     "eyebrow": "Work",
     "countLabel": "projects",
-    "coverAlt": "{{ name }} project cover",
+    "coverAlt": "{{ name }} home page",
     "tab": {
       "b-her": "B-HER EMPIRE",
       "collaboration": "Team project"

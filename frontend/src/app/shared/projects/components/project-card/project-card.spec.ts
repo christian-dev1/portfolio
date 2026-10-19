@@ -77,8 +77,18 @@ describe('ProjectCard', () => {
 
       const image = compiled.querySelector('.project-card__cover-image')!;
       expect(image.getAttribute('src')).toBe('/images/projects/cover.jpg');
-      expect(image.getAttribute('alt')).toBe('Couverture du projet Vesty Shop');
+      expect(image.getAttribute('alt')).toBe("Page d'accueil de Vesty Shop");
       expect(compiled.querySelector('.project-card__cover-generated')).toBeNull();
+    });
+
+    it('should translate the cover alt text', async () => {
+      language.lang.set('en');
+
+      await render({ ...baseProject, coverUrl: '/images/projects/cover.jpg' });
+
+      expect(compiled.querySelector('.project-card__cover-image')!.getAttribute('alt')).toBe(
+        'Vesty Shop home page',
+      );
     });
 
     it('should translate the tagline', async () => {
@@ -105,6 +115,18 @@ describe('ProjectCard', () => {
       expect(logo.getAttribute('src')).toBe('/images/projects/logo.png');
       expect(logo.getAttribute('alt')).toBe('Vesty Shop');
       expect(compiled.querySelector('.project-card__initials')).toBeNull();
+    });
+
+    it('should let a logo fill the emblem without the light inner border', async () => {
+      await render({ ...baseProject, logoUrl: '/images/projects/logo.png' });
+
+      expect(compiled.querySelector('.project-card__emblem--logo')).not.toBeNull();
+    });
+
+    it('should keep the inner border around the initials', async () => {
+      await render(baseProject);
+
+      expect(compiled.querySelector('.project-card__emblem--logo')).toBeNull();
     });
   });
 

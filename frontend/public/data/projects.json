@@ -52,6 +52,8 @@
     "roles": ["QA"],
     "technologies": [],
     "status": "pilot",
+    "logoUrl": "/images/projects/sekouh-logo.png",
+    "coverUrl": "/images/projects/sekouh-cover.jpg",
     "visible": true,
     "featured": false
   },
@@ -70,6 +72,8 @@
     "roles": ["QA", "Backend"],
     "technologies": ["Spring Boot", "PostgreSQL"],
     "status": "pilot",
+    "logoUrl": "/images/projects/superapp-logo.png",
+    "coverUrl": "/images/projects/superapp-cover.jpg",
     "visible": true,
     "featured": false
   }
