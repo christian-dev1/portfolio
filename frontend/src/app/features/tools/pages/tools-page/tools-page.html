@@ -9,7 +9,7 @@
 
         <ul class="tools__list">
           @for (tool of group.tools; track tool.id) {
-            <li class="tools__item">
+            <li class="tools__item glass">
               <strong class="tools__name">{{ tool.name | localize }}</strong>
               <span class="tools__used-in">
                 @for (place of tool.usedIn; track $index) {
