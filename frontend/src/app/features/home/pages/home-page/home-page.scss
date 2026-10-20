@@ -4,13 +4,9 @@
   display: block;
 }
 
-/* Repère des logos qui circulent sur la bande (app-band-orbit) ; ils s'arrêtent au survol. */
+/* Coordinate space for the SVG text streams. */
 .hero {
   position: relative;
-
-  &:hover {
-    --orbit-state: paused;
-  }
 }
 
 /* 1. Zone bleue pleine largeur avec trame de points */
@@ -59,7 +55,6 @@
 
 .hero__photo {
   position: relative;
-  z-index: 1;
   width: var(--photo-size);
   height: var(--photo-size);
   margin: calc(-1 * (var(--photo-size) / 2 + var(--band-height) / 2)) auto 0;
@@ -71,6 +66,8 @@
 
   img,
   .hero__initials {
+    position: relative;
+    z-index: 3;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +86,7 @@
   }
 }
 
-/* 4. Identité : assez d'air sous la photo pour les logos qui passent sous l'anneau. */
+/* Identity content beneath the portrait. */
 .hero__brand {
   margin: 2.5rem 0 0;
   /* Compense l'espace ajouté après la dernière lettre pour un vrai centrage. */

@@ -1,3 +1,4 @@
+import { ToolService } from '../../../../shared/tools/data-access/tool.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject, of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
@@ -30,6 +31,7 @@ describe('ContactPage', () => {
     TestBed.configureTestingModule({
       imports: [ContactPage, provideTranslocoForTests()],
       providers: [
+        { provide: ToolService, useValue: { getPublicTools: () => of([]) } },
         { provide: ProfileService, useValue: { getProfile: () => of(PROFILE_FIXTURE) } },
         { provide: ContactConfigService, useValue: { getContactConfig: () => contactConfig$ } },
       ],

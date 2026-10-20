@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../../core/i18n/language.service';
 import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -9,7 +10,6 @@ import { ProfileService } from '../../../../shared/profile/data-access/profile.s
 import { SocialNetwork } from '../../../../shared/profile/models/profile.model';
 import { ProjectService } from '../../../../shared/projects/data-access/project.service';
 import { ToolService } from '../../../../shared/tools/data-access/tool.service';
-import { BRAND_ICONS, isBrandIconSlug } from '../../../../shared/ui/brand-icons';
 import { BandOrbit } from '../../components/band-orbit/band-orbit';
 import { FeaturedProjects } from '../../components/featured-projects/featured-projects';
 import { KeyFigures } from '../../components/key-figures/key-figures';
@@ -48,11 +48,12 @@ export class HomePage {
   protected readonly projectCount = computed(() => this.projects()?.length);
   protected readonly toolCount = computed(() => this.tools()?.length);
 
-  /** Logos qui circulent sur la bande : seuls les outils qui ont un logo de marque. */
-  protected readonly orbitIcons = computed(() =>
-    (this.tools() ?? []).flatMap((tool) =>
-      tool.icon && isBrandIconSlug(tool.icon) ? [BRAND_ICONS[tool.icon]] : [],
-    ),
+  private readonly language = inject(LanguageService);
+  protected readonly orbitText = computed(
+    () =>
+      (this.tools() ?? [])
+        .map((tool) => tool.name[this.language.lang()].toUpperCase())
+        .join(' · ') + ' · ',
   );
 
   /** Passe à true si la photo ne charge pas : on affiche alors les initiales. */

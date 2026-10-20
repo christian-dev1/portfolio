@@ -1,14 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BRAND_ICONS, BrandIcon } from '../../../../shared/ui/brand-icons';
 import { BandOrbit } from './band-orbit';
-
-const ICONS: BrandIcon[] = [
-  BRAND_ICONS.docker,
-  BRAND_ICONS.git,
-  BRAND_ICONS.angular,
-  BRAND_ICONS.linux,
-];
 
 function rect(left: number, top: number, width: number, height: number): DOMRect {
   return { left, top, width, height, right: left + width, bottom: top + height } as DOMRect;
@@ -19,11 +11,11 @@ function rect(left: number, top: number, width: number, height: number): DOMRect
   template: `
     <div #band></div>
     <div #ring></div>
-    <app-band-orbit [icons]="icons()" [band]="band" [ring]="ring" />
+    <app-band-orbit [text]="text()" [band]="band" [ring]="ring" />
   `,
 })
 class Host {
-  readonly icons = signal(ICONS);
+  readonly text = signal('DOCKER · GIT · ANGULAR · LINUX · ');
 }
 
 describe('BandOrbit', () => {
@@ -32,7 +24,7 @@ describe('BandOrbit', () => {
   let resize: () => void;
 
   function stubBrowser(options: { offsetPath: boolean; reducedMotion: boolean }): void {
-    vi.stubGlobal('CSS', { supports: () => options.offsetPath });
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
     vi.stubGlobal('matchMedia', () => ({ matches: options.reducedMotion }));
     vi.stubGlobal(
       'ResizeObserver',
@@ -73,55 +65,38 @@ describe('BandOrbit', () => {
     expect(orbit.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('should send half of the logos along each stream, without any text', async () => {
+  it('should render two clipped text streams without logo badges', async () => {
     stubBrowser({ offsetPath: true, reducedMotion: false });
-
     await render();
-
-    const left = orbit.querySelectorAll('.orbit__stream--left .orbit__logo');
-    const right = orbit.querySelectorAll('.orbit__stream--right .orbit__logo');
-    expect(left.length).toBe(2);
-    expect(right.length).toBe(2);
-    expect(orbit.textContent!.trim()).toBe('');
+    expect(orbit.querySelectorAll('textPath')).toHaveLength(2);
+    expect(orbit.querySelector('clipPath path')!.getAttribute('clip-rule')).toBe('evenodd');
+    expect(orbit.querySelectorAll('animate')).toHaveLength(2);
+    expect(orbit.textContent).toContain('DOCKER · GIT');
+    expect(orbit.querySelector('app-brand-icon')).toBeNull();
   });
 
-  it('should build the paths from the measured band and ring', async () => {
+  it('should place the path at the middle of the measured eight pixel ring', async () => {
     stubBrowser({ offsetPath: true, reducedMotion: false });
-
     await render();
-
-    // Rayon suivi : 50 (anneau) + 3 (écart) + 11 (demi-logo) = 64.
-    const left = orbit.querySelector<HTMLElement>('.orbit__stream--left')!;
-    expect(left.style.getPropertyValue('--orbit-path')).toBe(
-      "path('M -22 100 L 436 100 A 64 64 0 0 1 564 100')",
+    expect(orbit.querySelector('defs > path')!.getAttribute('d')).toBe(
+      'M 0 100 L 454 100 A 46 46 0 0 1 546 100',
     );
   });
 
-  it('should spread the logos along the track with negative delays', async () => {
-    stubBrowser({ offsetPath: true, reducedMotion: false });
-
-    await render();
-
-    const delays = Array.from(
-      orbit.querySelectorAll<HTMLElement>('.orbit__stream--left .orbit__logo'),
-    ).map((logo) => parseFloat(logo.style.animationDelay));
-    expect(delays[0]).toBe(0);
-    expect(delays[1]).toBeLessThan(0);
-  });
-
-  it('should not display any moving logo when the user prefers reduced motion', async () => {
+  it('should keep static text visible with reduced motion', async () => {
     stubBrowser({ offsetPath: true, reducedMotion: true });
-
     await render();
-
-    expect(orbit.querySelector('.orbit__logo')).toBeNull();
+    expect(orbit.querySelectorAll('textPath')).toHaveLength(2);
+    expect(orbit.querySelector('animate')).toBeNull();
   });
 
-  it('should not display any moving logo when offset-path is not supported', async () => {
-    stubBrowser({ offsetPath: false, reducedMotion: false });
-
+  it('should recalculate paths when the ring moves', async () => {
+    stubBrowser({ offsetPath: true, reducedMotion: false });
     await render();
-
-    expect(orbit.querySelector('.orbit__logo')).toBeNull();
+    const ring = (fixture.nativeElement as HTMLElement).querySelectorAll('div')[1];
+    vi.spyOn(ring, 'getBoundingClientRect').mockReturnValue(rect(350, 50, 100, 100));
+    resize();
+    await fixture.whenStable();
+    expect(orbit.querySelector('defs > path')!.getAttribute('d')).toContain('L 354 100');
   });
 });

@@ -88,3 +88,31 @@
     display: none;
   }
 }
+
+.page-banner__band {
+  overflow: hidden;
+}
+.page-banner__ticker {
+  display: flex;
+  width: max-content;
+  height: 8px;
+  align-items: center;
+  color: var(--color-on-brand);
+  font: 700 6px var(--font-heading);
+  letter-spacing: 0.12em;
+  white-space: pre;
+  animation: banner-text 160s linear infinite;
+  span {
+    flex-shrink: 0;
+  }
+}
+@keyframes banner-text {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-banner__ticker {
+    animation: none;
+  }
+}

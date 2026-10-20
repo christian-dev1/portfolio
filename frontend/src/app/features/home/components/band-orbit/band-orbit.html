@@ -1,17 +1,52 @@
-@for (stream of streams(); track stream.side) {
-  <div
-    class="orbit__stream"
-    [class.orbit__stream--left]="stream.side === 'left'"
-    [class.orbit__stream--right]="stream.side === 'right'"
-    [style.--orbit-path]="stream.path"
-    [style.--orbit-duration.s]="stream.duration"
-    [style.--fade-from.px]="stream.fadeFrom"
-    [style.--fade-to.px]="stream.fadeTo"
-  >
-    @for (logo of stream.logos; track logo.icon.title) {
-      <span class="orbit__logo" [style.animation-delay.s]="logo.delay">
-        <app-brand-icon [icon]="logo.icon" [size]="12" />
-      </span>
-    }
-  </div>
+@if (layout(); as layout) {
+  <svg width="100%" height="100%" focusable="false">
+    <defs>
+      <clipPath [attr.id]="id + '-clip'">
+        <rect x="0" [attr.y]="layout.bandY - 4" [attr.width]="layout.width" height="8" />
+        <path [attr.d]="donut()" clip-rule="evenodd" />
+      </clipPath>
+      @for (stream of streams(); track stream.side) {
+        <path [attr.id]="id + '-' + stream.side" [attr.d]="stream.path" />
+        <linearGradient
+          [attr.id]="id + '-gradient-' + stream.side"
+          gradientUnits="userSpaceOnUse"
+          [attr.x1]="stream.side === 'left' ? stream.fadeFrom : layout.width - stream.fadeFrom"
+          [attr.x2]="stream.side === 'left' ? stream.fadeTo : layout.width - stream.fadeTo"
+        >
+          <stop offset="0" stop-color="white" />
+          <stop offset="1" stop-color="black" />
+        </linearGradient>
+        <mask [attr.id]="id + '-mask-' + stream.side">
+          <rect
+            width="100%"
+            height="100%"
+            [attr.fill]="'url(#' + id + '-gradient-' + stream.side + ')'"
+          />
+        </mask>
+      }
+    </defs>
+    <g [attr.clip-path]="'url(#' + id + '-clip)'">
+      @for (stream of streams(); track stream.side) {
+        <text [attr.mask]="'url(#' + id + '-mask-' + stream.side + ')'" dominant-baseline="central">
+          <textPath
+            [attr.href]="'#' + id + '-' + stream.side"
+            [attr.startOffset]="-period()"
+            [attr.textLength]="textLength()"
+            lengthAdjust="spacingAndGlyphs"
+          >
+            {{ repeatedText() }}
+            @if (!reducedMotion()) {
+              <animate
+                attributeName="startOffset"
+                [attr.from]="-period()"
+                to="0"
+                [attr.dur]="period() / 18 + 's'"
+                repeatCount="indefinite"
+              />
+            }
+          </textPath>
+        </text>
+      }
+    </g>
+  </svg>
 }

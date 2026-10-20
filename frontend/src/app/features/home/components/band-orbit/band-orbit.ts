@@ -1,3 +1,4 @@
+import { injectReducedMotion } from '../../../../shared/ui/motion/reduced-motion';
 import {
   Component,
   DestroyRef,
@@ -8,98 +9,67 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { BrandIcon } from '../../../../shared/ui/brand-icon/brand-icon';
-import { BrandIcon as BrandIconData } from '../../../../shared/ui/brand-icons';
-import { injectReducedMotion } from '../../../../shared/ui/motion/reduced-motion';
-import { OrbitLayout, orbitLogoCount, orbitTracks } from './orbit-path';
+import { OrbitLayout, orbitTracks } from './orbit-path';
 
-/** Diamètre d'un logo, en px. */
-const LOGO_SIZE = 22;
-/** Espace entre l'anneau de la photo et les logos qui en font le tour. */
-const RING_GAP = 3;
-/** Vitesse constante des logos, en px par seconde. */
-const SPEED = 36;
+let nextId = 0;
 
-interface OrbitStream {
-  side: 'left' | 'right';
-  path: string;
-  duration: number;
-  fadeFrom: number;
-  fadeTo: number;
-  logos: { icon: BrandIconData; delay: number }[];
-}
-
-export function supportsOffsetPath(): boolean {
-  return typeof CSS !== 'undefined' && CSS.supports?.('offset-path', "path('M 0 0')") === true;
-}
-
-/**
- * Petits logos qui glissent sur la bande rouge du hero puis s'enroulent autour de l'anneau
- * de la photo (décor, masqué aux lecteurs d'écran : la liste des technologies est dans le hero).
- * Les trajectoires sont recalculées à partir des positions réelles à chaque redimensionnement.
- * Rien n'est affiché avec les animations réduites ou sans support de `offset-path`.
- */
 @Component({
   selector: 'app-band-orbit',
-  imports: [BrandIcon],
   templateUrl: './band-orbit.html',
   styleUrl: './band-orbit.scss',
-  host: {
-    'aria-hidden': 'true',
-    '[style.--orbit-logo-size.px]': 'logoSize',
-  },
+  host: { 'aria-hidden': 'true' },
 })
 export class BandOrbit {
-  readonly icons = input.required<BrandIconData[]>();
-  /** Bande rouge : les logos suivent le milieu de son épaisseur. */
+  protected readonly reducedMotion = injectReducedMotion();
+  readonly text = input.required<string>();
   readonly band = input.required<HTMLElement>();
-  /** Rond de la photo, anneau compris. */
   readonly ring = input.required<HTMLElement>();
-
-  protected readonly logoSize = LOGO_SIZE;
-
+  protected readonly id = `band-orbit-${nextId++}`;
+  protected readonly layout = signal<OrbitLayout | null>(null);
+  private readonly fontsReady = signal(false);
+  protected readonly period = computed(() => {
+    this.fontsReady();
+    const text = this.text();
+    const context = document.createElement('canvas').getContext('2d');
+    if (!context) return 1000;
+    context.font = '700 6px "Space Grotesk"';
+    return Math.max(context.measureText(text).width + text.length * 0.72, 1);
+  });
   private readonly host: HTMLElement = inject(ElementRef).nativeElement;
-  private readonly reducedMotion = injectReducedMotion();
-  private readonly layout = signal<OrbitLayout | null>(null);
-
-  protected readonly streams = computed<OrbitStream[]>(() => {
+  protected readonly streams = computed(() => {
     const layout = this.layout();
-    if (!layout || this.reducedMotion()) {
-      return [];
-    }
-
+    if (!layout) return [];
     const tracks = orbitTracks(layout);
-    const count = orbitLogoCount(layout.width);
-
-    return (['left', 'right'] as const).map((side, parity) => {
-      const track = tracks[side];
-      const duration = track.length / SPEED;
-      // Un logo sur deux par flux, pour que les deux flux ne montrent pas les mêmes.
-      const icons = this.icons()
-        .filter((_, index) => index % 2 === parity)
-        .slice(0, count);
-      return {
-        side,
-        path: `path('${track.path}')`,
-        duration,
-        fadeFrom: track.fadeFrom,
-        fadeTo: track.fadeTo,
-        // Délais négatifs : les logos sont déjà répartis sur le trajet au premier affichage.
-        logos: icons.map((icon, index) => ({ icon, delay: -(index * duration) / icons.length })),
-      };
-    });
+    return (['left', 'right'] as const).map((side) => ({ side, ...tracks[side] }));
+  });
+  protected readonly repeatedText = computed(() => {
+    const length = Math.max(...this.streams().map((stream) => stream.length), 0);
+    return this.text().repeat(Math.ceil(length / this.period()) + 3);
+  });
+  protected readonly textLength = computed(
+    () => (this.repeatedText().length / Math.max(this.text().length, 1)) * this.period(),
+  );
+  protected readonly donut = computed(() => {
+    const l = this.layout();
+    if (!l) return '';
+    const { centerX: x, centerY: y, radius } = l;
+    const circle = (r: number) =>
+      `M ${x - r} ${y} a ${r} ${r} 0 1 0 ${2 * r} 0 a ${r} ${r} 0 1 0 ${-2 * r} 0 Z`;
+    return `${circle(radius + 4)} ${circle(radius - 4)}`;
   });
 
   constructor() {
     const destroyRef = inject(DestroyRef);
-
     afterNextRender(() => {
-      if (!supportsOffsetPath() || typeof ResizeObserver !== 'function') {
-        return;
-      }
+      if (typeof ResizeObserver !== 'function') return;
       const observer = new ResizeObserver(() => this.measure());
       observer.observe(this.host);
       observer.observe(this.ring());
+      observer.observe(this.band());
+      this.measure();
+      void document.fonts?.ready.then(() => {
+        if (!destroyRef.destroyed) this.fontsReady.set(true);
+      });
       destroyRef.onDestroy(() => observer.disconnect());
     });
   }
@@ -108,14 +78,12 @@ export class BandOrbit {
     const origin = this.host.getBoundingClientRect();
     const band = this.band().getBoundingClientRect();
     const ring = this.ring().getBoundingClientRect();
-
     this.layout.set({
       width: origin.width,
       bandY: band.top + band.height / 2 - origin.top,
       centerX: ring.left + ring.width / 2 - origin.left,
       centerY: ring.top + ring.height / 2 - origin.top,
-      radius: ring.width / 2 + RING_GAP + LOGO_SIZE / 2,
-      logoSize: LOGO_SIZE,
+      radius: ring.width / 2 - 4,
     });
   }
 }

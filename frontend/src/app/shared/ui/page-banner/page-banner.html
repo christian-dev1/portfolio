@@ -14,4 +14,10 @@
     }
   </div>
 </div>
-<div class="page-banner__band" aria-hidden="true"></div>
+<div class="page-banner__band" aria-hidden="true">
+  <div class="page-banner__ticker">
+    @for (copy of [0, 1]; track copy) {
+      <span>{{ technologyText().repeat(4) }}</span>
+    }
+  </div>
+</div>

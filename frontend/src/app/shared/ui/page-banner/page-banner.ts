@@ -1,4 +1,7 @@
-import { Component, computed, input } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ToolService } from '../../tools/data-access/tool.service';
+import { LanguageService } from '../../../core/i18n/language.service';
+import { Component, computed, inject, input } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { CountUp } from '../count-up/count-up';
 
@@ -10,6 +13,14 @@ import { CountUp } from '../count-up/count-up';
   styleUrl: './page-banner.scss',
 })
 export class PageBanner {
+  private readonly tools = toSignal(inject(ToolService).getPublicTools());
+  private readonly language = inject(LanguageService);
+  protected readonly technologyText = computed(
+    () =>
+      (this.tools() ?? [])
+        .map((tool) => tool.name[this.language.lang()].toUpperCase())
+        .join(' · ') + ' · ',
+  );
   readonly eyebrowKey = input.required<string>();
   readonly titleKey = input.required<string>();
   readonly introKey = input.required<string>();

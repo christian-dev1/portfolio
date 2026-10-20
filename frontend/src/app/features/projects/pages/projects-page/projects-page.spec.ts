@@ -1,3 +1,4 @@
+import { ToolService } from '../../../../shared/tools/data-access/tool.service';
 import { Component, input } from '@angular/core';
 import { ProjectFlipCard } from '../../components/project-flip-card/project-flip-card';
 import { TestBed } from '@angular/core/testing';
@@ -49,6 +50,7 @@ async function setup(
   TestBed.configureTestingModule({
     imports: [ProjectsPage, provideTranslocoForTests()],
     providers: [
+      { provide: ToolService, useValue: { getPublicTools: () => of([]) } },
       { provide: ProjectService, useValue: { getPublicProjects: () => projects$ } },
     ],
   });

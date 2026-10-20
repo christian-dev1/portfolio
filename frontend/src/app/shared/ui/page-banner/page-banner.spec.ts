@@ -1,3 +1,5 @@
+import { of } from 'rxjs';
+import { ToolService } from '../../tools/data-access/tool.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslocoForTests } from '../../../../testing/transloco-testing';
 import { LanguageService } from '../../../core/i18n/language.service';
@@ -23,6 +25,15 @@ describe('PageBanner', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: ToolService,
+          useValue: {
+            getPublicTools: () =>
+              of([{ id: 'docker', name: { fr: 'Docker', en: 'Docker' }, visible: true }]),
+          },
+        },
+      ],
       imports: [PageBanner, provideTranslocoForTests()],
     }).compileComponents();
 
@@ -71,6 +82,13 @@ describe('PageBanner', () => {
     await render(4);
 
     expect(compiled.querySelector('.page-banner__band')!.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('should repeat visible technology names inside the decorative band', async () => {
+    await render();
+    const band = compiled.querySelector('.page-banner__band')!;
+    expect(band.textContent).toContain('DOCKER ·');
+    expect(band.querySelectorAll('.page-banner__ticker > span')).toHaveLength(2);
   });
 
   it('should not display a counter on a page without count label', async () => {

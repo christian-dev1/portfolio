@@ -1,3 +1,4 @@
+import { ToolService } from '../../../../shared/tools/data-access/tool.service';
 import { TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
@@ -27,6 +28,7 @@ async function setup(
   TestBed.configureTestingModule({
     imports: [AboutPage, provideTranslocoForTests()],
     providers: [
+      { provide: ToolService, useValue: { getPublicTools: () => of([]) } },
       { provide: ProfileService, useValue: { getProfile: () => of(PROFILE_FIXTURE) } },
       { provide: CareerService, useValue: { getCareer: () => career$ } },
     ],
