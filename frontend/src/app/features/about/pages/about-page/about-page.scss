@@ -1,0 +1,115 @@
+.about {
+  display: grid;
+  gap: 3.5rem;
+  max-width: 70rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 0;
+
+  h2 {
+    margin: 0 0 1rem;
+    font-size: 1.75rem;
+  }
+}
+
+.about__bio {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 2rem;
+
+  p {
+    max-width: 42rem;
+  }
+}
+
+.about__photo {
+  width: 8rem;
+  height: 8rem;
+  padding: 3px;
+  border: 6px solid var(--color-brand-red);
+  border-radius: 50%;
+  background-color: var(--color-background);
+  box-shadow: var(--shadow-ring);
+  object-fit: cover;
+}
+
+.about__location {
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.about__values {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about__value {
+  padding: 1.25rem;
+  border-top: 4px solid var(--color-brand-red);
+  border-radius: 1rem;
+
+  h3 {
+    margin: 0;
+    font-size: 1.125rem;
+  }
+
+  p {
+    margin: 0.5rem 0 0;
+    color: var(--color-text-muted);
+  }
+}
+
+.about__company {
+  padding: 2rem;
+  border-bottom: 8px solid var(--color-brand-red);
+  border-radius: 1.25rem 1.25rem 0 0;
+
+  h2 {
+    margin: 0;
+    color: var(--color-on-brand);
+    letter-spacing: 0.08em;
+  }
+
+  p {
+    max-width: 44rem;
+    margin: 0.75rem 0 0;
+    color: var(--color-on-brand-muted);
+  }
+}
+
+.about__company-eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.about__company-role {
+  font-weight: 600;
+}
+
+.about__status {
+  text-align: center;
+}
+
+@media (max-width: 639.98px) {
+  .about {
+    gap: 2.5rem;
+    padding: 2rem 1rem 0;
+  }
+
+  .about__bio {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .about__company {
+    padding: 1.5rem;
+  }
+}

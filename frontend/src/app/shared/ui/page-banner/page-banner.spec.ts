@@ -72,4 +72,16 @@ describe('PageBanner', () => {
 
     expect(compiled.querySelector('.page-banner__band')!.getAttribute('aria-hidden')).toBe('true');
   });
+
+  it('should not display a counter on a page without count label', async () => {
+    fixture = TestBed.createComponent(PageBanner);
+    fixture.componentRef.setInput('eyebrowKey', 'nav.home');
+    fixture.componentRef.setInput('titleKey', 'projects.title');
+    fixture.componentRef.setInput('introKey', 'projects.intro');
+    fixture.componentRef.setInput('count', 3);
+    compiled = fixture.nativeElement as HTMLElement;
+    await fixture.whenStable();
+
+    expect(compiled.querySelector('.page-banner__counter')).toBeNull();
+  });
 });

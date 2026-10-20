@@ -9,7 +9,7 @@
     @if (paddedCount(); as paddedCount) {
       <div class="page-banner__counter" aria-hidden="true">
         <span class="page-banner__count">{{ paddedCount }}</span>
-        <span class="page-banner__count-label">{{ countLabelKey() | transloco }}</span>
+        <span class="page-banner__count-label">{{ countLabelKey()! | transloco }}</span>
       </div>
     }
   </div>
