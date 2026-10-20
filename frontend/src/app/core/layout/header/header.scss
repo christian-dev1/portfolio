@@ -23,12 +23,65 @@
 }
 
 .header__brand {
-  font-family: var(--font-heading);
-  font-size: 1.125rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: var(--color-heading);
-  text-decoration: none;
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  width: 158px;
+  height: 56px;
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      110deg,
+      transparent 35%,
+      var(--color-on-brand) 50%,
+      transparent 65%
+    );
+    background-size: 250% 100%;
+    mask: url('/images/brand/luchrist-wordmark-112.webp') center / contain no-repeat;
+    opacity: 0;
+    animation: brand-shine 1.2s ease 1;
+  }
+  &:hover::after {
+    animation: brand-shine-hover 1.2s ease 1;
+  }
+}
+@keyframes brand-shine {
+  0% {
+    background-position: 150% 0;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    background-position: -50% 0;
+    opacity: 0;
+  }
+}
+@keyframes brand-shine-hover {
+  0% {
+    background-position: 150% 0;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    background-position: -50% 0;
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .header__brand::after {
+    display: none;
+  }
 }
 
 .header__nav {
@@ -114,5 +167,12 @@
   .header__nav a {
     padding: 0 0.75rem;
     font-size: 0.9375rem;
+  }
+}
+
+@media (max-width: 639.98px) {
+  .header__brand {
+    width: 113px;
+    height: 40px;
   }
 }

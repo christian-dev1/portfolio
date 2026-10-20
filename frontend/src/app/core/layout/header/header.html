@@ -1,6 +1,17 @@
 <header class="header">
   <div class="header__pill glass">
-    <a class="header__brand" routerLink="/">LUCHRIST</a>
+    <a class="header__brand" routerLink="/">
+      <img
+        src="/images/brand/luchrist-wordmark-56.webp"
+        srcset="
+          /images/brand/luchrist-wordmark-56.webp  1x,
+          /images/brand/luchrist-wordmark-112.webp 2x
+        "
+        alt="LUCHRIST"
+        width="158"
+        height="56"
+      />
+    </a>
 
     <nav class="header__nav" [attr.aria-label]="'nav.mainLabel' | transloco">
       <ul>

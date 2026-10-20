@@ -23,7 +23,7 @@ describe('Header', () => {
     const brand = compiled.querySelector('.header__brand');
 
     expect(brand).not.toBeNull();
-    expect(brand!.textContent).toContain('LUCHRIST');
+    expect(brand!.querySelector('img')!.getAttribute('alt')).toBe('LUCHRIST');
     expect(brand!.getAttribute('href')).toBe('/');
   });
 
