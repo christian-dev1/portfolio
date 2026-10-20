@@ -1,0 +1,62 @@
+<app-page-banner
+  eyebrowKey="contact.eyebrow"
+  titleKey="contact.title"
+  introKey="contact.intro"
+  countLabelKey="contact.countLabel"
+  [count]="networks()?.length"
+/>
+
+@if (profile()) {
+  <div class="contact">
+    @if (email(); as email) {
+      <section class="contact__email glass" aria-labelledby="contact-email-title">
+        <h2 id="contact-email-title">{{ 'contact.emailTitle' | transloco }}</h2>
+        <p class="contact__address" #address>{{ email }}</p>
+        <div class="contact__actions">
+          <button type="button" class="button button--primary" (click)="copyEmail(address)">
+            {{ (copyState() === 'copied' ? 'contact.copied' : 'contact.copy') | transloco }}
+          </button>
+          <a class="button button--secondary" [href]="'mailto:' + email">
+            {{ 'contact.write' | transloco }}
+          </a>
+        </div>
+        <p class="contact__feedback" aria-live="polite">
+          @if (copyState() === 'copied') {
+            {{ 'contact.copiedMessage' | transloco }}
+          } @else if (copyState() === 'failed') {
+            {{ 'contact.copyFailed' | transloco }}
+          }
+        </p>
+      </section>
+    }
+
+    <section aria-labelledby="contact-networks-title">
+      <h2 id="contact-networks-title">{{ 'contact.networksTitle' | transloco }}</h2>
+      <ul class="contact__networks">
+        @for (item of networks(); track item.network) {
+          <li>
+            <a
+              class="contact__tile glass"
+              [href]="item.href"
+              [attr.target]="item.external ? '_blank' : null"
+              [attr.rel]="item.external ? 'noopener noreferrer' : null"
+            >
+              <span class="contact__logo" [style.color]="item.icon.color">
+                <app-brand-icon [icon]="item.icon" [size]="26" />
+              </span>
+              <span class="contact__tile-text">
+                <strong>{{ item.nameKey | transloco }}</strong
+                >&ngsp;
+                <span>
+                  {{ (item.external ? 'contact.newTab' : 'contact.mailApp') | transloco }}
+                </span>
+              </span>
+            </a>
+          </li>
+        }
+      </ul>
+    </section>
+  </div>
+} @else {
+  <p class="contact contact__status">{{ 'contact.loading' | transloco }}</p>
+}
