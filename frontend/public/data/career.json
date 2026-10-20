@@ -32,13 +32,13 @@
     "startYear": 2022,
     "endYear": 2023,
     "title": {
-      "fr": "Vendeur",
-      "en": "Sales assistant"
+      "fr": "Gérant",
+      "en": "Manager"
     },
-    "place": "Glacier familial, Yaoundé",
+    "place": "Glacier, Yaoundé",
     "description": {
-      "fr": "En parallèle de la terminale : accueil et vente le soir et les jours libres, gestion de la caisse en fin de journée, responsabilité de la boutique.",
-      "en": "Alongside my final year of high school: serving customers in the evenings and on days off, end-of-day cash handling, responsible for the shop."
+      "fr": "Gestion des ventes, de la caisse et de la clientèle.",
+      "en": "Managed sales, cash and customers."
     },
     "visible": true
   },
