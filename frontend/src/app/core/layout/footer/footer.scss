@@ -36,9 +36,32 @@
   font-size: 0.875rem;
 }
 
+.footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: 0.875rem;
+    color: var(--color-on-brand-muted);
+    text-underline-offset: 0.2em;
+
+    &:hover {
+      color: var(--color-on-brand);
+    }
+  }
+}
+
 @media (max-width: 639.98px) {
   .footer__content {
     flex-direction: column;
     text-align: center;
+  }
+
+  .footer__nav {
+    justify-content: center;
   }
 }

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../testing/transloco-testing';
 import { PROFILE_FIXTURE } from '../../../../testing/profile.fixture';
@@ -12,7 +13,10 @@ describe('Footer', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Footer, provideTranslocoForTests()],
-      providers: [{ provide: ProfileService, useValue: { getProfile: () => of(PROFILE_FIXTURE) } }],
+      providers: [
+        provideRouter([]),
+        { provide: ProfileService, useValue: { getProfile: () => of(PROFILE_FIXTURE) } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Footer);
@@ -48,5 +52,13 @@ describe('Footer', () => {
     const edge = compiled.querySelector('.footer__edge');
 
     expect(edge!.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('should repeat discreet links to the about, CV and contact pages', () => {
+    const hrefs = Array.from(compiled.querySelectorAll('.footer__nav a')).map((a) =>
+      a.getAttribute('href'),
+    );
+
+    expect(hrefs).toEqual(['/a-propos', '/cv', '/contact']);
   });
 });

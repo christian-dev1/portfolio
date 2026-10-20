@@ -44,4 +44,12 @@ describe('Header', () => {
     expect(buttons[0].getAttribute('aria-label')?.trim()).toBeTruthy();
     expect(buttons[1].getAttribute('aria-label')?.trim()).toBeTruthy();
   });
+
+  it('should link to the six pages in menu order', () => {
+    const hrefs = Array.from(compiled.querySelectorAll('.header__nav a')).map((a) =>
+      a.getAttribute('href'),
+    );
+
+    expect(hrefs).toEqual(['/', '/projets', '/outils', '/a-propos', '/cv', '/contact']);
+  });
 });
