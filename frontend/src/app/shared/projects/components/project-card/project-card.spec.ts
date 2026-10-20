@@ -8,6 +8,10 @@ const baseProject: Project = {
   id: 'vesty-shop',
   name: 'Vesty Shop',
   summary: { fr: 'Boutique de vêtements en ligne.', en: 'Online clothing store.' },
+  highlights: [
+    { fr: 'Projet réalisé seul', en: 'Built on my own' },
+    { fr: 'Commandes sur mesure', en: 'Made-to-measure orders' },
+  ],
   coverTagline: { fr: 'Prêt-à-porter', en: 'Ready-to-wear' },
   context: 'b-her',
   roles: ['Backend', 'QA'],
@@ -173,6 +177,33 @@ describe('ProjectCard', () => {
       await render({ ...baseProject, technologies: [] });
 
       expect(compiled.querySelectorAll('dt').length).toBe(1);
+    });
+  });
+
+  describe('highlights', () => {
+    it('should list the highlights in the current language', async () => {
+      language.lang.set('en');
+
+      await render(baseProject);
+
+      const items = Array.from(compiled.querySelectorAll('.project-card__highlights li')).map(
+        (li) => li.textContent!.trim(),
+      );
+      expect(items).toEqual(['Built on my own', 'Made-to-measure orders']);
+    });
+
+    it('should give the highlights list an accessible name', async () => {
+      await render(baseProject);
+
+      expect(compiled.querySelector('.project-card__highlights')!.getAttribute('aria-label')).toBe(
+        'Points forts',
+      );
+    });
+
+    it('should not render an empty list when there is no highlight', async () => {
+      await render({ ...baseProject, highlights: [] });
+
+      expect(compiled.querySelector('.project-card__highlights')).toBeNull();
     });
   });
 

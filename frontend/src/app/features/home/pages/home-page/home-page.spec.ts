@@ -8,12 +8,16 @@ import { LanguageService } from '../../../../core/i18n/language.service';
 import { ProfileService } from '../../../../shared/profile/data-access/profile.service';
 import { ProjectService } from '../../../../shared/projects/data-access/project.service';
 import { Project } from '../../../../shared/projects/models/project.model';
+import { Profile } from '../../../../shared/profile/models/profile.model';
+import { ToolService } from '../../../../shared/tools/data-access/tool.service';
+import { Tool } from '../../../../shared/tools/models/tool.model';
 import { HomePage } from './home-page';
 
 const featuredProject: Project = {
   id: 'wimo',
   name: 'WIMO',
   summary: { fr: 'Transfert d’argent.', en: 'Money transfer.' },
+  highlights: [],
   coverTagline: { fr: 'Accroche', en: 'Tagline' },
   context: 'b-her',
   roles: ['Backend'],
@@ -23,17 +27,49 @@ const featuredProject: Project = {
   featured: true,
 };
 
+const WITH_ALL_NETWORKS: Profile = {
+  ...PROFILE_FIXTURE,
+  socialLinks: PROFILE_FIXTURE.socialLinks.map((link) =>
+    link.url ? link : { ...link, url: `https://example.com/${link.network}` },
+  ),
+};
+
+const otherProject: Project = { ...featuredProject, id: 'other', name: 'Other', featured: false };
+
+function tool(id: string): Tool {
+  return {
+    id,
+    name: { fr: id, en: id },
+    category: 'backend',
+    usedIn: [],
+    visible: true,
+  };
+}
+
 async function setup(
-  options: { featured$?: Observable<Project[]>; lang?: 'fr' | 'en' } = {},
+  options: {
+    projects$?: Observable<Project[]>;
+    profile?: Profile;
+    lang?: 'fr' | 'en';
+  } = {},
 ): Promise<HTMLElement> {
   TestBed.configureTestingModule({
     imports: [HomePage, provideTranslocoForTests()],
     providers: [
       provideRouter([]),
-      { provide: ProfileService, useValue: { getProfile: () => of(PROFILE_FIXTURE) } },
+      {
+        provide: ProfileService,
+        useValue: { getProfile: () => of(options.profile ?? PROFILE_FIXTURE) },
+      },
       {
         provide: ProjectService,
-        useValue: { getFeaturedProjects: () => options.featured$ ?? of([featuredProject]) },
+        useValue: {
+          getPublicProjects: () => options.projects$ ?? of([featuredProject, otherProject]),
+        },
+      },
+      {
+        provide: ToolService,
+        useValue: { getPublicTools: () => of([tool('java'), tool('docker'), tool('git')]) },
       },
     ],
   });
@@ -118,7 +154,7 @@ describe('HomePage', () => {
   it('should link the main button to the projects page', async () => {
     const compiled = await setup();
 
-    const cta = compiled.querySelector('.hero__cta')!;
+    const cta = compiled.querySelector('.hero__actions .button--primary')!;
     expect(cta.getAttribute('href')).toBe('/projets');
     expect(cta.textContent).toContain('Voir mes projets');
   });
@@ -132,13 +168,13 @@ describe('HomePage', () => {
   });
 
   it('should display a message when there is no featured project', async () => {
-    const compiled = await setup({ featured$: of([]) });
+    const compiled = await setup({ projects$: of([otherProject]) });
 
     expect(compiled.textContent).toContain('Aucun projet mis en avant pour le moment.');
   });
 
   it('should display a loading message while featured projects are loading', async () => {
-    const compiled = await setup({ featured$: NEVER });
+    const compiled = await setup({ projects$: NEVER });
 
     expect(compiled.querySelector('.featured')!.textContent).toContain('Chargement des projets');
   });
@@ -148,5 +184,71 @@ describe('HomePage', () => {
 
     const seeAll = compiled.querySelector('.featured__see-all')!;
     expect(seeAll.getAttribute('href')).toBe('/projets');
+  });
+
+  it('should display the availability badge in the blue zone', async () => {
+    const compiled = await setup();
+
+    const badge = compiled.querySelector('.hero__banner app-availability-badge')!;
+    expect(badge.textContent).toContain('Disponible à distance');
+  });
+
+  it('should display what I am currently working on', async () => {
+    const compiled = await setup({ lang: 'en' });
+
+    const focus = compiled.querySelector('.hero__focus')!.textContent!.replace(/\s+/g, ' ');
+    expect(focus).toContain('Right now:');
+    expect(focus).toContain('Focus in English.');
+  });
+
+  it('should only show LinkedIn, GitHub, GitLab and email in the blue zone', async () => {
+    const compiled = await setup({ profile: WITH_ALL_NETWORKS });
+
+    const hrefs = Array.from(compiled.querySelectorAll('.hero__banner app-social-links a')).map(
+      (link) => link.getAttribute('href'),
+    );
+    expect(hrefs).toEqual([
+      'https://example.com/linkedin',
+      'https://github.com/example',
+      'https://gitlab.com/example',
+      'mailto:contact@example.com',
+    ]);
+  });
+
+  it('should compute the key figures from the visible projects and tools', async () => {
+    const compiled = await setup();
+
+    const figures = compiled.querySelector('app-key-figures')!.textContent!.replace(/\s+/g, ' ');
+    expect(figures).toContain('02 projets');
+    expect(figures).toContain('03 outils');
+    expect(figures).toContain('B-HER EMPIRE');
+  });
+
+  it('should only show featured projects in the featured section', async () => {
+    const compiled = await setup();
+
+    const names = Array.from(compiled.querySelectorAll('.featured h3')).map((h3) =>
+      h3.textContent!.trim(),
+    );
+    expect(names).toEqual(['WIMO']);
+  });
+
+  it('should hide the CV download button while there is no PDF for the current language', async () => {
+    const compiled = await setup({
+      profile: { ...PROFILE_FIXTURE, cvPdfUrl: { fr: '', en: '/cv/cv-en.pdf' } },
+    });
+
+    expect(compiled.querySelector('.hero__cv')).toBeNull();
+  });
+
+  it('should offer to download the CV of the current language when there is one', async () => {
+    const compiled = await setup({
+      profile: { ...PROFILE_FIXTURE, cvPdfUrl: { fr: '/cv/cv-fr.pdf', en: '' } },
+    });
+
+    const button = compiled.querySelector('.hero__cv')!;
+    expect(button.getAttribute('href')).toBe('/cv/cv-fr.pdf');
+    expect(button.hasAttribute('download')).toBe(true);
+    expect(button.textContent).toContain('Télécharger mon CV');
   });
 });

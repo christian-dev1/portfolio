@@ -66,6 +66,17 @@
         }
       </dl>
 
+      @if (project().highlights.length > 0) {
+        <ul
+          class="project-card__highlights bullets"
+          [attr.aria-label]="'projects.highlightsLabel' | transloco"
+        >
+          @for (highlight of project().highlights; track $index) {
+            <li>{{ highlight | localize }}</li>
+          }
+        </ul>
+      }
+
       @if (project().repositoryUrl; as url) {
         <div class="project-card__footer">
           <a class="project-card__link" [href]="url" target="_blank" rel="noopener noreferrer">

@@ -2,8 +2,17 @@
   <section class="hero">
     <div class="hero__banner brand-pattern">
       <div class="hero__banner-inner">
-        <p class="hero__founder glass glass--on-brand">{{ 'home.founder' | transloco }}</p>
-        <app-social-links [links]="profile.socialLinks" />
+        <div class="hero__status">
+          <div class="hero__pills">
+            <p class="hero__founder glass glass--on-brand">{{ 'home.founder' | transloco }}</p>
+            <app-availability-badge [availability]="profile.availability" />
+          </div>
+          <p class="hero__focus">
+            <strong>{{ 'home.currentFocus' | transloco }}</strong>
+            {{ profile.currentFocus | localize }}
+          </p>
+        </div>
+        <app-social-links [links]="profile.socialLinks" [only]="heroNetworks" />
       </div>
     </div>
 
@@ -35,9 +44,23 @@
       </p>
       <p class="hero__description">{{ profile.description | localize }}</p>
 
-      <a class="button button--primary hero__cta" routerLink="/projets">
-        {{ 'home.ctaProjects' | transloco }}
-      </a>
+      <div class="hero__actions">
+        <a class="button button--primary" routerLink="/projets">
+          {{ 'home.ctaProjects' | transloco }}
+        </a>
+        @if (profile.cvPdfUrl | localize; as cvUrl) {
+          <a class="button button--secondary hero__cv" [href]="cvUrl" download>
+            {{ 'home.downloadCv' | transloco }}
+          </a>
+        }
+      </div>
+
+      <app-key-figures
+        class="hero__figures"
+        [projectCount]="projectCount()"
+        [toolCount]="toolCount()"
+        [companyName]="profile.company.name"
+      />
     </div>
   </section>
 } @else {

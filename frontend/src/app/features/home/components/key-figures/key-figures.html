@@ -1,0 +1,21 @@
+<ul class="figures" [attr.aria-label]="'home.figures.label' | transloco">
+  @if (projectCount(); as count) {
+    <li class="figures__item">
+      <strong class="figures__value">{{ pad(count) }}</strong
+      >&ngsp;
+      <span class="figures__label">{{ 'home.figures.projects' | transloco }}</span>
+    </li>
+  }
+  @if (toolCount(); as count) {
+    <li class="figures__item">
+      <strong class="figures__value">{{ pad(count) }}</strong
+      >&ngsp;
+      <span class="figures__label">{{ 'home.figures.tools' | transloco }}</span>
+    </li>
+  }
+  <li class="figures__item">
+    <strong class="figures__value figures__value--text">{{ companyName() }}</strong
+    >&ngsp;
+    <span class="figures__label">{{ 'home.figures.founder' | transloco }}</span>
+  </li>
+</ul>

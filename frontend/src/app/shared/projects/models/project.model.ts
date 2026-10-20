@@ -10,6 +10,8 @@ export interface Project {
   id: string;
   name: string;
   summary: LocalizedText;
+  /** Points forts affichés en liste à puces dans la carte et dans le CV. */
+  highlights: LocalizedText[];
   context: ProjectContext;
   roles: string[];
   technologies: string[];
