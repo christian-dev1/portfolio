@@ -124,6 +124,22 @@
     "visible": true
   },
   {
+    "id": "wordpress",
+    "name": {
+      "fr": "WordPress",
+      "en": "WordPress"
+    },
+    "icon": "wordpress",
+    "category": "frontend",
+    "usedIn": [
+      {
+        "fr": "Projets personnels",
+        "en": "Personal projects"
+      }
+    ],
+    "visible": true
+  },
+  {
     "id": "postgresql",
     "name": {
       "fr": "PostgreSQL",

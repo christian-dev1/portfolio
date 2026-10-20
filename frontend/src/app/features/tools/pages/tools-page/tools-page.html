@@ -28,7 +28,8 @@
                 }
               </span>
               <span class="tools__text">
-                <strong class="tools__name">{{ tile.tool.name | localize }}</strong>
+                <strong class="tools__name">{{ tile.tool.name | localize }}</strong
+                >&ngsp;
                 <span class="tools__used-in">
                   @for (place of tile.tool.usedIn; track $index) {
                     {{ place | localize }}{{ $last ? '' : ', ' }}

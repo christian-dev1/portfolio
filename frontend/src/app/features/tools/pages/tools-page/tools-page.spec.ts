@@ -3,8 +3,8 @@ import { NEVER, Observable, of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
 import { LanguageService } from '../../../../core/i18n/language.service';
 import { ToolsPage } from './tools-page';
-import { ToolService } from '../../data-access/tool.service';
-import { Tool } from '../../models/tool.model';
+import { ToolService } from '../../../../shared/tools/data-access/tool.service';
+import { Tool } from '../../../../shared/tools/models/tool.model';
 
 function tool(id: string, category: Tool['category']): Tool {
   return {
@@ -150,5 +150,12 @@ describe('ToolsPage', () => {
 
     expect(compiled.querySelectorAll('h1').length).toBe(1);
     expect(compiled.querySelector('.page-banner__count')!.textContent).toBe('02');
+  });
+
+  it('should keep a space between the tool name and where it is used', async () => {
+    const compiled = await setup(of([tool('java', 'languages')]));
+
+    const text = compiled.querySelector('.tools__text')!.textContent!.replace(/\s+/g, ' ');
+    expect(text.trim()).toBe('java WIMO');
   });
 });

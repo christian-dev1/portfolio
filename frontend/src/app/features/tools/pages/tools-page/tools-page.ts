@@ -9,8 +9,8 @@ import {
   isBrandIconSlug,
 } from '../../../../shared/ui/brand-icons';
 import { PageBanner } from '../../../../shared/ui/page-banner/page-banner';
-import { ToolService } from '../../data-access/tool.service';
-import { Tool, ToolCategory, TOOL_CATEGORIES } from '../../models/tool.model';
+import { ToolService } from '../../../../shared/tools/data-access/tool.service';
+import { Tool, ToolCategory, TOOL_CATEGORIES } from '../../../../shared/tools/models/tool.model';
 
 interface ToolTile {
   tool: Tool;

@@ -1,5 +1,5 @@
-import { LocalizedText } from '../../../shared/i18n/localized-text';
-import { BrandIconSlug } from '../../../shared/ui/brand-icons';
+import { LocalizedText } from '../../i18n/localized-text';
+import { BrandIconSlug } from '../../ui/brand-icons';
 
 /** Ordre d'affichage des catégories sur la page Boîte à outils. */
 export const TOOL_CATEGORIES = [
