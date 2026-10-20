@@ -5,6 +5,11 @@ import { provideTranslocoForTests } from '../../../../../testing/transloco-testi
 import { PROFILE_FIXTURE } from '../../../../../testing/profile.fixture';
 import { LanguageService } from '../../../../core/i18n/language.service';
 import { CareerService } from '../../../../shared/career/data-access/career.service';
+import { ContactConfigService } from '../../../../shared/contact-config/data-access/contact-config.service';
+import {
+  ContactConfig,
+  EMPTY_CONTACT_CONFIG,
+} from '../../../../shared/contact-config/models/contact-config.model';
 import { ProfileService } from '../../../../shared/profile/data-access/profile.service';
 import { Profile } from '../../../../shared/profile/models/profile.model';
 import { ProjectService } from '../../../../shared/projects/data-access/project.service';
@@ -31,7 +36,15 @@ function tool(id: string, category: Tool['category']): Tool {
   return { id, name: { fr: id, en: id }, category, usedIn: [], visible: true };
 }
 
-async function setup(profile: Profile = PROFILE_FIXTURE): Promise<HTMLElement> {
+const CONTACT_CONFIG: ContactConfig = {
+  whatsapp: '237600000000',
+  phones: [{ number: '+237 600 00 00 00', label: { fr: 'Appels', en: 'Calls' } }],
+};
+
+async function setup(
+  profile: Profile = PROFILE_FIXTURE,
+  contactConfig: ContactConfig = EMPTY_CONTACT_CONFIG,
+): Promise<HTMLElement> {
   TestBed.configureTestingModule({
     imports: [CvPage, provideTranslocoForTests()],
     providers: [
@@ -39,6 +52,7 @@ async function setup(profile: Profile = PROFILE_FIXTURE): Promise<HTMLElement> {
       { provide: ProfileService, useValue: { getProfile: () => of(profile) } },
       { provide: ProjectService, useValue: { getPublicProjects: () => of([PROJECT]) } },
       { provide: CareerService, useValue: { getCareer: () => of([]) } },
+      { provide: ContactConfigService, useValue: { getContactConfig: () => of(contactConfig) } },
       {
         provide: ToolService,
         useValue: {
@@ -120,18 +134,29 @@ describe('CvPage', () => {
     expect(side).toContain('Football');
   });
 
-  it('should hide the direct contact block while WhatsApp and phones are empty', async () => {
+  it('should hide the direct contact block when there is no contact configuration', async () => {
     const compiled = await setup();
 
     expect(compiled.querySelector('.cv__direct')).toBeNull();
+    expect(compiled.querySelector('app-whatsapp-button')).toBeNull();
   });
 
-  it('should show WhatsApp and phone links once they are filled in', async () => {
-    const compiled = await setup({ ...PROFILE_FIXTURE, whatsapp: '000', phones: ['000'] });
+  it('should show the WhatsApp button and the labelled phone numbers once configured', async () => {
+    const compiled = await setup(PROFILE_FIXTURE, CONTACT_CONFIG);
 
-    const hrefs = Array.from(compiled.querySelectorAll('.cv__direct a')).map((a) =>
-      a.getAttribute('href'),
+    const direct = compiled.querySelector('.cv__direct')!;
+    expect(direct.querySelector('app-whatsapp-button a')!.getAttribute('href')).toBe(
+      'https://wa.me/237600000000',
     );
-    expect(hrefs).toEqual(['https://wa.me/000', 'tel:000']);
+    const phone = direct.querySelector('.cv__phones li')!;
+    expect(phone.textContent!.replace(/\s+/g, ' ').trim()).toBe('Appels +237 600 00 00 00');
+    expect(phone.querySelector('a')!.getAttribute('href')).toBe('tel:+237600000000');
+  });
+
+  it('should show only the WhatsApp button when there is no phone number', async () => {
+    const compiled = await setup(PROFILE_FIXTURE, { ...CONTACT_CONFIG, phones: [] });
+
+    expect(compiled.querySelector('app-whatsapp-button')).not.toBeNull();
+    expect(compiled.querySelector('.cv__phones')).toBeNull();
   });
 });

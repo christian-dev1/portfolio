@@ -51,7 +51,6 @@ export interface Profile {
   photoUrl: string;
   location: LocalizedText;
   availability: Availability;
-  currentFocus: LocalizedText;
   socialLinks: SocialLink[];
   slogan: LocalizedText;
   description: LocalizedText;
@@ -64,7 +63,4 @@ export interface Profile {
   company: Company;
   /** PDF du CV par langue ; chaîne vide = bouton de téléchargement masqué. */
   cvPdfUrl: LocalizedText;
-  /** Réservés à l'espace CV ; vides = blocs masqués. */
-  whatsapp: string;
-  phones: string[];
 }

@@ -34,15 +34,18 @@
       "title": "Featured projects",
       "seeAll": "See all projects",
       "loading": "Loading projects…",
-      "empty": "No featured projects yet."
+      "empty": "No featured projects yet.",
+      "intro": "A selection of projects I design, build and test end to end."
     },
-    "currentFocus": "Right now:",
     "downloadCv": "Download my CV",
     "figures": {
       "label": "Key figures",
       "projects": "projects",
       "tools": "tools",
       "founder": "Founder"
+    },
+    "marquee": {
+      "label": "Technologies I use"
     }
   },
   "social": {
@@ -141,7 +144,6 @@
     "languages": "Languages",
     "interests": "Interests",
     "directContact": "Direct contact",
-    "whatsapp": "Message me on WhatsApp",
     "loading": "Loading the CV…"
   },
   "contact": {
@@ -158,6 +160,10 @@
     "networksTitle": "On social media",
     "newTab": "Opens in a new tab",
     "mailApp": "Opens your mail app",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "whatsapp": "WhatsApp",
+    "whatsappLabel": "Message me on WhatsApp (opens in a new tab)",
+    "whatsappTitle": "On WhatsApp",
+    "whatsappIntro": "For a quick chat, message me directly on WhatsApp."
   }
 }

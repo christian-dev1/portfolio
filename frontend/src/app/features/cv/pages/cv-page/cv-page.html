@@ -11,20 +11,22 @@
         <li>{{ profile.location | localize }}</li>
         @if (email(); as email) {
           <li>
-            <a [href]="'mailto:' + email">{{ email }}</a>
+            <a class="link" [href]="'mailto:' + email">{{ email }}</a>
           </li>
         }
         @if (linkedin(); as linkedin) {
           <li>
-            <a [href]="linkedin" target="_blank" rel="noopener noreferrer">
+            <a class="link" [href]="linkedin" target="_blank" rel="noopener noreferrer">
               {{ 'social.names.linkedin' | transloco }}
+              <span class="link-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
         }
         @if (github(); as github) {
           <li>
-            <a [href]="github" target="_blank" rel="noopener noreferrer">
+            <a class="link" [href]="github" target="_blank" rel="noopener noreferrer">
               {{ 'social.names.github' | transloco }}
+              <span class="link-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
         }
@@ -40,14 +42,14 @@
           }
         </section>
 
-        <section aria-labelledby="cv-projects-title">
+        <section class="reveal" aria-labelledby="cv-projects-title">
           <h2 id="cv-projects-title">{{ 'cv.projects' | transloco }}</h2>
           @if (projects(); as projects) {
             <app-cv-projects [projects]="projects" />
           }
         </section>
 
-        <section aria-labelledby="cv-career-title">
+        <section class="reveal" aria-labelledby="cv-career-title">
           <h2 id="cv-career-title">{{ 'cv.career' | transloco }}</h2>
           @if (career(); as entries) {
             <app-career-timeline [entries]="entries" />
@@ -56,7 +58,7 @@
       </div>
 
       <aside class="cv__side">
-        <section class="cv__box glass" aria-labelledby="cv-skills-title">
+        <section class="cv__box glass reveal" aria-labelledby="cv-skills-title">
           <h2 id="cv-skills-title">{{ 'cv.skills' | transloco }}</h2>
           @if (skills(); as skills) {
             <dl class="cv__skills">
@@ -70,10 +72,10 @@
               }
             </dl>
           }
-          <a class="cv__more" routerLink="/outils">{{ 'cv.skillsLink' | transloco }}</a>
+          <a class="cv__more link" routerLink="/outils">{{ 'cv.skillsLink' | transloco }}</a>
         </section>
 
-        <section class="cv__box glass" aria-labelledby="cv-qualities-title">
+        <section class="cv__box glass reveal" aria-labelledby="cv-qualities-title">
           <h2 id="cv-qualities-title">{{ 'cv.qualities' | transloco }}</h2>
           <ul>
             @for (quality of profile.qualities; track $index) {
@@ -82,7 +84,7 @@
           </ul>
         </section>
 
-        <section class="cv__box glass" aria-labelledby="cv-languages-title">
+        <section class="cv__box glass reveal" aria-labelledby="cv-languages-title">
           <h2 id="cv-languages-title">{{ 'cv.languages' | transloco }}</h2>
           <ul>
             @for (language of profile.languages; track $index) {
@@ -91,7 +93,7 @@
           </ul>
         </section>
 
-        <section class="cv__box glass" aria-labelledby="cv-interests-title">
+        <section class="cv__box glass reveal" aria-labelledby="cv-interests-title">
           <h2 id="cv-interests-title">{{ 'cv.interests' | transloco }}</h2>
           <ul>
             @for (interest of profile.interests; track $index) {
@@ -100,24 +102,26 @@
           </ul>
         </section>
 
-        @if (whatsappUrl() || profile.phones.length > 0) {
-          <section class="cv__box cv__direct glass" aria-labelledby="cv-direct-title">
-            <h2 id="cv-direct-title">{{ 'cv.directContact' | transloco }}</h2>
-            <ul>
-              @if (whatsappUrl(); as whatsappUrl) {
-                <li>
-                  <a [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
-                    {{ 'cv.whatsapp' | transloco }}
-                  </a>
-                </li>
+        @if (contactConfig(); as config) {
+          @if (config.whatsapp || config.phones.length > 0) {
+            <section class="cv__box cv__direct glass" aria-labelledby="cv-direct-title">
+              <h2 id="cv-direct-title">{{ 'cv.directContact' | transloco }}</h2>
+              @if (config.whatsapp) {
+                <app-whatsapp-button [number]="config.whatsapp" />
               }
-              @for (phone of profile.phones; track phone) {
-                <li>
-                  <a [href]="telHref(phone)">{{ phone }}</a>
-                </li>
+              @if (config.phones.length > 0) {
+                <ul class="cv__phones">
+                  @for (phone of config.phones; track phone.number) {
+                    <li>
+                      <span>{{ phone.label | localize }}</span
+                      >&ngsp;
+                      <a class="link" [href]="telHref(phone.number)">{{ phone.number }}</a>
+                    </li>
+                  }
+                </ul>
               }
-            </ul>
-          </section>
+            </section>
+          }
         }
       </aside>
     </div>

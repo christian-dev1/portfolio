@@ -9,7 +9,6 @@ export const PROFILE_FIXTURE: Profile = {
     status: 'remote-only',
     label: { fr: 'Disponible à distance', en: 'Available remotely' },
   },
-  currentFocus: { fr: 'Focus en français.', en: 'Focus in English.' },
   // 3 réseaux renseignés (GitHub, GitLab, e-mail) ; les tests qui ont besoin des autres les ajoutent.
   socialLinks: [
     { network: 'linkedin', url: '' },
@@ -41,6 +40,4 @@ export const PROFILE_FIXTURE: Profile = {
     description: { fr: 'Description de la société.', en: 'Company description.' },
   },
   cvPdfUrl: { fr: '', en: '' },
-  whatsapp: '',
-  phones: [],
 };

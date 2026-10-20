@@ -34,15 +34,18 @@
       "title": "Projets mis en avant",
       "seeAll": "Voir tous les projets",
       "loading": "Chargement des projets…",
-      "empty": "Aucun projet mis en avant pour le moment."
+      "empty": "Aucun projet mis en avant pour le moment.",
+      "intro": "Une sélection de projets que je conçois, développe et teste de bout en bout."
     },
-    "currentFocus": "En ce moment :",
     "downloadCv": "Télécharger mon CV",
     "figures": {
       "label": "Chiffres clés",
       "projects": "projets",
       "tools": "outils",
       "founder": "Fondateur"
+    },
+    "marquee": {
+      "label": "Technologies que j'utilise"
     }
   },
   "social": {
@@ -141,7 +144,6 @@
     "languages": "Langues",
     "interests": "Centres d'intérêt",
     "directContact": "Contact direct",
-    "whatsapp": "Écrire sur WhatsApp",
     "loading": "Chargement du CV…"
   },
   "contact": {
@@ -158,6 +160,10 @@
     "networksTitle": "Sur les réseaux",
     "newTab": "S'ouvre dans un nouvel onglet",
     "mailApp": "Ouvre votre messagerie",
-    "loading": "Chargement…"
+    "loading": "Chargement…",
+    "whatsapp": "WhatsApp",
+    "whatsappLabel": "Écrire sur WhatsApp (nouvel onglet)",
+    "whatsappTitle": "Sur WhatsApp",
+    "whatsappIntro": "Pour un échange rapide, écrivez-moi directement sur WhatsApp."
   }
 }

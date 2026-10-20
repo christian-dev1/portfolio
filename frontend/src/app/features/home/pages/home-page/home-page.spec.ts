@@ -193,12 +193,20 @@ describe('HomePage', () => {
     expect(badge.textContent).toContain('Disponible à distance');
   });
 
-  it('should display what I am currently working on', async () => {
-    const compiled = await setup({ lang: 'en' });
+  it('should no longer display a "current focus" line', async () => {
+    const compiled = await setup();
 
-    const focus = compiled.querySelector('.hero__focus')!.textContent!.replace(/\s+/g, ' ');
-    expect(focus).toContain('Right now:');
-    expect(focus).toContain('Focus in English.');
+    expect(compiled.querySelector('.hero__focus')).toBeNull();
+    expect(compiled.textContent).not.toContain('En ce moment');
+  });
+
+  it('should show a ribbon with the visible technologies under the hero', async () => {
+    const compiled = await setup();
+
+    const names = Array.from(
+      compiled.querySelectorAll('app-tech-marquee ul.visually-hidden li'),
+    ).map((li) => li.textContent!.trim());
+    expect(names).toEqual(['java', 'docker', 'git']);
   });
 
   it('should only show LinkedIn, GitHub, GitLab and email in the blue zone', async () => {

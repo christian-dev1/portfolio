@@ -47,9 +47,8 @@ describe('Data contract: profile.json', () => {
     expect(profile.photoUrl).toMatch(/^\/images\//);
   });
 
-  it('should have a location, a current focus and a known availability', () => {
+  it('should have a location and a known availability', () => {
     expectLocalizedText(profile.location, 'profile.location');
-    expectLocalizedText(profile.currentFocus, 'profile.currentFocus');
     expectOneOf(profile.availability.status, AVAILABILITY_STATUSES, 'profile.availability');
     expectLocalizedText(profile.availability.label, 'profile.availability.label');
   });
@@ -93,14 +92,6 @@ describe('Data contract: profile.json', () => {
       if (url !== '') {
         expect(url, `profile.cvPdfUrl.${lang}`).toMatch(PDF_URL);
       }
-    }
-  });
-
-  it('should keep WhatsApp and phones as plain strings (empty until the CV space)', () => {
-    expect(typeof profile.whatsapp).toBe('string');
-    expect(Array.isArray(profile.phones)).toBe(true);
-    for (const phone of profile.phones as unknown[]) {
-      expect(typeof phone).toBe('string');
     }
   });
 });

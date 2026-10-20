@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { CareerTimeline } from '../../../../shared/career/components/career-timeline/career-timeline';
 import { CareerService } from '../../../../shared/career/data-access/career.service';
+import { WhatsappButton } from '../../../../shared/contact-config/components/whatsapp-button/whatsapp-button';
+import { ContactConfigService } from '../../../../shared/contact-config/data-access/contact-config.service';
 import { LocalizePipe } from '../../../../shared/i18n/localize.pipe';
 import { ProfileService } from '../../../../shared/profile/data-access/profile.service';
 import { SocialNetwork } from '../../../../shared/profile/models/profile.model';
@@ -15,7 +17,15 @@ import { CvProjects } from '../../components/cv-projects/cv-projects';
 
 @Component({
   selector: 'app-cv-page',
-  imports: [RouterLink, TranslocoPipe, LocalizePipe, PageBanner, CareerTimeline, CvProjects],
+  imports: [
+    RouterLink,
+    TranslocoPipe,
+    LocalizePipe,
+    PageBanner,
+    CareerTimeline,
+    CvProjects,
+    WhatsappButton,
+  ],
   templateUrl: './cv-page.html',
   styleUrl: './cv-page.scss',
 })
@@ -24,6 +34,8 @@ export class CvPage {
   protected readonly projects = toSignal(inject(ProjectService).getPublicProjects());
   protected readonly career = toSignal(inject(CareerService).getCareer());
   private readonly tools = toSignal(inject(ToolService).getPublicTools());
+  /** Coordonnées personnelles hors Git ; vides si le fichier de configuration est absent. */
+  protected readonly contactConfig = toSignal(inject(ContactConfigService).getContactConfig());
 
   /** Compétences compactes : une ligne par catégorie, dans l'ordre de la boîte à outils. */
   protected readonly skills = computed(() => {
@@ -39,12 +51,6 @@ export class CvPage {
   protected readonly email = computed(() => this.link('email'));
   protected readonly linkedin = computed(() => this.link('linkedin'));
   protected readonly github = computed(() => this.link('github'));
-
-  /** Lien WhatsApp à partir du numéro (chiffres seuls), ou vide si non renseigné. */
-  protected readonly whatsappUrl = computed(() => {
-    const digits = this.profile()?.whatsapp.replace(/\D/g, '') ?? '';
-    return digits ? `https://wa.me/${digits}` : '';
-  });
 
   protected telHref(phone: string): string {
     return `tel:${phone.replace(/[^\d+]/g, '')}`;

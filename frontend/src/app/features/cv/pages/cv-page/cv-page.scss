@@ -1,16 +1,11 @@
 .cv {
-  max-width: 70rem;
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding: 3rem 1.5rem 0;
+  padding: 3rem var(--content-gutter) 0;
 
   h2 {
     margin: 0 0 1rem;
     font-size: 1.375rem;
-  }
-
-  a {
-    font-weight: 600;
-    color: var(--color-accent-text);
   }
 }
 
@@ -111,6 +106,6 @@
 
 @media (max-width: 639.98px) {
   .cv {
-    padding: 2rem 1rem 0;
+    padding-top: 2rem;
   }
 }

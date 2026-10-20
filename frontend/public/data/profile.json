@@ -13,10 +13,6 @@
       "en": "Available for remote work"
     }
   },
-  "currentFocus": {
-    "fr": "Je fais évoluer WIMO et j'accompagne la phase pilote de Sekouh.",
-    "en": "Building WIMO and supporting the Sekouh pilot phase."
-  },
   "socialLinks": [
     {
       "network": "linkedin",
@@ -185,7 +181,5 @@
   "cvPdfUrl": {
     "fr": "",
     "en": ""
-  },
-  "whatsapp": "",
-  "phones": []
+  }
 }

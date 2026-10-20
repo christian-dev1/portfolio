@@ -2,15 +2,9 @@
   <section class="hero">
     <div class="hero__banner brand-pattern">
       <div class="hero__banner-inner">
-        <div class="hero__status">
-          <div class="hero__pills">
-            <p class="hero__founder glass glass--on-brand">{{ 'home.founder' | transloco }}</p>
-            <app-availability-badge [availability]="profile.availability" />
-          </div>
-          <p class="hero__focus">
-            <strong>{{ 'home.currentFocus' | transloco }}</strong>
-            {{ profile.currentFocus | localize }}
-          </p>
+        <div class="hero__pills">
+          <p class="hero__founder glass glass--on-brand">{{ 'home.founder' | transloco }}</p>
+          <app-availability-badge [availability]="profile.availability" />
         </div>
         <app-social-links [links]="profile.socialLinks" [only]="heroNetworks" />
       </div>
@@ -67,20 +61,8 @@
   <p class="home__status">{{ 'home.loading' | transloco }}</p>
 }
 
-<section class="featured" aria-labelledby="featured-title">
-  <h2 id="featured-title" class="featured__title">{{ 'home.featured.title' | transloco }}</h2>
+@if (tools(); as tools) {
+  <app-tech-marquee class="home__marquee" [tools]="tools" />
+}
 
-  @if (featuredProjects(); as projects) {
-    <div class="featured__grid">
-      @for (project of projects; track project.id) {
-        <app-project-card [project]="project" [headingLevel]="3" />
-      } @empty {
-        <p>{{ 'home.featured.empty' | transloco }}</p>
-      }
-    </div>
-  } @else {
-    <p>{{ 'home.featured.loading' | transloco }}</p>
-  }
-
-  <a class="featured__see-all" routerLink="/projets">{{ 'home.featured.seeAll' | transloco }}</a>
-</section>
+<app-featured-projects [projects]="featuredProjects()" />

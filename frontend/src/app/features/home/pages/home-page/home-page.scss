@@ -16,32 +16,15 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.75rem;
-  max-width: 70rem;
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-.hero__status {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
+  padding: 0 var(--content-gutter);
 }
 
 .hero__pills {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-.hero__focus {
-  max-width: 34rem;
-  margin: 0;
-  font-size: 0.9375rem;
-  color: var(--color-on-brand-muted);
-
-  strong {
-    color: var(--color-on-brand);
-  }
 }
 
 .hero__founder {
@@ -166,31 +149,8 @@
   text-align: center;
 }
 
-/* 5. Projets mis en avant */
-.featured {
-  max-width: 70rem;
-  margin: 4rem auto 0;
-  padding: 0 1.5rem;
-}
-
-.featured__title {
-  margin: 0 0 1.5rem;
-  font-size: 1.75rem;
-}
-
-.featured__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
-  gap: 2rem 1.5rem;
-}
-
-.featured__see-all {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-  margin-top: 1rem;
-  font-weight: 600;
-  color: var(--color-accent-text);
+.home__marquee {
+  margin-top: 3.5rem;
 }
 
 /* Mobile : pastille et icônes l'une sous l'autre, photo plus petite. */
@@ -203,15 +163,10 @@
     padding-top: 1rem;
   }
 
-  .hero__banner-inner,
-  .hero__status {
+  .hero__banner-inner {
     flex-direction: column;
     align-items: center;
     text-align: center;
-  }
-
-  .hero__banner-inner {
-    padding: 0 1rem;
   }
 
   .hero__pills {
