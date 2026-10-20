@@ -8,6 +8,7 @@ import {
   siGithub,
   siGitlab,
   siGmail,
+  siInstagram,
   siIntellijidea,
   siJunit5,
   siLinkedin,
@@ -15,11 +16,13 @@ import {
   siOpenjdk,
   siPostgresql,
   siPostman,
+  siSnapchat,
   siSpringboot,
   siSwagger,
   siTiktok,
   siTypescript,
   siVitest,
+  siWordpress,
   siYoutube,
 } from 'simple-icons';
 
@@ -36,6 +39,7 @@ const SOURCES = {
   github: siGithub,
   gitlab: siGitlab,
   gmail: siGmail,
+  instagram: siInstagram,
   intellijidea: siIntellijidea,
   junit5: siJunit5,
   linkedin: siLinkedin,
@@ -43,11 +47,13 @@ const SOURCES = {
   openjdk: siOpenjdk,
   postgresql: siPostgresql,
   postman: siPostman,
+  snapchat: siSnapchat,
   springboot: siSpringboot,
   swagger: siSwagger,
   tiktok: siTiktok,
   typescript: siTypescript,
   vitest: siVitest,
+  wordpress: siWordpress,
   youtube: siYoutube,
 } satisfies Record<string, SimpleIcon>;
 

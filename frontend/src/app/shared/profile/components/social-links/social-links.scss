@@ -5,6 +5,8 @@
 .social-links {
   display: flex;
   flex-wrap: wrap;
+  /* Si les ronds passent sur deux lignes (9 réseaux à 360px), les lignes restent centrées. */
+  justify-content: center;
   gap: 0.625rem;
   margin: 0;
   padding: 0;

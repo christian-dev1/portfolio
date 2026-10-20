@@ -1,0 +1,7 @@
+<p
+  class="availability glass glass--on-brand"
+  [class.availability--unavailable]="availability().status === 'unavailable'"
+>
+  <span class="availability__dot" aria-hidden="true"></span>
+  {{ availability().label | localize }}
+</p>

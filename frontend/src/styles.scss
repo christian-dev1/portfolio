@@ -9,6 +9,9 @@
   --color-on-brand-muted: rgba(255, 255, 255, 0.85);
   /* Encre foncée sur un fond de marque clair (ex. survol GitLab). */
   --color-brand-ink: #0a1230;
+  /* Point de disponibilité (posé sur la zone bleue, identique dans les deux thèmes). */
+  --color-available: #22c55e;
+  --color-unavailable: #94a3b8;
 
   --color-primary: #1e3a8a;
   --color-heading: #1e3a8a;
@@ -157,6 +160,11 @@ h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  /* Neutralise le style natif quand la classe est posée sur un <button>. */
+  border: 0;
+  background: none;
+  font-size: inherit;
+  cursor: pointer;
   min-height: 2.75rem;
   padding: 0.625rem 1.5rem;
   border-radius: 999px;
@@ -176,6 +184,29 @@ h3 {
       background-color: var(--color-brand-red-hover);
       transform: translateY(-1px);
     }
+  }
+
+  &--secondary {
+    border: 2px solid var(--color-accent-text);
+    color: var(--color-accent-text);
+
+    &:hover {
+      background-color: var(--color-accent-soft);
+    }
+  }
+}
+
+/* Liste à puces rouges (points forts des projets, CV). */
+.bullets {
+  margin: 0;
+  padding-left: 1.125rem;
+
+  li::marker {
+    color: var(--color-brand-red);
+  }
+
+  li + li {
+    margin-top: 0.25rem;
   }
 }
 

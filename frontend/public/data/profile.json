@@ -2,7 +2,26 @@
   "fullName": "Noutchom Noumbiap Christian Luther",
   "brand": "LUCHRIST",
   "photoUrl": "/images/photo-luchrist.jpg",
+  "location": {
+    "fr": "Yaoundé, Cameroun",
+    "en": "Yaoundé, Cameroon"
+  },
+  "availability": {
+    "status": "remote-only",
+    "label": {
+      "fr": "Disponible pour des missions à distance",
+      "en": "Available for remote work"
+    }
+  },
+  "currentFocus": {
+    "fr": "Je fais évoluer WIMO et j'accompagne la phase pilote de Sekouh.",
+    "en": "Building WIMO and supporting the Sekouh pilot phase."
+  },
   "socialLinks": [
+    {
+      "network": "linkedin",
+      "url": "https://www.linkedin.com/in/christian-noutchom-494840345/"
+    },
     {
       "network": "github",
       "url": "https://github.com/christian-dev1"
@@ -12,20 +31,24 @@
       "url": "https://gitlab.com/christian-dev1"
     },
     {
-      "network": "linkedin",
-      "url": ""
-    },
-    {
-      "network": "facebook",
-      "url": ""
-    },
-    {
       "network": "youtube",
-      "url": ""
+      "url": "https://www.youtube.com/@luchrist-r2d"
     },
     {
       "network": "tiktok",
-      "url": ""
+      "url": "https://vm.tiktok.com/ZG9U4PqLLTLmy-naTeA/"
+    },
+    {
+      "network": "facebook",
+      "url": "https://www.facebook.com/profile.php?id=61585366945559"
+    },
+    {
+      "network": "instagram",
+      "url": "https://www.instagram.com/noutchom"
+    },
+    {
+      "network": "snapchat",
+      "url": "https://www.snapchat.com/add/luchrist07"
     },
     {
       "network": "email",
@@ -39,5 +62,130 @@
   "description": {
     "fr": "Je conçois, développe et teste des applications, du backend Spring Boot jusqu'aux tests de bout en bout.",
     "en": "I design, build and test applications, from the Spring Boot backend to end-to-end tests."
-  }
+  },
+  "bio": [
+    {
+      "fr": "Développeur backend et QA camerounais, je conçois, développe et teste des applications avec Java, Spring Boot et Angular. Polyvalent et passionné par les nouvelles technologies, je travaille aussi avec WordPress.",
+      "en": "I'm a Cameroonian backend developer and QA engineer. I design, build and test applications with Java, Spring Boot and Angular. Versatile and passionate about new technologies, I also work with WordPress."
+    },
+    {
+      "fr": "D'un naturel calme et détendu, je suis aussi très jovial avec ceux que je connais. J'aime oser : face à une difficulté, je cherche la solution plutôt que de dire « je ne peux pas ». Et je rêve grand, c'est pour ça que j'ai fondé B-HER EMPIRE.",
+      "en": "Calm and easygoing by nature, I'm also very cheerful with the people I know. I like to dare: when something gets hard, I look for the solution instead of saying \"I can't\". And I dream big, which is why I founded B-HER EMPIRE."
+    }
+  ],
+  "values": [
+    {
+      "id": "dare",
+      "title": {
+        "fr": "Oser",
+        "en": "Dare"
+      },
+      "text": {
+        "fr": "Face à une difficulté, je cherche la solution plutôt que de dire « je ne peux pas ».",
+        "en": "When something gets hard, I look for the solution instead of saying \"I can't\"."
+      }
+    },
+    {
+      "id": "dream-big",
+      "title": {
+        "fr": "Rêver grand",
+        "en": "Dream big"
+      },
+      "text": {
+        "fr": "Je vise loin : c'est cette ambition qui m'a poussé à fonder B-HER EMPIRE.",
+        "en": "I aim high: that ambition is what led me to found B-HER EMPIRE."
+      }
+    },
+    {
+      "id": "versatility",
+      "title": {
+        "fr": "Polyvalence",
+        "en": "Versatility"
+      },
+      "text": {
+        "fr": "Du backend aux tests, en passant par le frontend et WordPress, je m'adapte aux besoins du projet.",
+        "en": "From backend to testing, through frontend and WordPress, I adapt to what the project needs."
+      }
+    },
+    {
+      "id": "commitment",
+      "title": {
+        "fr": "Engagement",
+        "en": "Commitment"
+      },
+      "text": {
+        "fr": "Je m'investis dans chaque projet et je le mène jusqu'au bout.",
+        "en": "I put myself into every project and see it through to the end."
+      }
+    }
+  ],
+  "qualities": [
+    {
+      "fr": "Travail en équipe",
+      "en": "Teamwork"
+    },
+    {
+      "fr": "Écoute et communication",
+      "en": "Listening and communication"
+    },
+    {
+      "fr": "Gestion de la pression et des délais",
+      "en": "Working under pressure and deadlines"
+    },
+    {
+      "fr": "Engagement jusqu'au bout",
+      "en": "Follow-through"
+    }
+  ],
+  "interests": [
+    {
+      "fr": "Football",
+      "en": "Football"
+    },
+    {
+      "fr": "Sport et forme physique",
+      "en": "Sport and fitness"
+    },
+    {
+      "fr": "Musique et chant",
+      "en": "Music and singing"
+    },
+    {
+      "fr": "Théâtre et comédie",
+      "en": "Theatre and comedy"
+    },
+    {
+      "fr": "Nouvelles technologies",
+      "en": "New technologies"
+    }
+  ],
+  "languages": [
+    {
+      "name": {
+        "fr": "Français",
+        "en": "French"
+      },
+      "level": {
+        "fr": "Courant",
+        "en": "Fluent"
+      }
+    }
+  ],
+  "company": {
+    "name": "B-HER EMPIRE",
+    "role": {
+      "fr": "Fondateur et PDG",
+      "en": "Founder & CEO"
+    },
+    "description": {
+      "fr": "B-HER EMPIRE — startup numérique que j'ai fondée (en cours de création). Conception, développement et test d'applications, de logiciels et de plateformes, avec un accompagnement en communication et marketing digital.",
+      "en": "B-HER EMPIRE — a digital startup I founded (currently being set up). Design, development and testing of applications, software and platforms, with support in communication and digital marketing."
+    }
+  },
+  "cvPdfUrl": {
+    "fr": "",
+    "en": ""
+  },
+  "whatsapp": "",
+  "phones": []
 }

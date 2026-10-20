@@ -83,4 +83,14 @@ describe('SocialLinks', () => {
     expect(gitlab.style.getPropertyValue('--brand-hex')).toBe('#FC6D26');
     expect(gitlab.classList).toContain('social-links__link--dark-ink');
   });
+
+  it('should only display the requested networks, in data order', async () => {
+    fixture.componentRef.setInput('only', ['email', 'github']);
+    await fixture.whenStable();
+
+    const hrefs = Array.from(compiled.querySelectorAll('a')).map((link) =>
+      link.getAttribute('href'),
+    );
+    expect(hrefs).toEqual(['https://github.com/example', 'mailto:contact@example.com']);
+  });
 });
