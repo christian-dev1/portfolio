@@ -1,10 +1,11 @@
 import { Component, input } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { CountUp } from '../../../../shared/ui/count-up/count-up';
 
 /** Chiffres clés de l'accueil, calculés depuis les données (jamais écrits en dur). */
 @Component({
   selector: 'app-key-figures',
-  imports: [TranslocoPipe],
+  imports: [TranslocoPipe, CountUp],
   templateUrl: './key-figures.html',
   styleUrl: './key-figures.scss',
 })
@@ -13,8 +14,4 @@ export class KeyFigures {
   readonly projectCount = input<number>();
   readonly toolCount = input<number>();
   readonly companyName = input.required<string>();
-
-  protected pad(count: number): string {
-    return String(count).padStart(2, '0');
-  }
 }

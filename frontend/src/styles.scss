@@ -48,9 +48,19 @@
   --shadow-ring: 0 2px 4px rgba(15, 23, 42, 0.16);
   --color-tile-bg: rgba(30, 58, 138, 0.06);
 
+  /* Mise en page : une seule largeur de contenu, réutilisée par le header, les pages et le footer. */
+  --content-width: 77.5rem;
+  --content-gutter: 1.5rem;
+
   /* Typographie */
   --font-heading: 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+}
+
+@media (max-width: 639.98px) {
+  :root {
+    --content-gutter: 1rem;
+  }
 }
 
 :root[data-theme='dark'] {
@@ -196,6 +206,41 @@ h3 {
   }
 }
 
+/* Texte réservé aux lecteurs d'écran. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Liens : soulignement qui se dessine au survol / focus, flèche « ↗ » qui glisse. */
+.link {
+  font-weight: 600;
+  color: var(--color-accent-text);
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 2px;
+  transition: background-size 0.25s ease;
+
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 2px;
+  }
+}
+
+.link-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+
+  a:hover &,
+  a:focus-visible & {
+    transform: translate(2px, -2px);
+  }
+}
+
 /* Liste à puces rouges (points forts des projets, CV). */
 .bullets {
   margin: 0;
@@ -210,6 +255,36 @@ h3 {
   }
 }
 
+/* Apparition au défilement : uniquement si le navigateur sait lier une animation au scroll.
+   Sans support (ou animations réduites), le contenu est simplement visible. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Transitions de page (View Transitions du routeur) : fondu court. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 180ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -217,5 +292,11 @@ h3 {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

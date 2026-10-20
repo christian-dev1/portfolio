@@ -6,9 +6,9 @@
       <p class="page-banner__intro">{{ introKey() | transloco }}</p>
     </div>
 
-    @if (paddedCount(); as paddedCount) {
+    @if (shownCount(); as shownCount) {
       <div class="page-banner__counter" aria-hidden="true">
-        <span class="page-banner__count">{{ paddedCount }}</span>
+        <span class="page-banner__count" [appCountUp]="shownCount.value"></span>
         <span class="page-banner__count-label">{{ countLabelKey()! | transloco }}</span>
       </div>
     }

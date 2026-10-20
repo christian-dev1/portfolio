@@ -1,6 +1,6 @@
 import { ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
-import { TitleStrategy, provideRouter } from '@angular/router';
+import { TitleStrategy, provideRouter, withViewTransitions } from '@angular/router';
 import { provideTransloco } from '@jsverse/transloco';
 
 import { routes } from './app.routes';
@@ -10,7 +10,7 @@ import { TranslatedTitleStrategy } from './core/i18n/translated-title.strategy';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    provideRouter(routes, withViewTransitions({ skipInitialTransition: true })),
     { provide: TitleStrategy, useClass: TranslatedTitleStrategy },
     provideHttpClient(),
     provideTransloco({

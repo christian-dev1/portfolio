@@ -26,7 +26,8 @@
   gap: 1rem;
   /* -1px : recouvre la ligne d'anticrénelage entre le SVG et l'aplat. */
   margin-top: -1px;
-  padding: 1rem max(1.5rem, calc((100% - 72rem) / 2)) 2rem;
+  padding: 1rem
+    max(var(--content-gutter), calc((100% - var(--content-width)) / 2 + var(--content-gutter))) 2rem;
   background-color: var(--color-brand-blue);
   color: var(--color-on-brand);
 }
@@ -47,10 +48,16 @@
     min-height: 2.75rem;
     font-size: 0.875rem;
     color: var(--color-on-brand-muted);
-    text-underline-offset: 0.2em;
+    text-decoration: none;
+    background: linear-gradient(currentColor, currentColor) no-repeat 0 85% / 0 1px;
+    transition:
+      background-size 0.25s ease,
+      color 0.25s ease;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       color: var(--color-on-brand);
+      background-size: 100% 1px;
     }
   }
 }

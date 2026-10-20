@@ -1,10 +1,11 @@
 import { Component, computed, input } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { CountUp } from '../count-up/count-up';
 
 /** Bandeau des pages intérieures : zone bleue à points, h1, bande rouge et grand compteur. */
 @Component({
   selector: 'app-page-banner',
-  imports: [TranslocoPipe],
+  imports: [TranslocoPipe, CountUp],
   templateUrl: './page-banner.html',
   styleUrl: './page-banner.scss',
 })
@@ -17,10 +18,9 @@ export class PageBanner {
   /** Nombre réel calculé depuis les données ; `undefined` pendant le chargement. */
   readonly count = input<number>();
 
-  protected readonly paddedCount = computed(() => {
-    const count = this.count();
-    return count === undefined || !this.countLabelKey()
-      ? undefined
-      : String(count).padStart(2, '0');
+  /** Compteur affiché seulement avec un libellé et un nombre (objet : 0 reste « vrai » dans @if). */
+  protected readonly shownCount = computed(() => {
+    const value = this.count();
+    return value === undefined || !this.countLabelKey() ? undefined : { value };
   });
 }

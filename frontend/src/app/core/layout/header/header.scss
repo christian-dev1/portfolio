@@ -1,19 +1,24 @@
 :host {
+  /* Retrait de la pilule par rapport aux bords de la fenêtre. */
+  --header-inset: 0.5rem;
   position: sticky;
   top: 0;
   z-index: 100;
   display: block;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem var(--header-inset);
+  /* Le header reste en place pendant les transitions de page. */
+  view-transition-name: site-header;
 }
 
+/* La pilule s'étend sur la largeur du contenu : le logo s'aligne sur le bord gauche du contenu. */
 .header__pill {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem 1rem;
-  max-width: 61.25rem;
+  max-width: calc(var(--content-width) - 2 * var(--header-inset));
   margin: 0 auto;
-  padding: 0.375rem 0.5rem 0.375rem 1.25rem;
+  padding: 0.375rem 0.5rem 0.375rem calc(var(--content-gutter) - var(--header-inset));
   border-radius: 999px;
 }
 
@@ -103,11 +108,7 @@
 
 @media (max-width: 639.98px) {
   :host {
-    padding: 0.5rem;
-  }
-
-  .header__pill {
-    padding: 0.375rem 0.5rem 0.375rem 1rem;
+    --header-inset: 0.25rem;
   }
 
   .header__nav a {

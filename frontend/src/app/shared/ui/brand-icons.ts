@@ -22,6 +22,7 @@ import {
   siTiktok,
   siTypescript,
   siVitest,
+  siWhatsapp,
   siWordpress,
   siYoutube,
 } from 'simple-icons';
@@ -53,6 +54,7 @@ const SOURCES = {
   tiktok: siTiktok,
   typescript: siTypescript,
   vitest: siVitest,
+  whatsapp: siWhatsapp,
   wordpress: siWordpress,
   youtube: siYoutube,
 } satisfies Record<string, SimpleIcon>;
