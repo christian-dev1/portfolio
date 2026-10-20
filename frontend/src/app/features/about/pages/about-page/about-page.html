@@ -2,52 +2,58 @@
 
 @if (profile(); as profile) {
   <div class="about">
-    <section class="about__bio" aria-labelledby="about-bio-title">
+    <aside class="about__identity brand-pattern">
       <img
         class="about__photo"
         [src]="profile.photoUrl"
         [alt]="'home.photoAlt' | transloco"
-        width="128"
-        height="128"
+        width="160"
+        height="160"
       />
-      <div>
+      <p class="about__name">{{ profile.fullName }}</p>
+      <p class="about__role">{{ 'home.jobTitle' | transloco }}</p>
+      <p class="about__location">
+        {{ 'about.basedIn' | transloco }} {{ profile.location | localize }}
+      </p>
+      <app-availability-badge [availability]="profile.availability" />
+    </aside>
+
+    <div class="about__content">
+      <section class="about__bio" aria-labelledby="about-bio-title">
         <h2 id="about-bio-title">{{ 'about.bioTitle' | transloco }}</h2>
         @for (paragraph of profile.bio; track $index) {
           <p>{{ paragraph | localize }}</p>
         }
-        <p class="about__location">
-          {{ 'about.basedIn' | transloco }} {{ profile.location | localize }}
-        </p>
-      </div>
-    </section>
+      </section>
 
-    <section aria-labelledby="about-values-title">
-      <h2 id="about-values-title">{{ 'about.valuesTitle' | transloco }}</h2>
-      <ul class="about__values">
-        @for (value of profile.values; track value.id) {
-          <li class="about__value glass">
-            <h3>{{ value.title | localize }}</h3>
-            <p>{{ value.text | localize }}</p>
-          </li>
+      <section aria-labelledby="about-values-title">
+        <h2 id="about-values-title">{{ 'about.valuesTitle' | transloco }}</h2>
+        <ul class="about__values">
+          @for (value of profile.values; track value.id) {
+            <li class="about__value glass reveal">
+              <h3>{{ value.title | localize }}</h3>
+              <p>{{ value.text | localize }}</p>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section class="about__company glass reveal" aria-labelledby="about-company-title">
+        <p class="about__company-eyebrow">{{ 'about.companyEyebrow' | transloco }}</p>
+        <h2 id="about-company-title">{{ profile.company.name }}</h2>
+        <p class="about__company-role">{{ profile.company.role | localize }}</p>
+        <p>{{ profile.company.description | localize }}</p>
+      </section>
+
+      <section class="reveal" aria-labelledby="about-career-title">
+        <h2 id="about-career-title">{{ 'about.careerTitle' | transloco }}</h2>
+        @if (career(); as entries) {
+          <app-career-timeline [entries]="entries" />
+        } @else {
+          <p>{{ 'about.loading' | transloco }}</p>
         }
-      </ul>
-    </section>
-
-    <section class="about__company brand-pattern" aria-labelledby="about-company-title">
-      <p class="about__company-eyebrow">{{ 'about.companyEyebrow' | transloco }}</p>
-      <h2 id="about-company-title">{{ profile.company.name }}</h2>
-      <p class="about__company-role">{{ profile.company.role | localize }}</p>
-      <p>{{ profile.company.description | localize }}</p>
-    </section>
-
-    <section aria-labelledby="about-career-title">
-      <h2 id="about-career-title">{{ 'about.careerTitle' | transloco }}</h2>
-      @if (career(); as entries) {
-        <app-career-timeline [entries]="entries" />
-      } @else {
-        <p>{{ 'about.loading' | transloco }}</p>
-      }
-    </section>
+      </section>
+    </div>
   </div>
 } @else {
   <p class="about about__status">{{ 'about.loading' | transloco }}</p>

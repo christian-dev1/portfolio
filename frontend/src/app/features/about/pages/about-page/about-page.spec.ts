@@ -47,13 +47,22 @@ describe('AboutPage', () => {
     expect(titles[0].closest('app-page-banner')).not.toBeNull();
   });
 
-  it('should display every bio paragraph and the location', async () => {
+  it('should display every bio paragraph', async () => {
     const compiled = await setup(of(CAREER), 'en');
 
     const text = compiled.querySelector('.about__bio')!.textContent!;
     expect(text).toContain('First paragraph.');
     expect(text).toContain('Second paragraph.');
-    expect(text).toContain('City, Country');
+  });
+
+  it('should keep an identity card with name, job, city and availability in the side column', async () => {
+    const compiled = await setup(of(CAREER), 'en');
+
+    const identity = compiled.querySelector('aside.about__identity')!.textContent!;
+    expect(identity).toContain('Noutchom Noumbiap Christian Luther');
+    expect(identity).toContain('Backend Developer & QA');
+    expect(identity).toContain('City, Country');
+    expect(identity).toContain('Available remotely');
   });
 
   it('should display the photo with a translated alt text', async () => {

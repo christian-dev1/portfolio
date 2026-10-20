@@ -4,12 +4,13 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { CareerTimeline } from '../../../../shared/career/components/career-timeline/career-timeline';
 import { CareerService } from '../../../../shared/career/data-access/career.service';
 import { LocalizePipe } from '../../../../shared/i18n/localize.pipe';
+import { AvailabilityBadge } from '../../../../shared/profile/components/availability-badge/availability-badge';
 import { ProfileService } from '../../../../shared/profile/data-access/profile.service';
 import { PageBanner } from '../../../../shared/ui/page-banner/page-banner';
 
 @Component({
   selector: 'app-about-page',
-  imports: [TranslocoPipe, LocalizePipe, PageBanner, CareerTimeline],
+  imports: [TranslocoPipe, LocalizePipe, PageBanner, CareerTimeline, AvailabilityBadge],
   templateUrl: './about-page.html',
   styleUrl: './about-page.scss',
 })
