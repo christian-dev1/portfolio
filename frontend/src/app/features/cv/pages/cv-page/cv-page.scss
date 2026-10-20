@@ -20,6 +20,12 @@
   border-bottom: 6px solid var(--color-brand-red);
 }
 
+.cv__identity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .cv__name {
   margin: 0;
   font-family: var(--font-heading);
@@ -107,5 +113,131 @@
 @media (max-width: 639.98px) {
   .cv {
     padding-top: 2rem;
+  }
+}
+
+/* Variantes d'un même contenu : version écran, version imprimée (texte court). */
+.cv__print-only {
+  display: none;
+}
+
+/* Impression A4 (Ctrl+P → Enregistrer en PDF) : la même page, en noir sur blanc,
+   sans navigation ni décor, avec l'identité de marque (bande rouge, titres bleus, photo). */
+@media print {
+  .cv__screen-only,
+  app-page-banner,
+  app-cv-download-button,
+  app-whatsapp-button,
+  .cv__more {
+    display: none;
+  }
+
+  .cv__print-only {
+    display: revert;
+  }
+
+  .cv {
+    max-width: none;
+    padding: 0;
+    line-height: 1.4;
+
+    /* Fine bande rouge en haut de la première page. */
+    &::before {
+      content: '';
+      display: block;
+      height: 8px;
+      margin-bottom: 5mm;
+      background-color: var(--color-brand-red);
+    }
+
+    h2 {
+      margin-bottom: 2mm;
+      font-size: 12pt;
+      color: var(--color-brand-blue);
+      break-after: avoid;
+    }
+  }
+
+  .glass {
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .cv__header {
+    flex-wrap: nowrap;
+    padding: 0 0 4mm;
+    border-radius: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cv__photo {
+    display: block;
+    flex-shrink: 0;
+    width: 24mm;
+    height: 24mm;
+    border: 3px solid var(--color-brand-red);
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .cv__name {
+    font-size: 16pt;
+    color: var(--color-brand-blue);
+  }
+
+  .cv__contact {
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: 0.5mm;
+    text-align: right;
+    white-space: nowrap;
+
+    .link {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+  }
+
+  .cv__layout {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 7mm;
+    margin-top: 5mm;
+  }
+
+  .cv__main {
+    display: block;
+
+    > section + section {
+      margin-top: 6mm;
+    }
+  }
+
+  .cv__side {
+    gap: 4mm;
+  }
+
+  .cv__box {
+    padding: 0;
+    border-radius: 0;
+    break-inside: avoid;
+
+    h2 {
+      font-size: 11pt;
+    }
+  }
+
+  .cv__skills dd {
+    margin-bottom: 1.5mm;
+  }
+
+  /* Sans « ?complet=1 », le bloc ne contient qu'un bouton : rien à imprimer. */
+  .cv__direct:not(.cv__direct--complete) {
+    display: none;
+  }
+
+  .cv__box .cv__phones {
+    padding-left: 0;
+    list-style: none;
   }
 }

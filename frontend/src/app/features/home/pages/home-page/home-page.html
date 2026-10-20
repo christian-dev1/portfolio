@@ -42,11 +42,7 @@
         <a class="button button--primary" routerLink="/projets">
           {{ 'home.ctaProjects' | transloco }}
         </a>
-        @if (profile.cvPdfUrl | localize; as cvUrl) {
-          <a class="button button--secondary hero__cv" [href]="cvUrl" download>
-            {{ 'home.downloadCv' | transloco }}
-          </a>
-        }
+        <app-cv-download-button class="hero__cv" />
       </div>
 
       <app-key-figures

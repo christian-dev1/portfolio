@@ -45,3 +45,6 @@ Thumbs.db
 
 # Données personnelles de contact : jamais commitées (générées au démarrage du conteneur)
 /public/config/contact.json
+
+# PDF publics du CV : générés depuis /cv et déposés sur le serveur au déploiement, jamais commités
+/public/cv/

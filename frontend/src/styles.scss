@@ -330,3 +330,80 @@ h3 {
     animation: none !important;
   }
 }
+
+/* Impression du CV (/cv) : A4, fond blanc et texte foncé quel que soit le thème, aucune
+   animation, sans header ni footer ni décor. Les règles propres au CV sont dans cv-page.scss. */
+@page {
+  size: A4 portrait;
+  margin: 14mm;
+}
+
+@media print {
+  :root:has(app-cv-page),
+  :root[data-theme='dark']:has(app-cv-page) {
+    color-scheme: light;
+    /* Les tailles en rem du CV deviennent des tailles de document imprimé (~9,5 pt). */
+    font-size: 12.5px;
+    --color-heading: #1e3a8a;
+    --color-accent-text: #b91c1c;
+    --color-background: #ffffff;
+    --color-text: #111827;
+    --color-text-muted: #4b5563;
+    --color-border: #d6deef;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+
+    body {
+      background: none;
+    }
+
+    body::before,
+    app-header,
+    app-footer {
+      display: none;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    /* Contenus d'ordinaire révélés à l'écran : toujours visibles sur papier. */
+    .reveal,
+    .stagger--armed > * {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Static flow avoids clipped positioned fragments on later PDF pages. */
+    .timeline {
+      padding-left: 1rem;
+      border-left: 2px solid var(--color-brand-red);
+    }
+
+    .timeline::before,
+    .timeline__dot {
+      display: none;
+    }
+
+    .timeline__entry {
+      position: static;
+    }
+
+    /* Blocs simples plutôt que grilles imbriquées : Chrome les découpe proprement entre deux pages. */
+    .cv-projects {
+      display: block;
+    }
+
+    .cv-projects__item + .cv-projects__item {
+      margin-top: 4mm;
+    }
+
+    .timeline__entry,
+    .cv-projects__item {
+      break-inside: avoid;
+    }
+  }
+}

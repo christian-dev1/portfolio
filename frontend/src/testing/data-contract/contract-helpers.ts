@@ -7,7 +7,6 @@
 export const KEBAB_CASE_ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 export const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const HTTPS_URL = /^https:\/\//;
-export const PDF_URL = /^(\/|https:\/\/).+\.pdf$/;
 export const PROJECT_IMAGE = /^\/images\/projects\/[a-z0-9-]+\.(png|jpe?g|webp|svg)$/;
 
 export function expectUniqueKebabCaseIds(items: { id: string }[]): void {

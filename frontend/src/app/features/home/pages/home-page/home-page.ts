@@ -3,6 +3,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { CvDownloadButton } from '../../../../shared/contact-config/components/cv-download-button/cv-download-button';
 import { LocalizePipe } from '../../../../shared/i18n/localize.pipe';
 import { AvailabilityBadge } from '../../../../shared/profile/components/availability-badge/availability-badge';
 import { SocialLinks } from '../../../../shared/profile/components/social-links/social-links';
@@ -28,6 +29,7 @@ const HERO_NETWORKS: readonly SocialNetwork[] = ['linkedin', 'github', 'gitlab',
     KeyFigures,
     BandOrbit,
     FeaturedProjects,
+    CvDownloadButton,
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',

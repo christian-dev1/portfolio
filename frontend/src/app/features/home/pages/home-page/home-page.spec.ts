@@ -4,7 +4,9 @@ import { provideRouter } from '@angular/router';
 import { NEVER, Observable, of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
 import { PROFILE_FIXTURE } from '../../../../../testing/profile.fixture';
-import { LanguageService } from '../../../../core/i18n/language.service';
+import { Lang, LanguageService } from '../../../../core/i18n/language.service';
+import { CvPdfService } from '../../../../shared/contact-config/data-access/cv-pdf.service';
+import { LocalizedText } from '../../../../shared/i18n/localized-text';
 import { ProfileService } from '../../../../shared/profile/data-access/profile.service';
 import { ProjectService } from '../../../../shared/projects/data-access/project.service';
 import { Project } from '../../../../shared/projects/models/project.model';
@@ -51,6 +53,8 @@ async function setup(
     projects$?: Observable<Project[]>;
     profile?: Profile;
     lang?: 'fr' | 'en';
+    /** PDF existants par langue (ce que renvoie `CvPdfService`). */
+    cvPdf?: LocalizedText;
   } = {},
 ): Promise<HTMLElement> {
   TestBed.configureTestingModule({
@@ -70,6 +74,10 @@ async function setup(
       {
         provide: ToolService,
         useValue: { getPublicTools: () => of([tool('java'), tool('docker'), tool('git')]) },
+      },
+      {
+        provide: CvPdfService,
+        useValue: { getAvailableUrl: (lang: Lang) => of(options.cvPdf?.[lang] ?? '') },
       },
     ],
   });
@@ -256,19 +264,15 @@ describe('HomePage', () => {
   });
 
   it('should hide the CV download button while there is no PDF for the current language', async () => {
-    const compiled = await setup({
-      profile: { ...PROFILE_FIXTURE, cvPdfUrl: { fr: '', en: '/cv/cv-en.pdf' } },
-    });
+    const compiled = await setup({ cvPdf: { fr: '', en: '/cv/cv-en.pdf' } });
 
-    expect(compiled.querySelector('.hero__cv')).toBeNull();
+    expect(compiled.querySelector('.hero__cv a')).toBeNull();
   });
 
   it('should offer to download the CV of the current language when there is one', async () => {
-    const compiled = await setup({
-      profile: { ...PROFILE_FIXTURE, cvPdfUrl: { fr: '/cv/cv-fr.pdf', en: '' } },
-    });
+    const compiled = await setup({ cvPdf: { fr: '/cv/cv-fr.pdf', en: '' } });
 
-    const button = compiled.querySelector('.hero__cv')!;
+    const button = compiled.querySelector('.hero__cv a')!;
     expect(button.getAttribute('href')).toBe('/cv/cv-fr.pdf');
     expect(button.hasAttribute('download')).toBe(true);
     expect(button.textContent).toContain('Télécharger mon CV');

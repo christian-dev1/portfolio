@@ -6,7 +6,6 @@ import {
 import {
   EMAIL,
   HTTPS_URL,
-  PDF_URL,
   expectUniqueKebabCaseIds,
   expectLocalizedText,
   expectOneOf,
@@ -95,12 +94,9 @@ describe('Data contract: profile.json', () => {
     expectLocalizedText(profile.company.description, 'profile.company.description');
   });
 
-  it('should have an empty or PDF CV link for each language', () => {
-    for (const lang of ['fr', 'en'] as const) {
-      const url = profile.cvPdfUrl[lang];
-      if (url !== '') {
-        expect(url, `profile.cvPdfUrl.${lang}`).toMatch(PDF_URL);
-      }
+  it('should have an empty or https portfolio address', () => {
+    if (profile.websiteUrl !== '') {
+      expect(profile.websiteUrl).toMatch(HTTPS_URL);
     }
   });
 });

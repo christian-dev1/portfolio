@@ -2,6 +2,7 @@
   "fullName": "Noutchom Noumbiap Christian Luther",
   "brand": "LUCHRIST",
   "photoUrl": "/images/photo-luchrist.jpg",
+  "websiteUrl": "",
   "location": {
     "fr": "Yaoundé, Cameroun",
     "en": "Yaoundé, Cameroon"
@@ -187,9 +188,5 @@
       "fr": "B-HER EMPIRE — startup numérique que j'ai fondée (en cours de création). Conception, développement et test d'applications, de logiciels et de plateformes, avec un accompagnement en communication et marketing digital.",
       "en": "B-HER EMPIRE — a digital startup I founded (currently being set up). Design, development and testing of applications, software and platforms, with support in communication and digital marketing."
     }
-  },
-  "cvPdfUrl": {
-    "fr": "",
-    "en": ""
   }
 }

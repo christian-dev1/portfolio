@@ -3,12 +3,23 @@
 @if (profile(); as profile) {
   <div class="cv">
     <header class="cv__header glass">
-      <div>
-        <p class="cv__name">{{ profile.fullName }}</p>
-        <p class="cv__role">{{ 'home.jobTitle' | transloco }}</p>
+      <div class="cv__identity">
+        <img
+          class="cv__photo cv__print-only"
+          [src]="profile.photoUrl"
+          alt=""
+          width="96"
+          height="96"
+        />
+        <div>
+          <p class="cv__name">{{ profile.fullName }}</p>
+          <p class="cv__role">{{ 'home.jobTitle' | transloco }}</p>
+        </div>
       </div>
       <ul class="cv__contact">
-        <li>{{ profile.location | localize }}</li>
+        <li>
+          <span class="cv__city">{{ city(profile.location | localize) }}</span>
+        </li>
         @if (email(); as email) {
           <li>
             <a class="link" [href]="'mailto:' + email">{{ email }}</a>
@@ -17,20 +28,32 @@
         @if (linkedin(); as linkedin) {
           <li>
             <a class="link" [href]="linkedin" target="_blank" rel="noopener noreferrer">
-              {{ 'social.names.linkedin' | transloco }}
-              <span class="link-arrow" aria-hidden="true">↗</span>
+              <span class="cv__screen-only">
+                {{ 'social.names.linkedin' | transloco }}
+                <span class="link-arrow" aria-hidden="true">↗</span>
+              </span>
+              <span class="cv__print-only">{{ shortUrl(linkedin) }}</span>
             </a>
           </li>
         }
         @if (github(); as github) {
           <li>
             <a class="link" [href]="github" target="_blank" rel="noopener noreferrer">
-              {{ 'social.names.github' | transloco }}
-              <span class="link-arrow" aria-hidden="true">↗</span>
+              <span class="cv__screen-only">
+                {{ 'social.names.github' | transloco }}
+                <span class="link-arrow" aria-hidden="true">↗</span>
+              </span>
+              <span class="cv__print-only">{{ shortUrl(github) }}</span>
             </a>
           </li>
         }
+        @if (profile.websiteUrl; as website) {
+          <li class="cv__print-only">
+            <a class="link" [href]="website">{{ shortUrl(website) }}</a>
+          </li>
+        }
       </ul>
+      <app-cv-download-button />
     </header>
 
     <div class="cv__layout">
@@ -103,14 +126,27 @@
         </section>
 
         @if (contactConfig(); as config) {
-          @if (config.whatsapp || config.phones.length > 0) {
-            <section class="cv__box cv__direct glass" aria-labelledby="cv-direct-title">
+          @if (config.whatsapp || (complete && config.phones.length > 0)) {
+            <section
+              class="cv__box cv__direct glass"
+              [class.cv__direct--complete]="complete"
+              aria-labelledby="cv-direct-title"
+            >
               <h2 id="cv-direct-title">{{ 'cv.directContact' | transloco }}</h2>
               @if (config.whatsapp) {
                 <app-whatsapp-button [number]="config.whatsapp" />
               }
-              @if (config.phones.length > 0) {
+              @if (complete) {
                 <ul class="cv__phones">
+                  @if (config.whatsapp) {
+                    <li>
+                      <span>{{ 'cv.whatsappPro' | transloco }}</span
+                      >&ngsp;
+                      <a class="link" [href]="telHref('+' + config.whatsapp)"
+                        >+{{ config.whatsapp }}</a
+                      >
+                    </li>
+                  }
                   @for (phone of config.phones; track phone.number) {
                     <li>
                       <span>{{ phone.label | localize }}</span

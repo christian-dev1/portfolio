@@ -4,6 +4,7 @@ export const PROFILE_FIXTURE: Profile = {
   fullName: 'Noutchom Noumbiap Christian Luther',
   brand: 'LUCHRIST',
   photoUrl: '/images/photo-test.jpg',
+  websiteUrl: 'https://portfolio.example.com/',
   location: { fr: 'Ville, Pays', en: 'City, Country' },
   availability: {
     status: 'remote-only',
@@ -39,5 +40,4 @@ export const PROFILE_FIXTURE: Profile = {
     role: { fr: 'Fondateur', en: 'Founder' },
     description: { fr: 'Description de la société.', en: 'Company description.' },
   },
-  cvPdfUrl: { fr: '', en: '' },
 };

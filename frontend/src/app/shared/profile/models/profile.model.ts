@@ -49,6 +49,8 @@ export interface Profile {
   fullName: string;
   brand: string;
   photoUrl: string;
+  /** Adresse publique du portfolio (https), imprimée sur le CV ; vide = non imprimée. */
+  websiteUrl: string;
   location: LocalizedText;
   availability: Availability;
   socialLinks: SocialLink[];
@@ -61,6 +63,4 @@ export interface Profile {
   interests: LocalizedText[];
   languages: SpokenLanguage[];
   company: Company;
-  /** PDF du CV par langue ; chaîne vide = bouton de téléchargement masqué. */
-  cvPdfUrl: LocalizedText;
 }
