@@ -1,5 +1,4 @@
 :host {
-  --flip-duration: 1.6s;
   display: block;
   height: 100%;
 }
@@ -180,12 +179,12 @@
 .flip-card--returning {
   .flip-card__front {
     transform: none;
-    animation: front-return 0.9s ease both;
+    animation: front-return var(--flip-duration) ease both;
   }
   .flip-card__back {
     opacity: 1;
     transform: perspective(1400px) rotateY(0deg);
-    animation: back-return 0.9s ease both;
+    animation: back-return var(--flip-duration) ease both;
     pointer-events: none;
   }
 }

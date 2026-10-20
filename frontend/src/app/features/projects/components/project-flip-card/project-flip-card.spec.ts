@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
 import { LanguageService } from '../../../../core/i18n/language.service';
 import { Project } from '../../../../shared/projects/models/project.model';
-import { ProjectFlipCard } from './project-flip-card';
+import { FLIP_DURATION_MS, ProjectFlipCard } from './project-flip-card';
 
 const PROJECT: Project = {
   id: 'wimo',
@@ -139,9 +139,28 @@ describe('ProjectFlipCard', () => {
       await dispatch(card(), new PointerEvent('pointerleave', { pointerType: 'mouse' }));
       expect(card().classList).toContain('flip-card--returning');
       expect(link().getAttribute('tabindex')).toBe('-1');
-      await new Promise((resolve) => setTimeout(resolve, 950));
+      await new Promise((resolve) => setTimeout(resolve, FLIP_DURATION_MS + 50));
       await fixture.whenStable();
       expect(card().classList).not.toContain('flip-card--returning');
+    });
+
+    it('should share one duration between the rotation and the fade back', async () => {
+      await render();
+
+      const host = fixture.nativeElement as HTMLElement;
+      expect(FLIP_DURATION_MS).toBe(1600);
+      expect(host.style.getPropertyValue('--flip-duration')).toBe('1600ms');
+    });
+
+    it('should still be fading back after the former 0.9 s', async () => {
+      await render();
+      await dispatch(card(), new PointerEvent('pointerenter', { pointerType: 'mouse' }));
+      await dispatch(card(), new PointerEvent('pointerleave', { pointerType: 'mouse' }));
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await fixture.whenStable();
+
+      expect(card().classList).toContain('flip-card--returning');
     });
 
     it('should cancel a pending fade when the pointer enters again', async () => {
