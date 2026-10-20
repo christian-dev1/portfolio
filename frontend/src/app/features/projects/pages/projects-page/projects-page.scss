@@ -1,7 +1,7 @@
 .projects {
-  max-width: 70rem;
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding: 3rem 1.5rem 0;
+  padding: 3rem var(--content-gutter) 0;
 
   &__grid {
     display: grid;
@@ -12,6 +12,6 @@
 
 @media (max-width: 639.98px) {
   .projects {
-    padding: 2rem 1rem 0;
+    padding-top: 2rem;
   }
 }

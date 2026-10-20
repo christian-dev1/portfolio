@@ -1,7 +1,7 @@
 .tools {
-  max-width: 70rem;
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding: 1rem 1.5rem 0;
+  padding: 1rem var(--content-gutter) 0;
 }
 
 /* Une « rail » par catégorie : titre + compteur à gauche, tuiles à droite. */
@@ -94,7 +94,7 @@
 
 @media (max-width: 719.98px) {
   .tools {
-    padding: 0.5rem 1rem 0;
+    padding-top: 0.5rem;
   }
 
   .tools__rail {

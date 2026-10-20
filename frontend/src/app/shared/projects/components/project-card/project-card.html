@@ -79,9 +79,9 @@
 
       @if (project().repositoryUrl; as url) {
         <div class="project-card__footer">
-          <a class="project-card__link" [href]="url" target="_blank" rel="noopener noreferrer">
+          <a class="project-card__link link" [href]="url" target="_blank" rel="noopener noreferrer">
             {{ 'projects.repositoryLink' | transloco }}
-            <span aria-hidden="true">↗</span>
+            <span class="link-arrow" aria-hidden="true">↗</span>
           </a>
         </div>
       } @else if (project().context === 'collaboration') {
