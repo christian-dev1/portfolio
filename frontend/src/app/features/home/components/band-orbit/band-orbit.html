@@ -10,16 +10,23 @@
         <linearGradient
           [attr.id]="id + '-gradient-' + stream.side"
           gradientUnits="userSpaceOnUse"
-          [attr.x1]="stream.side === 'left' ? stream.fadeFrom : layout.width - stream.fadeFrom"
-          [attr.x2]="stream.side === 'left' ? stream.fadeTo : layout.width - stream.fadeTo"
+          [attr.x1]="stream.fade.from.x"
+          [attr.y1]="stream.fade.from.y"
+          [attr.x2]="stream.fade.to.x"
+          [attr.y2]="stream.fade.to.y"
         >
           <stop offset="0" stop-color="white" />
           <stop offset="1" stop-color="black" />
         </linearGradient>
+        <!-- Fully opaque everywhere, except the last few pixels before the opposite junction. -->
         <mask [attr.id]="id + '-mask-' + stream.side">
+          <rect width="100%" height="100%" fill="white" />
           <rect
-            width="100%"
-            height="100%"
+            class="band-orbit__fade"
+            [attr.x]="stream.fade.to.x - fadeZone"
+            [attr.y]="stream.fade.to.y - fadeZone"
+            [attr.width]="fadeZone * 2"
+            [attr.height]="fadeZone * 2"
             [attr.fill]="'url(#' + id + '-gradient-' + stream.side + ')'"
           />
         </mask>

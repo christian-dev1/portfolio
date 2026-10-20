@@ -1,4 +1,4 @@
-import { OrbitLayout, orbitTracks } from './orbit-path';
+import { FADE_LENGTH_PX, OrbitLayout, orbitTracks } from './orbit-path';
 
 /** Bande à y = 100, anneau de rayon 50 centré dessus, au milieu d'une zone de 1000 px. */
 const LAYOUT: OrbitLayout = {
@@ -32,11 +32,31 @@ describe('orbitTracks', () => {
     expect(right.length).toBeCloseTo(450 + halfCircle, 0);
   });
 
-  it('should fade each stream out on the far side of the ring, counted from its own edge', () => {
-    const { left, right } = orbitTracks(LAYOUT);
+  it('should fade over six pixels only', () => {
+    expect(FADE_LENGTH_PX).toBe(6);
+  });
 
-    expect(left).toMatchObject({ fadeFrom: 500, fadeTo: 550 });
-    expect(right).toMatchObject({ fadeFrom: 500, fadeTo: 550 });
+  it('should fade the upper stream just before the right junction, heading down', () => {
+    const { left } = orbitTracks(LAYOUT);
+
+    expect(left.fade).toEqual({ from: { x: 550, y: 94 }, to: { x: 550, y: 100 } });
+  });
+
+  it('should fade the lower stream just before the left junction, heading up', () => {
+    const { right } = orbitTracks(LAYOUT);
+
+    expect(right.fade).toEqual({ from: { x: 450, y: 106 }, to: { x: 450, y: 100 } });
+  });
+
+  it('should keep the fade on the last six pixels of path when the band is off-centre', () => {
+    const { left, right } = orbitTracks({ ...LAYOUT, centerY: 70 });
+
+    for (const { fade } of [left, right]) {
+      const length = Math.hypot(fade.to.x - fade.from.x, fade.to.y - fade.from.y);
+      expect(length).toBeCloseTo(FADE_LENGTH_PX, 1);
+    }
+    // Triangle 30-40-50 : la tangente horaire en (540, 100) vaut (-0.6, 0.8).
+    expect(left.fade.from).toEqual({ x: 543.6, y: 95.2 });
   });
 
   it('should follow the real positions when the ring is off-centre', () => {
@@ -44,7 +64,7 @@ describe('orbitTracks', () => {
 
     expect(left.path).toBe('M 0 100 L 250 100 A 50 50 0 0 1 350 100');
     expect(right.path).toBe('M 800 100 L 350 100 A 50 50 0 0 1 250 100');
-    expect(right.fadeFrom).toBe(500);
+    expect(right.fade.to).toEqual({ x: 250, y: 100 });
   });
 
   it('should take the long way over the ring when the band is below its centre', () => {
