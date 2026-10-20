@@ -1,0 +1,16 @@
+<ol class="timeline">
+  @for (entry of entries(); track entry.id) {
+    <li class="timeline__entry">
+      <span class="timeline__dot" aria-hidden="true"></span>
+      <p class="timeline__years">{{ years(entry) }}</p>
+      <h3 class="timeline__title">{{ entry.title | localize }}</h3>
+      <p class="timeline__meta">
+        <span class="timeline__type">{{ 'career.type.' + entry.type | transloco }}</span>
+        {{ entry.place }}
+      </p>
+      @if (entry.description; as description) {
+        <p class="timeline__description">{{ description | localize }}</p>
+      }
+    </li>
+  }
+</ol>

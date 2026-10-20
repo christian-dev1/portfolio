@@ -1,0 +1,56 @@
+[
+  {
+    "id": "kfokam48",
+    "type": "education",
+    "startYear": 2024,
+    "endYear": 2026,
+    "title": {
+      "fr": "Formation en développement logiciel",
+      "en": "Software development training"
+    },
+    "place": "KFOKAM48",
+    "description": {
+      "fr": "Admission sur concours. Développement backend, frontend et assurance qualité.",
+      "en": "Admitted through a competitive exam. Backend, frontend and quality assurance."
+    },
+    "visible": true
+  },
+  {
+    "id": "bac",
+    "type": "education",
+    "endYear": 2023,
+    "title": {
+      "fr": "Baccalauréat série D",
+      "en": "Baccalaureate, series D (science)"
+    },
+    "place": "Institut Baudelaire Bilingue (IBB), Yaoundé",
+    "visible": true
+  },
+  {
+    "id": "ice-cream-shop",
+    "type": "experience",
+    "startYear": 2022,
+    "endYear": 2023,
+    "title": {
+      "fr": "Vendeur",
+      "en": "Sales assistant"
+    },
+    "place": "Glacier familial, Yaoundé",
+    "description": {
+      "fr": "En parallèle de la terminale : accueil et vente le soir et les jours libres, gestion de la caisse en fin de journée, responsabilité de la boutique.",
+      "en": "Alongside my final year of high school: serving customers in the evenings and on days off, end-of-day cash handling, responsible for the shop."
+    },
+    "visible": true
+  },
+  {
+    "id": "bepc",
+    "type": "education",
+    "endYear": 2018,
+    "title": {
+      "fr": "BEPC",
+      "en": "BEPC"
+    },
+    "place": "Lycée de Bapa",
+    "visible": false
+  }
+]

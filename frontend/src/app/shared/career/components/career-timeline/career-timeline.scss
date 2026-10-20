@@ -1,0 +1,79 @@
+:host {
+  display: block;
+}
+
+.timeline {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 2rem;
+  list-style: none;
+
+  /* La ligne rouge qui relie les points. */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    left: 0.4375rem;
+    width: 2px;
+    background-color: var(--color-brand-red);
+  }
+}
+
+.timeline__entry {
+  position: relative;
+
+  & + & {
+    margin-top: 1.75rem;
+  }
+}
+
+.timeline__dot {
+  position: absolute;
+  top: 0.3rem;
+  left: -2rem;
+  width: 1rem;
+  height: 1rem;
+  border: 3px solid var(--color-brand-red);
+  border-radius: 50%;
+  background-color: var(--color-background);
+}
+
+.timeline__years {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--color-accent-text);
+}
+
+.timeline__title {
+  margin: 0.125rem 0 0;
+  font-size: 1.125rem;
+}
+
+.timeline__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+.timeline__type {
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background-color: var(--color-tag-bg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.timeline__description {
+  max-width: 42rem;
+  margin: 0.5rem 0 0;
+}
