@@ -36,7 +36,29 @@
   height: 1rem;
   border: 3px solid var(--color-brand-red);
   border-radius: 50%;
-  background-color: var(--color-background);
+  background-color: var(--color-brand-red);
+}
+
+/* À l'apparition de l'entrée, le point se remplit de rouge (état final : point plein). */
+@media (prefers-reduced-motion: no-preference) {
+  .stagger--armed .timeline__dot {
+    background-color: var(--color-background);
+  }
+
+  .stagger--in .timeline__dot {
+    animation: dot-fill 0.35s ease-out both;
+    animation-delay: calc(var(--stagger-index, 0) * 70ms + 0.25s);
+  }
+}
+
+@keyframes dot-fill {
+  from {
+    background-color: var(--color-background);
+  }
+
+  to {
+    background-color: var(--color-brand-red);
+  }
 }
 
 .timeline__years {

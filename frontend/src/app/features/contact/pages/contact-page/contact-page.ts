@@ -7,6 +7,7 @@ import { ProfileService } from '../../../../shared/profile/data-access/profile.s
 import { toSocialLinkViews } from '../../../../shared/profile/models/social-link-view';
 import { BrandIcon } from '../../../../shared/ui/brand-icon/brand-icon';
 import { PageBanner } from '../../../../shared/ui/page-banner/page-banner';
+import { Stagger } from '../../../../shared/ui/stagger/stagger';
 
 type CopyState = 'idle' | 'copied' | 'failed';
 
@@ -15,7 +16,7 @@ const FEEDBACK_DURATION_MS = 4000;
 
 @Component({
   selector: 'app-contact-page',
-  imports: [TranslocoPipe, PageBanner, BrandIcon, WhatsappButton],
+  imports: [TranslocoPipe, PageBanner, BrandIcon, WhatsappButton, Stagger],
   templateUrl: './contact-page.html',
   styleUrl: './contact-page.scss',
 })

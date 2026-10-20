@@ -62,6 +62,11 @@
   }
 }
 
+/* Au survol, le logo prend sa couleur officielle (si elle reste lisible) et se soulève. */
+.tools__tile:hover .tools__logo {
+  color: var(--brand-color, var(--color-heading));
+}
+
 .tools__logo {
   display: flex;
   flex-shrink: 0;
@@ -71,6 +76,10 @@
   height: 2.75rem;
   border-radius: 0.75rem;
   background-color: var(--color-tile-bg);
+  color: var(--color-heading);
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .tools__monogram {
@@ -110,6 +119,12 @@
 
   .tools__rail-count {
     font-size: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tools__tile:hover .tools__logo {
+    transform: translateY(-3px);
   }
 }
 

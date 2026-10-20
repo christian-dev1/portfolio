@@ -1,12 +1,13 @@
 import { Component, input } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { LocalizePipe } from '../../../i18n/localize.pipe';
+import { Stagger } from '../../../ui/stagger/stagger';
 import { CareerEntry } from '../../models/career.model';
 
 /** Frise verticale du parcours : ligne rouge, un point et les années par entrée. */
 @Component({
   selector: 'app-career-timeline',
-  imports: [TranslocoPipe, LocalizePipe],
+  imports: [TranslocoPipe, LocalizePipe, Stagger],
   templateUrl: './career-timeline.html',
   styleUrl: './career-timeline.scss',
 })

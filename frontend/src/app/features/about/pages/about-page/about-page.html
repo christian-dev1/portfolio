@@ -28,9 +28,9 @@
 
       <section aria-labelledby="about-values-title">
         <h2 id="about-values-title">{{ 'about.valuesTitle' | transloco }}</h2>
-        <ul class="about__values">
+        <ul class="about__values" appStagger>
           @for (value of profile.values; track value.id) {
-            <li class="about__value glass reveal">
+            <li class="about__value glass">
               <h3>{{ value.title | localize }}</h3>
               <p>{{ value.text | localize }}</p>
             </li>
@@ -45,7 +45,7 @@
         <p>{{ profile.company.description | localize }}</p>
       </section>
 
-      <section class="reveal" aria-labelledby="about-career-title">
+      <section aria-labelledby="about-career-title">
         <h2 id="about-career-title">{{ 'about.careerTitle' | transloco }}</h2>
         @if (career(); as entries) {
           <app-career-timeline [entries]="entries" />

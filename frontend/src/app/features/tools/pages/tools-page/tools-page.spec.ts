@@ -109,7 +109,8 @@ describe('ToolsPage', () => {
 
     const logo = compiled.querySelector<HTMLElement>('.tools__logo')!;
     expect(logo.querySelector('svg[aria-hidden="true"] path')).not.toBeNull();
-    expect(logo.style.color).not.toBe('');
+    // Couleur officielle appliquée au survol, via la variable --brand-color.
+    expect(logo.style.getPropertyValue('--brand-color')).toBe('#2496ED');
     expect(compiled.querySelector('.tools__monogram')).toBeNull();
   });
 
@@ -118,7 +119,8 @@ describe('ToolsPage', () => {
 
     const compiled = await setup(of([java]));
 
-    expect(compiled.querySelector<HTMLElement>('.tools__logo')!.style.color).toBe('');
+    const logo = compiled.querySelector<HTMLElement>('.tools__logo')!;
+    expect(logo.style.getPropertyValue('--brand-color')).toBe('');
   });
 
   it('should display the monogram of a tool without icon', async () => {

@@ -8,6 +8,7 @@ import {
   BrandIcon as BrandIconData,
   isBrandIconSlug,
 } from '../../../../shared/ui/brand-icons';
+import { Stagger } from '../../../../shared/ui/stagger/stagger';
 import { PageBanner } from '../../../../shared/ui/page-banner/page-banner';
 import { ToolService } from '../../../../shared/tools/data-access/tool.service';
 import { Tool, ToolCategory, TOOL_CATEGORIES } from '../../../../shared/tools/models/tool.model';
@@ -28,7 +29,7 @@ interface ToolGroup {
 
 @Component({
   selector: 'app-tools-page',
-  imports: [TranslocoPipe, LocalizePipe, BrandIcon, PageBanner],
+  imports: [TranslocoPipe, LocalizePipe, BrandIcon, PageBanner, Stagger],
   templateUrl: './tools-page.html',
   styleUrl: './tools-page.scss',
 })

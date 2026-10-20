@@ -42,9 +42,9 @@
 
     <section aria-labelledby="contact-networks-title">
       <h2 id="contact-networks-title">{{ 'contact.networksTitle' | transloco }}</h2>
-      <ul class="contact__networks">
+      <ul class="contact__networks" appStagger>
         @for (item of networks(); track item.network) {
-          <li class="reveal">
+          <li>
             <a
               class="contact__tile glass"
               [href]="item.href"

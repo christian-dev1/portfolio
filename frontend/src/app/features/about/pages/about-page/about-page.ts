@@ -7,10 +7,11 @@ import { LocalizePipe } from '../../../../shared/i18n/localize.pipe';
 import { AvailabilityBadge } from '../../../../shared/profile/components/availability-badge/availability-badge';
 import { ProfileService } from '../../../../shared/profile/data-access/profile.service';
 import { PageBanner } from '../../../../shared/ui/page-banner/page-banner';
+import { Stagger } from '../../../../shared/ui/stagger/stagger';
 
 @Component({
   selector: 'app-about-page',
-  imports: [TranslocoPipe, LocalizePipe, PageBanner, CareerTimeline, AvailabilityBadge],
+  imports: [TranslocoPipe, LocalizePipe, PageBanner, CareerTimeline, AvailabilityBadge, Stagger],
   templateUrl: './about-page.html',
   styleUrl: './about-page.scss',
 })
