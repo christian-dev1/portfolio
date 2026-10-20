@@ -42,7 +42,6 @@
   --halo-blue: rgba(59, 91, 219, 0.14);
   --halo-red: rgba(220, 38, 38, 0.08);
   --pattern-dot: rgba(255, 255, 255, 0.16);
-  --shadow-red: 0 10px 30px rgba(220, 38, 38, 0.35);
   --shadow-lift: 0 16px 40px rgba(15, 23, 42, 0.14);
   /* Ombre neutre, courte et peu floue, sous les ronds à anneau rouge : aucun halo coloré. */
   --shadow-ring: 0 2px 4px rgba(15, 23, 42, 0.16);
@@ -188,7 +187,6 @@ h3 {
   &--primary {
     background-color: var(--color-brand-red);
     color: var(--color-on-brand);
-    box-shadow: var(--shadow-red);
 
     &:hover {
       background-color: var(--color-brand-red-hover);
@@ -203,6 +201,13 @@ h3 {
     &:hover {
       background-color: var(--color-accent-soft);
     }
+  }
+}
+
+/* Légère pression au clic : le bouton répond sous le doigt, sans halo. */
+@media (prefers-reduced-motion: no-preference) {
+  .button:active {
+    transform: scale(0.97);
   }
 }
 
@@ -271,6 +276,31 @@ h3 {
   from {
     opacity: 0;
     transform: translateY(1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Apparition échelonnée des enfants d'une liste (directive `appStagger`). Les enfants ne sont
+   masqués que lorsque la directive a « armé » la liste ; sinon ils restent simplement visibles. */
+@media (prefers-reduced-motion: no-preference) {
+  .stagger--armed > * {
+    opacity: 0;
+  }
+
+  .stagger--in > * {
+    animation: stagger-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(var(--stagger-index, 0) * 70ms);
+  }
+}
+
+@keyframes stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
   }
 
   to {

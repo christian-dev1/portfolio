@@ -26,7 +26,8 @@
   background-color: var(--color-unavailable);
 }
 
-/* Pulsation discrète, seulement si disponible et si l'utilisateur n'a pas demandé moins d'animations. */
+/* Pulsation discrète à l'arrivée (3 fois, pas de boucle), seulement si disponible
+   et si l'utilisateur n'a pas demandé moins d'animations. */
 @media (prefers-reduced-motion: no-preference) {
   .availability:not(.availability--unavailable) .availability__dot::after {
     content: '';
@@ -34,7 +35,7 @@
     inset: 0;
     border-radius: 50%;
     background-color: var(--color-available);
-    animation: pulse 2.4s ease-out infinite;
+    animation: pulse 2.4s ease-out 3;
   }
 }
 
