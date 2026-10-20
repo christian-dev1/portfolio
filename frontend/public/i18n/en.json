@@ -3,7 +3,10 @@
     "mainLabel": "Main navigation",
     "home": "Home",
     "projects": "Projects",
-    "tools": "Tools"
+    "tools": "Tools",
+    "about": "About",
+    "cv": "CV",
+    "contact": "Contact"
   },
   "theme": {
     "toLight": "Switch to light mode",
@@ -16,7 +19,10 @@
   "titles": {
     "home": "LUCHRIST — Home",
     "projects": "LUCHRIST — Projects",
-    "tools": "LUCHRIST — Toolbox"
+    "tools": "LUCHRIST — Toolbox",
+    "about": "LUCHRIST — About",
+    "cv": "LUCHRIST — CV",
+    "contact": "LUCHRIST — Contact"
   },
   "home": {
     "jobTitle": "Backend Developer & QA",
@@ -29,6 +35,14 @@
       "seeAll": "See all projects",
       "loading": "Loading projects…",
       "empty": "No featured projects yet."
+    },
+    "currentFocus": "Right now:",
+    "downloadCv": "Download my CV",
+    "figures": {
+      "label": "Key figures",
+      "projects": "projects",
+      "tools": "tools",
+      "founder": "Founder"
     }
   },
   "social": {
@@ -39,7 +53,20 @@
     "linkedin": "LinkedIn (opens in a new tab)",
     "facebook": "Facebook (opens in a new tab)",
     "youtube": "YouTube (opens in a new tab)",
-    "tiktok": "TikTok (opens in a new tab)"
+    "tiktok": "TikTok (opens in a new tab)",
+    "instagram": "Instagram (opens in a new tab)",
+    "snapchat": "Snapchat (opens in a new tab)",
+    "names": {
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "gitlab": "GitLab",
+      "youtube": "YouTube",
+      "tiktok": "TikTok",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "snapchat": "Snapchat",
+      "email": "Email"
+    }
   },
   "projects": {
     "title": "Projects",
@@ -62,7 +89,8 @@
     "tab": {
       "b-her": "B-HER EMPIRE",
       "collaboration": "Team project"
-    }
+    },
+    "highlightsLabel": "Highlights"
   },
   "tools": {
     "title": "Toolbox",
@@ -79,5 +107,57 @@
     },
     "eyebrow": "Tech stack & QA",
     "countLabel": "technologies"
+  },
+  "footer": {
+    "navLabel": "Secondary links"
+  },
+  "career": {
+    "type": {
+      "education": "Education",
+      "experience": "Experience"
+    }
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "Who am I?",
+    "intro": "My journey, what drives me and the company I'm building.",
+    "bioTitle": "In short",
+    "basedIn": "Based in",
+    "valuesTitle": "What drives me",
+    "companyEyebrow": "The company I founded",
+    "careerTitle": "Journey",
+    "loading": "Loading…"
+  },
+  "cv": {
+    "eyebrow": "Curriculum vitae",
+    "title": "My CV",
+    "intro": "An overview of my profile, my projects and my skills.",
+    "profile": "Profile",
+    "projects": "Projects",
+    "career": "Journey",
+    "skills": "Skills",
+    "skillsLink": "See the full toolbox",
+    "qualities": "Strengths",
+    "languages": "Languages",
+    "interests": "Interests",
+    "directContact": "Direct contact",
+    "whatsapp": "Message me on WhatsApp",
+    "loading": "Loading the CV…"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Get in touch",
+    "intro": "A question, a project, an assignment? Email me or find me on social media.",
+    "countLabel": "networks",
+    "emailTitle": "By email",
+    "copy": "Copy address",
+    "copied": "Copied ✓",
+    "copiedMessage": "Email address copied to the clipboard.",
+    "copyFailed": "Copy failed: the address is selected, press Ctrl+C.",
+    "write": "Send an email",
+    "networksTitle": "On social media",
+    "newTab": "Opens in a new tab",
+    "mailApp": "Opens your mail app",
+    "loading": "Loading…"
   }
 }

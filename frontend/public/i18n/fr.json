@@ -3,7 +3,10 @@
     "mainLabel": "Navigation principale",
     "home": "Accueil",
     "projects": "Projets",
-    "tools": "Outils"
+    "tools": "Outils",
+    "about": "À propos",
+    "cv": "CV",
+    "contact": "Contact"
   },
   "theme": {
     "toLight": "Activer le mode clair",
@@ -16,7 +19,10 @@
   "titles": {
     "home": "LUCHRIST — Accueil",
     "projects": "LUCHRIST — Projets",
-    "tools": "LUCHRIST — Boîte à outils"
+    "tools": "LUCHRIST — Boîte à outils",
+    "about": "LUCHRIST — À propos",
+    "cv": "LUCHRIST — CV",
+    "contact": "LUCHRIST — Contact"
   },
   "home": {
     "jobTitle": "Développeur Backend & QA",
@@ -29,6 +35,14 @@
       "seeAll": "Voir tous les projets",
       "loading": "Chargement des projets…",
       "empty": "Aucun projet mis en avant pour le moment."
+    },
+    "currentFocus": "En ce moment :",
+    "downloadCv": "Télécharger mon CV",
+    "figures": {
+      "label": "Chiffres clés",
+      "projects": "projets",
+      "tools": "outils",
+      "founder": "Fondateur"
     }
   },
   "social": {
@@ -39,7 +53,20 @@
     "linkedin": "LinkedIn (nouvel onglet)",
     "facebook": "Facebook (nouvel onglet)",
     "youtube": "YouTube (nouvel onglet)",
-    "tiktok": "TikTok (nouvel onglet)"
+    "tiktok": "TikTok (nouvel onglet)",
+    "instagram": "Instagram (nouvel onglet)",
+    "snapchat": "Snapchat (nouvel onglet)",
+    "names": {
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "gitlab": "GitLab",
+      "youtube": "YouTube",
+      "tiktok": "TikTok",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "snapchat": "Snapchat",
+      "email": "E-mail"
+    }
   },
   "projects": {
     "title": "Projets",
@@ -62,7 +89,8 @@
     "tab": {
       "b-her": "B-HER EMPIRE",
       "collaboration": "Projet en équipe"
-    }
+    },
+    "highlightsLabel": "Points forts"
   },
   "tools": {
     "title": "Boîte à outils",
@@ -79,5 +107,57 @@
     },
     "eyebrow": "Stack technique & QA",
     "countLabel": "technologies"
+  },
+  "footer": {
+    "navLabel": "Liens secondaires"
+  },
+  "career": {
+    "type": {
+      "education": "Formation",
+      "experience": "Expérience"
+    }
+  },
+  "about": {
+    "eyebrow": "À propos",
+    "title": "Qui suis-je ?",
+    "intro": "Mon parcours, ce qui me guide et l'entreprise que je construis.",
+    "bioTitle": "En bref",
+    "basedIn": "Basé à",
+    "valuesTitle": "Ce qui me guide",
+    "companyEyebrow": "L'entreprise que j'ai fondée",
+    "careerTitle": "Parcours",
+    "loading": "Chargement…"
+  },
+  "cv": {
+    "eyebrow": "Curriculum vitae",
+    "title": "Mon CV",
+    "intro": "Une vue d'ensemble de mon profil, de mes projets et de mes compétences.",
+    "profile": "Profil",
+    "projects": "Projets",
+    "career": "Parcours",
+    "skills": "Compétences",
+    "skillsLink": "Voir toute la boîte à outils",
+    "qualities": "Qualités",
+    "languages": "Langues",
+    "interests": "Centres d'intérêt",
+    "directContact": "Contact direct",
+    "whatsapp": "Écrire sur WhatsApp",
+    "loading": "Chargement du CV…"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Me contacter",
+    "intro": "Une question, un projet, une mission ? Écrivez-moi ou retrouvez-moi sur mes réseaux.",
+    "countLabel": "réseaux",
+    "emailTitle": "Par e-mail",
+    "copy": "Copier l'adresse",
+    "copied": "Copié ✓",
+    "copiedMessage": "Adresse e-mail copiée dans le presse-papiers.",
+    "copyFailed": "Copie impossible : l'adresse est sélectionnée, utilisez Ctrl+C.",
+    "write": "Écrire un e-mail",
+    "networksTitle": "Sur les réseaux",
+    "newTab": "S'ouvre dans un nouvel onglet",
+    "mailApp": "Ouvre votre messagerie",
+    "loading": "Chargement…"
   }
 }
