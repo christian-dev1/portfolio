@@ -1,0 +1,53 @@
+<article
+  class="flip-card"
+  appCardToggle
+  #toggle="cardToggle"
+  [class.flip-card--team]="project().context === 'collaboration'"
+  [class.flip-card--flipped]="toggle.active()"
+  [class.flip-card--unfolded]="toggle.reducedMotion()"
+>
+  <p class="flip-card__tab">{{ tabKey() | transloco }}</p>
+
+  <div class="flip-card__faces">
+    <div class="flip-card__face flip-card__front glass" [class.brand-pattern]="!project().logoUrl">
+      @if (toggle.reducedMotion()) {
+        <div class="flip-card__cover">
+          <ng-container [ngTemplateOutlet]="emblem" />
+        </div>
+      } @else {
+        <button
+          type="button"
+          class="flip-card__cover flip-card__toggle"
+          [attr.aria-pressed]="toggle.active()"
+        >
+          <ng-container [ngTemplateOutlet]="emblem" />
+          <span class="flip-card__hint">
+            <span class="flip-card__hint-icon" aria-hidden="true">↻</span>
+            <span class="flip-card__hint-text flip-card__hint-text--hover">
+              {{ 'projects.flip.hintHover' | transloco }}
+            </span>
+            <span class="flip-card__hint-text flip-card__hint-text--touch">
+              {{ 'projects.flip.hintTouch' | transloco }}
+            </span>
+          </span>
+        </button>
+      }
+    </div>
+
+    <div class="flip-card__face flip-card__back glass">
+      <app-project-details
+        [project]="project()"
+        [linksFocusable]="toggle.active() || toggle.reducedMotion()"
+      />
+    </div>
+  </div>
+</article>
+
+<ng-template #emblem>
+  @if (project().logoUrl; as logoUrl) {
+    <img class="flip-card__logo" [src]="logoUrl" alt="" width="144" height="144" />
+  } @else {
+    <span class="flip-card__initials" aria-hidden="true">{{ initials() }}</span>
+  }
+  <span class="visually-hidden">{{ project().name }}</span>
+</ng-template>

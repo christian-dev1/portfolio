@@ -54,7 +54,7 @@ describe('ProjectsPage', () => {
   it('should display one card per project', async () => {
     const compiled = await setup(of(projects));
 
-    expect(compiled.querySelectorAll('app-project-card').length).toBe(2);
+    expect(compiled.querySelectorAll('app-project-flip-card').length).toBe(2);
   });
 
   it('should display a message when there is no project', async () => {

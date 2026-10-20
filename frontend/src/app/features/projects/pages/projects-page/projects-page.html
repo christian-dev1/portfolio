@@ -10,7 +10,7 @@
   @if (projects(); as projectList) {
     <div class="projects__grid">
       @for (project of projectList; track project.id) {
-        <app-project-card class="reveal" [project]="project" />
+        <app-project-flip-card class="reveal" [project]="project" />
       } @empty {
         <p>{{ 'projects.empty' | transloco }}</p>
       }

@@ -2,12 +2,12 @@ import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ProjectService } from '../../../../shared/projects/data-access/project.service';
-import { ProjectCard } from '../../../../shared/projects/components/project-card/project-card';
+import { ProjectFlipCard } from '../../components/project-flip-card/project-flip-card';
 import { PageBanner } from '../../../../shared/ui/page-banner/page-banner';
 
 @Component({
   selector: 'app-projects-page',
-  imports: [PageBanner, ProjectCard, TranslocoPipe],
+  imports: [PageBanner, ProjectFlipCard, TranslocoPipe],
   templateUrl: './projects-page.html',
   styleUrl: './projects-page.scss',
 })

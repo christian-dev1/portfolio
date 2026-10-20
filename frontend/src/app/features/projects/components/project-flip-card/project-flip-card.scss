@@ -1,0 +1,182 @@
+:host {
+  --flip-duration: 0.6s;
+  display: block;
+  height: 100%;
+}
+
+.flip-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Onglet de dossier : hors des faces, il reste visible des deux côtés. */
+.flip-card__tab {
+  align-self: flex-start;
+  margin: 0;
+  padding: 0.375rem 1rem;
+  border-radius: 12px 12px 0 0;
+  background-color: var(--color-brand-red);
+  color: var(--color-on-brand);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.flip-card--team .flip-card__tab {
+  background-color: var(--color-brand-blue);
+}
+
+/* Les deux faces partagent la même cellule : la carte prend la hauteur de la plus haute (le verso). */
+.flip-card__faces {
+  display: grid;
+  flex: 1;
+  border-radius: 4px 20px 20px 20px;
+}
+
+.flip-card__face {
+  display: flex;
+  grid-area: 1 / 1;
+  flex-direction: column;
+  overflow: clip;
+  border-radius: inherit;
+  backface-visibility: hidden;
+  transition: transform var(--flip-duration) cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.flip-card__back {
+  transform: perspective(1400px) rotateY(180deg);
+  /* Face cachée : elle ne capte ni clic ni survol. */
+  pointer-events: none;
+}
+
+.flip-card--flipped {
+  .flip-card__front {
+    transform: perspective(1400px) rotateY(-180deg);
+    pointer-events: none;
+  }
+
+  .flip-card__back {
+    transform: perspective(1400px) rotateY(0deg);
+    pointer-events: auto;
+  }
+}
+
+/* Le bouton du recto est retourné quand il a le focus : l'anneau de focus passe sur la carte. */
+.flip-card__faces:has(.flip-card__toggle:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.flip-card__toggle:focus-visible {
+  outline: none;
+}
+
+.flip-card__cover {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 16rem;
+  padding: 2rem 1.5rem 3.5rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+}
+
+.flip-card__toggle {
+  cursor: pointer;
+}
+
+.flip-card__logo,
+.flip-card__initials {
+  width: 9rem;
+  height: 9rem;
+  border: 6px solid var(--color-brand-red);
+  border-radius: 50%;
+  box-shadow: var(--shadow-ring);
+}
+
+.flip-card__logo {
+  object-fit: cover;
+  background-color: var(--color-brand-red);
+}
+
+.flip-card__initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-brand-blue);
+  font-family: var(--font-heading);
+  font-size: 2.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* Aide en coin : « survolez » avec une souris, « touchez » sur écran tactile. */
+.flip-card__hint {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.flip-card__hint-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background-color: var(--color-brand-red);
+  color: var(--color-on-brand);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.flip-card__hint-text--hover {
+  display: none;
+}
+
+@media (hover: hover) {
+  .flip-card__hint-text--hover {
+    display: inline;
+  }
+
+  .flip-card__hint-text--touch {
+    display: none;
+  }
+}
+
+/* Animations réduites : pas de rotation, le verso s'affiche directement sous le recto. */
+.flip-card--unfolded {
+  .flip-card__faces {
+    gap: 0.75rem;
+  }
+
+  .flip-card__face {
+    grid-area: auto;
+    transform: none;
+    backface-visibility: visible;
+    pointer-events: auto;
+  }
+
+  .flip-card__cover {
+    min-height: 0;
+    padding-bottom: 2rem;
+  }
+}
