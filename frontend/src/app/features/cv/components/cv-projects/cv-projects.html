@@ -1,0 +1,31 @@
+<ul class="cv-projects">
+  @for (project of projects(); track project.id) {
+    <li class="cv-projects__item">
+      <h3 class="cv-projects__name">
+        {{ project.name }}
+        <span class="cv-projects__context">{{
+          'projects.tab.' + project.context | transloco
+        }}</span>
+      </h3>
+      <p class="cv-projects__summary">{{ project.summary | localize }}</p>
+      <dl class="cv-projects__facts">
+        <dt>{{ 'projects.roleLabel' | transloco }}</dt>
+        <dd>{{ project.roles.join(', ') }}</dd>
+        @if (project.technologies.length > 0) {
+          <dt>{{ 'projects.technologiesLabel' | transloco }}</dt>
+          <dd>{{ project.technologies.join(', ') }}</dd>
+        }
+      </dl>
+      @if (project.highlights.length > 0) {
+        <ul
+          class="cv-projects__highlights bullets"
+          [attr.aria-label]="'projects.highlightsLabel' | transloco"
+        >
+          @for (highlight of project.highlights; track $index) {
+            <li>{{ highlight | localize }}</li>
+          }
+        </ul>
+      }
+    </li>
+  }
+</ul>
