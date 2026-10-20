@@ -1,94 +1,46 @@
-<article class="project-card" [class.project-card--team]="project().context === 'collaboration'">
+<article
+  class="project-card"
+  [appCardToggle]="swappable()"
+  #toggle="cardToggle"
+  [class.project-card--team]="project().context === 'collaboration'"
+  [class.project-card--swapped]="toggle.active()"
+>
   <p class="project-card__tab">{{ tabKey() | transloco }}</p>
 
-  <div class="project-card__panel glass">
-    <div class="project-card__cover">
-      @if (project().coverUrl; as coverUrl) {
-        <img
-          class="project-card__cover-image"
-          [src]="coverUrl"
-          [alt]="'projects.coverAlt' | transloco: { name: project().name }"
-        />
-      } @else {
-        <div class="project-card__cover-generated brand-pattern" aria-hidden="true">
-          <span class="project-card__cover-name">{{ project().name }}</span>
-          <span class="project-card__cover-tagline glass glass--on-brand">
-            {{ project().coverTagline | localize }}
-          </span>
-        </div>
-      }
-    </div>
-    <div class="project-card__band" aria-hidden="true"></div>
-
-    <div class="project-card__emblem" [class.project-card__emblem--logo]="!!project().logoUrl">
-      @if (project().logoUrl; as logoUrl) {
-        <img [src]="logoUrl" [alt]="project().name" width="72" height="72" />
-      } @else {
-        <span class="project-card__initials" aria-hidden="true">{{ initials() }}</span>
-      }
-    </div>
-
-    <div class="project-card__header">
-      @if (headingLevel() === 3) {
-        <h3 class="project-card__name">{{ project().name }}</h3>
-      } @else {
-        <h2 class="project-card__name">{{ project().name }}</h2>
-      }
-      <p class="project-card__status">{{ statusKey() | transloco }}</p>
-    </div>
-
-    <div class="project-card__body">
-      <p class="project-card__summary">{{ project().summary | localize }}</p>
-
-      <dl class="project-card__facts">
-        <div class="project-card__fact">
-          <dt>{{ 'projects.roleLabel' | transloco }}</dt>
-          <dd>
-            <ul class="project-card__chips">
-              @for (role of project().roles; track role) {
-                <li>{{ role }}</li>
-              }
-            </ul>
-          </dd>
-        </div>
-
-        @if (project().technologies.length > 0) {
-          <div class="project-card__fact">
-            <dt>{{ 'projects.technologiesLabel' | transloco }}</dt>
-            <dd>
-              <ul class="project-card__chips">
-                @for (technology of project().technologies; track technology) {
-                  <li>{{ technology }}</li>
-                }
-              </ul>
-            </dd>
+  <div class="project-card__panel glass" #panel>
+    <div class="project-card__visual" #visual>
+      <div class="project-card__cover">
+        @if (project().coverUrl; as coverUrl) {
+          <img
+            class="project-card__cover-image"
+            [src]="coverUrl"
+            [alt]="'projects.coverAlt' | transloco: { name: project().name }"
+          />
+        } @else {
+          <div class="project-card__cover-generated brand-pattern" aria-hidden="true">
+            <span class="project-card__cover-name">{{ project().name }}</span>
+            <span class="project-card__cover-tagline glass glass--on-brand">
+              {{ project().coverTagline | localize }}
+            </span>
           </div>
         }
-      </dl>
+      </div>
+      <div class="project-card__band" aria-hidden="true"></div>
 
-      @if (project().highlights.length > 0) {
-        <ul
-          class="project-card__highlights bullets"
-          [attr.aria-label]="'projects.highlightsLabel' | transloco"
-        >
-          @for (highlight of project().highlights; track $index) {
-            <li>{{ highlight | localize }}</li>
-          }
-        </ul>
-      }
-
-      @if (project().repositoryUrl; as url) {
-        <div class="project-card__footer">
-          <a class="project-card__link link" [href]="url" target="_blank" rel="noopener noreferrer">
-            {{ 'projects.repositoryLink' | transloco }}
-            <span class="link-arrow" aria-hidden="true">↗</span>
-          </a>
-        </div>
-      } @else if (project().context === 'collaboration') {
-        <div class="project-card__footer">
-          <p class="project-card__note">{{ 'projects.privateCode' | transloco }}</p>
-        </div>
-      }
+      <div class="project-card__emblem" [class.project-card__emblem--logo]="!!project().logoUrl">
+        @if (project().logoUrl; as logoUrl) {
+          <img [src]="logoUrl" [alt]="project().name" width="72" height="72" />
+        } @else {
+          <span class="project-card__initials" aria-hidden="true">{{ initials() }}</span>
+        }
+      </div>
     </div>
+
+    <app-project-details
+      class="project-card__content"
+      #content
+      [project]="project()"
+      [headingLevel]="headingLevel()"
+    />
   </div>
 </article>

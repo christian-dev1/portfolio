@@ -134,100 +134,106 @@ describe('ProjectCard', () => {
     });
   });
 
-  describe('header', () => {
-    it('should display the name in a level 2 heading by default', async () => {
-      await render(baseProject);
-
-      expect(compiled.querySelector('h2')!.textContent).toContain('Vesty Shop');
-      expect(compiled.querySelector('h3')).toBeNull();
-    });
-
-    it('should use a level 3 heading when asked to', async () => {
+  describe('details', () => {
+    it('should display the name, the status and the summary of the project', async () => {
       await render(baseProject, 3);
 
-      expect(compiled.querySelector('h2')).toBeNull();
-      expect(compiled.querySelector('h3')!.textContent).toContain('Vesty Shop');
-    });
-
-    it('should display the translated status', async () => {
-      await render({ ...baseProject, status: 'pilot' });
-
-      expect(text('.project-card__status')).toBe('En phase pilote');
+      expect(compiled.querySelector('app-project-details h3')!.textContent).toContain('Vesty Shop');
+      expect(text('.project-details__status')).toBe('En développement');
+      expect(text('.project-details__summary')).toBe('Boutique de vêtements en ligne.');
     });
   });
 
-  describe('body', () => {
-    it('should display the summary in the current language', async () => {
-      language.lang.set('en');
+  describe('block swap', () => {
+    function article(): HTMLElement {
+      return compiled.querySelector('.project-card')!;
+    }
 
+    async function dispatch(target: Element, event: Event): Promise<void> {
+      target.dispatchEvent(event);
+      await fixture.whenStable();
+    }
+
+    function pointer(type: string, pointerType: string): Event {
+      return new PointerEvent(type, {
+        bubbles: type !== 'pointerenter' && type !== 'pointerleave',
+        pointerType,
+      });
+    }
+
+    async function renderSwappable(project: Project = baseProject): Promise<void> {
+      fixture = TestBed.createComponent(ProjectCard);
+      fixture.componentRef.setInput('project', project);
+      fixture.componentRef.setInput('swappable', true);
+      compiled = fixture.nativeElement as HTMLElement;
+      await fixture.whenStable();
+    }
+
+    afterEach(() => {
+      vi.unstubAllGlobals();
+    });
+
+    it('should keep the normal layout when the card is not swappable', async () => {
       await render(baseProject);
 
-      expect(text('.project-card__summary')).toBe('Online clothing store.');
+      await dispatch(article(), pointer('pointerenter', 'mouse'));
+
+      expect(article().classList).not.toContain('project-card--swapped');
     });
 
-    it('should list roles and stack as definitions', async () => {
-      await render(baseProject);
+    it('should swap the blocks while the mouse is over the card', async () => {
+      await renderSwappable();
 
-      const terms = Array.from(compiled.querySelectorAll('dt')).map((dt) => dt.textContent!.trim());
-      expect(terms).toEqual(['Rôle', 'Stack']);
-      expect(compiled.querySelectorAll('.project-card__chips li').length).toBe(4);
+      await dispatch(article(), pointer('pointerenter', 'mouse'));
+      expect(article().classList).toContain('project-card--swapped');
+
+      await dispatch(article(), pointer('pointerleave', 'mouse'));
+      expect(article().classList).not.toContain('project-card--swapped');
     });
 
-    it('should hide the stack when there is no technology', async () => {
-      await render({ ...baseProject, technologies: [] });
+    it('should toggle the swap on each tap', async () => {
+      await renderSwappable();
+      const summary = compiled.querySelector('.project-details__summary')!;
 
-      expect(compiled.querySelectorAll('dt').length).toBe(1);
-    });
-  });
+      await dispatch(summary, pointer('pointerdown', 'touch'));
+      await dispatch(summary, new MouseEvent('click', { bubbles: true }));
+      expect(article().classList).toContain('project-card--swapped');
 
-  describe('highlights', () => {
-    it('should list the highlights in the current language', async () => {
-      language.lang.set('en');
-
-      await render(baseProject);
-
-      const items = Array.from(compiled.querySelectorAll('.project-card__highlights li')).map(
-        (li) => li.textContent!.trim(),
-      );
-      expect(items).toEqual(['Built on my own', 'Made-to-measure orders']);
+      await dispatch(summary, pointer('pointerdown', 'touch'));
+      await dispatch(summary, new MouseEvent('click', { bubbles: true }));
+      expect(article().classList).not.toContain('project-card--swapped');
     });
 
-    it('should give the highlights list an accessible name', async () => {
-      await render(baseProject);
+    it('should swap the blocks while the keyboard focus is in the card', async () => {
+      await renderSwappable({ ...baseProject, repositoryUrl: 'https://gitlab.com/exemple' });
+      const link = compiled.querySelector<HTMLElement>('.project-details__link')!;
 
-      expect(compiled.querySelector('.project-card__highlights')!.getAttribute('aria-label')).toBe(
-        'Points forts',
-      );
+      await dispatch(link, new FocusEvent('focusin', { bubbles: true }));
+      expect(article().classList).toContain('project-card--swapped');
+
+      await dispatch(link, new FocusEvent('focusout', { bubbles: true, relatedTarget: null }));
+      expect(article().classList).not.toContain('project-card--swapped');
     });
 
-    it('should not render an empty list when there is no highlight', async () => {
-      await render({ ...baseProject, highlights: [] });
+    it('should keep the repository link clickable without swapping back on tap', async () => {
+      await renderSwappable({ ...baseProject, repositoryUrl: 'https://gitlab.com/exemple' });
+      const link = compiled.querySelector<HTMLAnchorElement>('.project-details__link')!;
+      link.addEventListener('click', (event) => event.preventDefault());
 
-      expect(compiled.querySelector('.project-card__highlights')).toBeNull();
-    });
-  });
+      await dispatch(link, pointer('pointerdown', 'touch'));
+      await dispatch(link, new MouseEvent('click', { bubbles: true, cancelable: true }));
 
-  describe('footer', () => {
-    it('should link to the repository safely in a new tab', async () => {
-      await render({ ...baseProject, repositoryUrl: 'https://gitlab.com/exemple' });
-
-      const link = compiled.querySelector('.project-card__footer a')!;
-      expect(link.getAttribute('href')).toBe('https://gitlab.com/exemple');
-      expect(link.getAttribute('target')).toBe('_blank');
-      expect(link.getAttribute('rel')).toBe('noopener noreferrer');
-      expect(link.textContent).toContain('Voir le code');
+      expect(article().classList).not.toContain('project-card--swapped');
     });
 
-    it('should mention private code for a team project without repository', async () => {
-      await render({ ...baseProject, context: 'collaboration' });
+    it('should never swap when the user prefers reduced motion', async () => {
+      vi.stubGlobal('matchMedia', () => ({ matches: true }));
+      await renderSwappable();
 
-      expect(text('.project-card__footer')).toBe('Code non public (projet en équipe)');
-    });
+      await dispatch(article(), pointer('pointerenter', 'mouse'));
 
-    it('should not display a footer for a B-HER project without repository', async () => {
-      await render(baseProject);
-
-      expect(compiled.querySelector('.project-card__footer')).toBeNull();
+      expect(article().classList).not.toContain('project-card--swapped');
+      expect(text('.project-details__summary')).toBe('Boutique de vêtements en ligne.');
     });
   });
 });

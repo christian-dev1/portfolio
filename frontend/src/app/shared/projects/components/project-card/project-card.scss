@@ -31,21 +31,22 @@
   background-color: var(--color-brand-blue);
 }
 
+/* Le panneau découpe la couverture à ses coins arrondis, en haut comme en bas (inversion). */
 .project-card__panel {
   display: flex;
   flex: 1;
   flex-direction: column;
+  overflow: clip;
   border-radius: 4px 20px 20px 20px;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
 
-/* 2. Couverture 16/10 (image ou générée) */
+/* 2. Couverture 2/1 (image ou générée) */
 .project-card__cover {
   aspect-ratio: 2 / 1;
   overflow: hidden;
-  border-radius: 3px 19px 0 0;
 }
 
 .project-card__cover-image {
@@ -131,115 +132,37 @@
   background-color: var(--color-brand-red);
 }
 
+.project-card__content {
+  flex: 1;
+}
+
 .project-card:hover .project-card__panel,
 .project-card:focus-within .project-card__panel {
   box-shadow: var(--shadow-lift);
 }
 
-/* Le mouvement au survol n'existe que si l'utilisateur n'a pas demandé à le réduire. */
+/* Le mouvement n'existe que si l'utilisateur n'a pas demandé à le réduire. */
 @media (prefers-reduced-motion: no-preference) {
   .project-card:hover,
   .project-card:focus-within {
     .project-card__panel {
       transform: translateY(-3px);
     }
+  }
 
-    .project-card__emblem {
-      transform: translateY(-2px);
+  /* 5. Inversion (accueil) : chaque bloc glisse de la hauteur de l'autre, la carte ne bouge pas. */
+  .project-card__visual,
+  .project-card__content {
+    transition: transform 450ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .project-card--swapped {
+    .project-card__visual {
+      transform: translateY(var(--content-height, 0px));
+    }
+
+    .project-card__content {
+      transform: translateY(calc(-1 * var(--visual-height, 0px)));
     }
   }
-}
-
-/* 5. Nom et statut centrés */
-.project-card__header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem 0;
-  text-align: center;
-}
-
-.project-card__name {
-  margin: 0;
-  font-size: 1.375rem;
-  letter-spacing: 0.04em;
-}
-
-.project-card__status {
-  margin: 0;
-  padding: 0.125rem 0.625rem;
-  border-radius: 999px;
-  background-color: var(--color-status-bg);
-  color: var(--color-status-text);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-/* 6. Résumé, faits, pied */
-.project-card__body {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem 1.25rem 1.25rem;
-}
-
-.project-card__summary {
-  margin: 0;
-}
-
-.project-card__facts {
-  display: grid;
-  gap: 0.625rem;
-  margin: 0;
-}
-
-.project-card__fact {
-  display: grid;
-  grid-template-columns: 4.5rem 1fr;
-  align-items: start;
-  gap: 0.75rem;
-
-  dt {
-    padding-top: 0.2rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-  }
-
-  dd {
-    margin: 0;
-  }
-}
-
-.project-card__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    padding: 0.125rem 0.5rem;
-    border-radius: 0.375rem;
-    background-color: var(--color-tag-bg);
-    font-size: 0.8125rem;
-  }
-}
-
-.project-card__footer {
-  margin-top: auto;
-  padding-top: 0.875rem;
-  border-top: 1px dashed var(--color-border);
-}
-
-.project-card__note {
-  margin: 0;
-  font-size: 0.8125rem;
-  font-style: italic;
-  color: var(--color-text-muted);
 }

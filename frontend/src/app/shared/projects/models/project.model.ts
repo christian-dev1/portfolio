@@ -25,3 +25,13 @@ export interface Project {
   visible: boolean;
   featured: boolean;
 }
+
+/** Initiales affichées à défaut de logo : « Vesty Shop » → « VS ». */
+export function projectInitials(name: string): string {
+  return name
+    .split(' ')
+    .slice(0, 2)
+    .map((word) => word.charAt(0))
+    .join('')
+    .toUpperCase();
+}

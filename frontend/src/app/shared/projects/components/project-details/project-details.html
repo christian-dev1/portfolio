@@ -1,0 +1,68 @@
+<div class="project-details__header">
+  @if (headingLevel() === 3) {
+    <h3 class="project-details__name">{{ project().name }}</h3>
+  } @else {
+    <h2 class="project-details__name">{{ project().name }}</h2>
+  }
+  <p class="project-details__status">{{ statusKey() | transloco }}</p>
+</div>
+
+<div class="project-details__body">
+  <p class="project-details__summary">{{ project().summary | localize }}</p>
+
+  <dl class="project-details__facts">
+    <div class="project-details__fact">
+      <dt>{{ 'projects.roleLabel' | transloco }}</dt>
+      <dd>
+        <ul class="project-details__chips">
+          @for (role of project().roles; track role) {
+            <li>{{ role }}</li>
+          }
+        </ul>
+      </dd>
+    </div>
+
+    @if (project().technologies.length > 0) {
+      <div class="project-details__fact">
+        <dt>{{ 'projects.technologiesLabel' | transloco }}</dt>
+        <dd>
+          <ul class="project-details__chips">
+            @for (technology of project().technologies; track technology) {
+              <li>{{ technology }}</li>
+            }
+          </ul>
+        </dd>
+      </div>
+    }
+  </dl>
+
+  @if (project().highlights.length > 0) {
+    <ul
+      class="project-details__highlights bullets"
+      [attr.aria-label]="'projects.highlightsLabel' | transloco"
+    >
+      @for (highlight of project().highlights; track $index) {
+        <li>{{ highlight | localize }}</li>
+      }
+    </ul>
+  }
+
+  @if (project().repositoryUrl; as url) {
+    <div class="project-details__footer">
+      <a
+        class="project-details__link link"
+        [href]="url"
+        target="_blank"
+        rel="noopener noreferrer"
+        [attr.tabindex]="linksFocusable() ? null : -1"
+      >
+        {{ 'projects.repositoryLink' | transloco }}
+        <span class="link-arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  } @else if (project().context === 'collaboration') {
+    <div class="project-details__footer">
+      <p class="project-details__note">{{ 'projects.privateCode' | transloco }}</p>
+    </div>
+  }
+</div>

@@ -10,7 +10,12 @@
   @if (projects(); as projects) {
     <div class="featured__grid">
       @for (project of projects; track project.id) {
-        <app-project-card class="reveal" [project]="project" [headingLevel]="3" />
+        <app-project-card
+          class="reveal"
+          [project]="project"
+          [headingLevel]="3"
+          [swappable]="true"
+        />
       } @empty {
         <p>{{ 'home.featured.empty' | transloco }}</p>
       }
