@@ -1,59 +1,48 @@
-# LuchristPortfolio
+# Frontend LUCHRIST
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.26.
+Angular 21 standalone, signals, SCSS, Transloco, Vitest et polices auto-hébergées.
+Aucune dépendance supplémentaire n’est nécessaire pour l’impression ou les téléchargements de CV.
 
-## Development server
+## Commandes
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Depuis `frontend/` :
 
 ```bash
-ng generate component component-name
+npx ng serve
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Serveur local : `http://localhost:4300/`.
 
 ```bash
-ng generate --help
+npx ng test --watch=false
 ```
-
-## Building
-
-To build the project run:
 
 ```bash
-ng build
+npx ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Générer le CV en PDF
 
-## Running unit tests
+La page `/cv` est la source des exports FR/EN. Imprimer en A4 avec arrière-plans,
+sans en-têtes ni pieds de page du navigateur. Le CV public ne contient aucun numéro
+de téléphone et n’affiche que la ville comme localisation.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+**Aucun PDF n’est commité, même public.** Déposer les PDF publics dans
+`frontend/public/cv/`, dont le dossier entier est ignoré par Git, puis les envoyer sur
+le serveur au déploiement. Le fichier d’exécution `frontend/public/config/contact.json`,
+également ignoré, peut déclarer :
 
-```bash
-ng test
+```json
+"cvPdf": { "fr": "/cv/cv-fr.pdf", "en": "/cv/cv-en.pdf" }
 ```
 
-## Running end-to-end tests
+Le bouton apparaît seulement si le PDF de la langue active est configuré et répond
+à HEAD avec le statut 200 et un type PDF. La disponibilité est mise en cache pendant
+la session ; absence de fichier ou erreur réseau : bouton masqué.
 
-For end-to-end (e2e) testing, run:
+La version complète exige `/cv?complet=1` **et** `localhost` ou `127.0.0.1`.
+Enregistrer cette version hors du dépôt dans `~/Documents/`, uniquement pour les
+recruteurs. Ne jamais la déposer dans un dossier public ni sur le serveur.
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+La [documentation du projet](../README.md) décrit la configuration d’exécution,
+le déploiement des PDF et l’architecture du formulaire de contact.
