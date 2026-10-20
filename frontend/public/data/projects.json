@@ -85,7 +85,7 @@
     "context": "collaboration",
     "roles": ["QA"],
     "technologies": [],
-    "status": "pilot",
+    "status": "in-progress",
     "logoUrl": "/images/projects/sekouh-logo.png",
     "coverUrl": "/images/projects/sekouh-cover.jpg",
     "visible": true,

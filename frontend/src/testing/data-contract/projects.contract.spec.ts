@@ -56,6 +56,13 @@ describe('Data contract: projects.json', () => {
     }
   });
 
+  it('should show Sekouh as in progress and SuperApp as a pilot', () => {
+    const statuses = Object.fromEntries(projects.map((project) => [project.id, project.status]));
+
+    expect(statuses['sekouh']).toBe('in-progress');
+    expect(statuses['superapp']).toBe('pilot');
+  });
+
   it('should have boolean visible and featured flags', () => {
     for (const project of projects) {
       expect(typeof project.visible, `${project.id}.visible`).toBe('boolean');

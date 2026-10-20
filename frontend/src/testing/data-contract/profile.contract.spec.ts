@@ -74,10 +74,19 @@ describe('Data contract: profile.json', () => {
       expect(items.length, `profile.${name}`).toBeGreaterThan(0);
       items.forEach((item, index) => expectLocalizedText(item, `profile.${name}[${index}]`));
     }
+    expect(profile.languages.length, 'profile.languages').toBeGreaterThan(0);
     profile.languages.forEach((language, index) => {
       expectLocalizedText(language.name, `profile.languages[${index}].name`);
       expectLocalizedText(language.level, `profile.languages[${index}].level`);
     });
+  });
+
+  it('should list French as fluent and English as basic', () => {
+    const levels = Object.fromEntries(
+      profile.languages.map((language) => [language.name.en, language.level.en]),
+    );
+
+    expect(levels).toEqual({ French: 'Fluent', English: 'Basic' });
   });
 
   it('should describe the company in French and English', () => {
