@@ -1,14 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
 import { PROFILE_FIXTURE } from '../../../../../testing/profile.fixture';
 import { LanguageService } from '../../../../core/i18n/language.service';
+import { ContactConfigService } from '../../../../shared/contact-config/data-access/contact-config.service';
+import {
+  ContactConfig,
+  EMPTY_CONTACT_CONFIG,
+} from '../../../../shared/contact-config/models/contact-config.model';
 import { ProfileService } from '../../../../shared/profile/data-access/profile.service';
 import { ContactPage } from './contact-page';
 
 describe('ContactPage', () => {
   let fixture: ComponentFixture<ContactPage>;
   let compiled: HTMLElement;
+  let contactConfig$: BehaviorSubject<ContactConfig>;
 
   function mockClipboard(clipboard: { writeText: (text: string) => Promise<void> } | undefined) {
     Object.defineProperty(navigator, 'clipboard', { value: clipboard, configurable: true });
@@ -20,9 +26,13 @@ describe('ContactPage', () => {
   }
 
   beforeEach(async () => {
+    contactConfig$ = new BehaviorSubject<ContactConfig>(EMPTY_CONTACT_CONFIG);
     TestBed.configureTestingModule({
       imports: [ContactPage, provideTranslocoForTests()],
-      providers: [{ provide: ProfileService, useValue: { getProfile: () => of(PROFILE_FIXTURE) } }],
+      providers: [
+        { provide: ProfileService, useValue: { getProfile: () => of(PROFILE_FIXTURE) } },
+        { provide: ContactConfigService, useValue: { getContactConfig: () => contactConfig$ } },
+      ],
     });
 
     TestBed.inject(LanguageService).lang.set('fr');
@@ -107,5 +117,22 @@ describe('ContactPage', () => {
 
   it('should not contain any form', () => {
     expect(compiled.querySelector('form')).toBeNull();
+  });
+
+  it('should hide the WhatsApp block when there is no contact configuration', () => {
+    expect(compiled.querySelector('.contact__whatsapp')).toBeNull();
+  });
+
+  it('should show the WhatsApp button, but never any phone number, once configured', async () => {
+    contactConfig$.next({
+      whatsapp: '237600000000',
+      phones: [{ number: '+237 600 00 00 00', label: { fr: 'Appels', en: 'Calls' } }],
+    });
+    await fixture.whenStable();
+
+    const button = compiled.querySelector('.contact__whatsapp app-whatsapp-button a')!;
+    expect(button.getAttribute('href')).toBe('https://wa.me/237600000000');
+    expect(compiled.textContent).not.toContain('+237');
+    expect(compiled.querySelector('a[href^="tel:"]')).toBeNull();
   });
 });

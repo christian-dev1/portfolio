@@ -1,9 +1,12 @@
+/* Deux colonnes : e-mail et WhatsApp à gauche, réseaux à droite. */
 .contact {
   display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: start;
   gap: 3rem;
-  max-width: 70rem;
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding: 3rem 1.5rem 0;
+  padding: 3rem var(--content-gutter) 0;
 
   h2 {
     margin: 0 0 1rem;
@@ -11,11 +14,21 @@
   }
 }
 
-.contact__email {
+.contact__direct {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.contact__email,
+.contact__whatsapp {
   padding: 2rem;
   border-radius: 1.25rem;
   border-bottom: 6px solid var(--color-brand-red);
-  text-align: center;
+}
+
+.contact__whatsapp p {
+  margin: 0 0 1.25rem;
+  color: var(--color-text-muted);
 }
 
 .contact__address {
@@ -31,7 +44,6 @@
 .contact__actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 0.75rem;
   margin-top: 1.5rem;
 }
@@ -45,7 +57,7 @@
 
 .contact__networks {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
   gap: 1rem;
   margin: 0;
   padding: 0;
@@ -97,13 +109,20 @@
   text-align: center;
 }
 
+@media (max-width: 899.98px) {
+  .contact {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 639.98px) {
   .contact {
     gap: 2.5rem;
-    padding: 2rem 1rem 0;
+    padding-top: 2rem;
   }
 
-  .contact__email {
+  .contact__email,
+  .contact__whatsapp {
     padding: 1.5rem 1rem;
   }
 }

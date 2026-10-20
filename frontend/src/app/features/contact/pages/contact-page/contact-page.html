@@ -8,33 +8,43 @@
 
 @if (profile()) {
   <div class="contact">
-    @if (email(); as email) {
-      <section class="contact__email glass" aria-labelledby="contact-email-title">
-        <h2 id="contact-email-title">{{ 'contact.emailTitle' | transloco }}</h2>
-        <p class="contact__address" #address>{{ email }}</p>
-        <div class="contact__actions">
-          <button type="button" class="button button--primary" (click)="copyEmail(address)">
-            {{ (copyState() === 'copied' ? 'contact.copied' : 'contact.copy') | transloco }}
-          </button>
-          <a class="button button--secondary" [href]="'mailto:' + email">
-            {{ 'contact.write' | transloco }}
-          </a>
-        </div>
-        <p class="contact__feedback" aria-live="polite">
-          @if (copyState() === 'copied') {
-            {{ 'contact.copiedMessage' | transloco }}
-          } @else if (copyState() === 'failed') {
-            {{ 'contact.copyFailed' | transloco }}
-          }
-        </p>
-      </section>
-    }
+    <div class="contact__direct">
+      @if (email(); as email) {
+        <section class="contact__email glass reveal" aria-labelledby="contact-email-title">
+          <h2 id="contact-email-title">{{ 'contact.emailTitle' | transloco }}</h2>
+          <p class="contact__address" #address>{{ email }}</p>
+          <div class="contact__actions">
+            <button type="button" class="button button--primary" (click)="copyEmail(address)">
+              {{ (copyState() === 'copied' ? 'contact.copied' : 'contact.copy') | transloco }}
+            </button>
+            <a class="button button--secondary" [href]="'mailto:' + email">
+              {{ 'contact.write' | transloco }}
+            </a>
+          </div>
+          <p class="contact__feedback" aria-live="polite">
+            @if (copyState() === 'copied') {
+              {{ 'contact.copiedMessage' | transloco }}
+            } @else if (copyState() === 'failed') {
+              {{ 'contact.copyFailed' | transloco }}
+            }
+          </p>
+        </section>
+      }
+
+      @if (contactConfig()?.whatsapp; as whatsapp) {
+        <section class="contact__whatsapp glass reveal" aria-labelledby="contact-whatsapp-title">
+          <h2 id="contact-whatsapp-title">{{ 'contact.whatsappTitle' | transloco }}</h2>
+          <p>{{ 'contact.whatsappIntro' | transloco }}</p>
+          <app-whatsapp-button [number]="whatsapp" />
+        </section>
+      }
+    </div>
 
     <section aria-labelledby="contact-networks-title">
       <h2 id="contact-networks-title">{{ 'contact.networksTitle' | transloco }}</h2>
       <ul class="contact__networks">
         @for (item of networks(); track item.network) {
-          <li>
+          <li class="reveal">
             <a
               class="contact__tile glass"
               [href]="item.href"

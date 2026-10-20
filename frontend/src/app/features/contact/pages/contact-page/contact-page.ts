@@ -1,6 +1,8 @@
 import { Component, DOCUMENT, DestroyRef, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { WhatsappButton } from '../../../../shared/contact-config/components/whatsapp-button/whatsapp-button';
+import { ContactConfigService } from '../../../../shared/contact-config/data-access/contact-config.service';
 import { ProfileService } from '../../../../shared/profile/data-access/profile.service';
 import { toSocialLinkViews } from '../../../../shared/profile/models/social-link-view';
 import { BrandIcon } from '../../../../shared/ui/brand-icon/brand-icon';
@@ -13,7 +15,7 @@ const FEEDBACK_DURATION_MS = 4000;
 
 @Component({
   selector: 'app-contact-page',
-  imports: [TranslocoPipe, PageBanner, BrandIcon],
+  imports: [TranslocoPipe, PageBanner, BrandIcon, WhatsappButton],
   templateUrl: './contact-page.html',
   styleUrl: './contact-page.scss',
 })
@@ -22,6 +24,8 @@ export class ContactPage {
   private feedbackTimer?: ReturnType<typeof setTimeout>;
 
   protected readonly profile = toSignal(inject(ProfileService).getProfile());
+  /** Numéro WhatsApp hors Git ; le bloc est masqué si la configuration est vide. */
+  protected readonly contactConfig = toSignal(inject(ContactConfigService).getContactConfig());
   protected readonly networks = computed(() => {
     const profile = this.profile();
     return profile ? toSocialLinkViews(profile.socialLinks) : undefined;
