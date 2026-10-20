@@ -31,8 +31,8 @@ describe('App routes', () => {
   it('should give every page a tab title key translated in French and English', async () => {
     const lazyRoutes = routes.filter((route) => route.loadChildren);
 
-    for (const route of lazyRoutes) {
-      const [page] = await childRoutes(route);
+    const pages = await Promise.all(lazyRoutes.map(childRoutes));
+    for (const [page] of pages) {
       const key = page.title as string;
 
       expect(typeof translate(fr, key), `fr ${key}`).toBe('string');

@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
-import { ToolsPage } from './pages/tools-page/tools-page';
 
 export const TOOLS_ROUTES: Routes = [
   {
     path: '',
-    component: ToolsPage,
+    loadComponent: () => import('./pages/tools-page/tools-page').then((m) => m.ToolsPage),
     title: 'titles.tools',
   },
 ];

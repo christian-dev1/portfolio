@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
-import { CvPage } from './pages/cv-page/cv-page';
 
 export const CV_ROUTES: Routes = [
   {
     path: '',
-    component: CvPage,
+    loadComponent: () => import('./pages/cv-page/cv-page').then((m) => m.CvPage),
     title: 'titles.cv',
   },
 ];

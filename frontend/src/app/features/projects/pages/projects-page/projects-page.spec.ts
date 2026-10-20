@@ -1,3 +1,5 @@
+import { Component, input } from '@angular/core';
+import { ProjectFlipCard } from '../../components/project-flip-card/project-flip-card';
 import { TestBed } from '@angular/core/testing';
 import { NEVER, Observable, of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
@@ -5,6 +7,11 @@ import { LanguageService } from '../../../../core/i18n/language.service';
 import { ProjectsPage } from './projects-page';
 import { ProjectService } from '../../../../shared/projects/data-access/project.service';
 import { Project } from '../../../../shared/projects/models/project.model';
+
+@Component({ selector: 'app-project-flip-card', template: '' })
+class ProjectCardStub {
+  readonly project = input.required<Project>();
+}
 
 const projects: Project[] = [
   {
@@ -41,7 +48,14 @@ async function setup(
 ): Promise<HTMLElement> {
   TestBed.configureTestingModule({
     imports: [ProjectsPage, provideTranslocoForTests()],
-    providers: [{ provide: ProjectService, useValue: { getPublicProjects: () => projects$ } }],
+    providers: [
+      { provide: ProjectService, useValue: { getPublicProjects: () => projects$ } },
+    ],
+  });
+
+  TestBed.overrideComponent(ProjectsPage, {
+    remove: { imports: [ProjectFlipCard] },
+    add: { imports: [ProjectCardStub] },
   });
 
   TestBed.inject(LanguageService).lang.set(lang);
