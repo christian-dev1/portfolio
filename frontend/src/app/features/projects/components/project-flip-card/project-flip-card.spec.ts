@@ -74,7 +74,7 @@ describe('ProjectFlipCard', () => {
       expect(compiled.querySelector('.flip-card__logo')!.getAttribute('src')).toBe(
         '/images/projects/logo.png',
       );
-      expect(compiled.querySelector('.flip-card__front')!.classList).not.toContain('brand-pattern');
+      expect(compiled.querySelector('.flip-card__front')!.classList).toContain('brand-pattern');
     });
 
     it('should give the project name to screen readers on the front', async () => {
@@ -133,6 +133,26 @@ describe('ProjectFlipCard', () => {
       expect(card().classList).not.toContain('flip-card--flipped');
     });
 
+    it('should fade back without rotating and reset after the fade', async () => {
+      await render();
+      await dispatch(card(), new PointerEvent('pointerenter', { pointerType: 'mouse' }));
+      await dispatch(card(), new PointerEvent('pointerleave', { pointerType: 'mouse' }));
+      expect(card().classList).toContain('flip-card--returning');
+      expect(link().getAttribute('tabindex')).toBe('-1');
+      await new Promise((resolve) => setTimeout(resolve, 950));
+      await fixture.whenStable();
+      expect(card().classList).not.toContain('flip-card--returning');
+    });
+
+    it('should cancel a pending fade when the pointer enters again', async () => {
+      await render();
+      await dispatch(card(), new PointerEvent('pointerenter', { pointerType: 'mouse' }));
+      await dispatch(card(), new PointerEvent('pointerleave', { pointerType: 'mouse' }));
+      await dispatch(card(), new PointerEvent('pointerenter', { pointerType: 'mouse' }));
+      expect(card().classList).toContain('flip-card--flipped');
+      expect(card().classList).not.toContain('flip-card--returning');
+    });
+
     it('should flip on keyboard focus and make the back link reachable', async () => {
       await render();
 
@@ -174,6 +194,7 @@ describe('ProjectFlipCard', () => {
         back,
         new PointerEvent('pointerdown', { bubbles: true, pointerType: 'touch' }),
       );
+      await dispatch(toggle(), new FocusEvent('focusout', { bubbles: true, relatedTarget: null }));
       await dispatch(back, new MouseEvent('click', { bubbles: true }));
       expect(card().classList).not.toContain('flip-card--flipped');
       expect(toggle().getAttribute('aria-pressed')).toBe('false');
@@ -196,14 +217,12 @@ describe('ProjectFlipCard', () => {
       vi.stubGlobal('matchMedia', () => ({ matches: true }));
     });
 
-    it('should unfold the card: no flip button, both faces shown, link reachable', async () => {
+    it('should show only the original card with reduced motion', async () => {
       await render();
 
       expect(card().classList).toContain('flip-card--unfolded');
       expect(compiled.querySelector('.flip-card__toggle')).toBeNull();
-      expect(compiled.querySelector('.flip-card__front .visually-hidden')!.textContent).toContain(
-        'WIMO',
-      );
+      expect(compiled.querySelector('.flip-card__front')).toBeNull();
       expect(compiled.querySelector('.flip-card__back')!.textContent).toContain(
         'Application de transfert d’argent.',
       );

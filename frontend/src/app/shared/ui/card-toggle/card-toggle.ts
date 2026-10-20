@@ -78,7 +78,10 @@ export class CardToggle {
   protected onFocusOut(event: FocusEvent): void {
     if (!this.host.contains(event.relatedTarget as Node | null)) {
       this.focused.set(false);
-      this.forced.set(null);
+      // A tap on the back can blur the cover before its click toggles the card.
+      if (this.lastPointerType === null) {
+        this.forced.set(null);
+      }
     }
   }
 

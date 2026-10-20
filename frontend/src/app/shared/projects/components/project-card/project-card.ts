@@ -30,6 +30,7 @@ export class ProjectCard {
    * glisse en bas et le texte remonte, sans changer la hauteur de la carte.
    */
   readonly swappable = input(false);
+  readonly linksFocusable = input(true);
 
   private readonly toggle = viewChild.required(CardToggle);
   private readonly panel = viewChild.required<ElementRef<HTMLElement>>('panel');

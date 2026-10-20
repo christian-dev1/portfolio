@@ -1,5 +1,5 @@
 :host {
-  --flip-duration: 0.6s;
+  --flip-duration: 1.6s;
   display: block;
   height: 100%;
 }
@@ -10,7 +10,7 @@
   height: 100%;
 }
 
-/* Onglet de dossier : hors des faces, il reste visible des deux côtés. */
+/* The folder tab belongs to the front face. */
 .flip-card__tab {
   align-self: flex-start;
   margin: 0;
@@ -40,13 +40,13 @@
   display: flex;
   grid-area: 1 / 1;
   flex-direction: column;
-  overflow: clip;
+  overflow: hidden;
   border-radius: inherit;
-  backface-visibility: hidden;
-  transition: transform var(--flip-duration) cubic-bezier(0.65, 0, 0.35, 1);
+  backface-opacity: 0;
 }
 
 .flip-card__back {
+  opacity: 0;
   transform: perspective(1400px) rotateY(180deg);
   /* Face cachée : elle ne capte ni clic ni survol. */
   pointer-events: none;
@@ -54,11 +54,17 @@
 
 .flip-card--flipped {
   .flip-card__front {
+    opacity: 0;
+    animation: hide-front var(--flip-duration) steps(1, end);
+    transition: transform var(--flip-duration) cubic-bezier(0.65, 0, 0.35, 1);
     transform: perspective(1400px) rotateY(-180deg);
     pointer-events: none;
   }
 
   .flip-card__back {
+    opacity: 1;
+    animation: reveal-back var(--flip-duration) steps(1, end);
+    transition: transform var(--flip-duration) cubic-bezier(0.65, 0, 0.35, 1);
     transform: perspective(1400px) rotateY(0deg);
     pointer-events: auto;
   }
@@ -83,7 +89,7 @@
   justify-content: center;
   width: 100%;
   min-height: 16rem;
-  padding: 2rem 1.5rem 3.5rem;
+  padding: 2rem 1.5rem;
   border: 0;
   background: none;
   color: inherit;
@@ -94,13 +100,22 @@
   cursor: pointer;
 }
 
+.flip-card__cover::before {
+  content: '';
+  position: absolute;
+  inset: calc(50% - 4px) 0 auto;
+  height: 8px;
+  background: var(--color-brand-red);
+}
+
 .flip-card__logo,
 .flip-card__initials {
+  position: relative;
+  z-index: 1;
   width: 9rem;
   height: 9rem;
-  border: 6px solid var(--color-brand-red);
+  border: 8px solid var(--color-brand-red);
   border-radius: 50%;
-  box-shadow: var(--shadow-ring);
 }
 
 .flip-card__logo {
@@ -162,21 +177,57 @@
   }
 }
 
-/* Animations réduites : pas de rotation, le verso s'affiche directement sous le recto. */
-.flip-card--unfolded {
-  .flip-card__faces {
-    gap: 0.75rem;
-  }
-
-  .flip-card__face {
-    grid-area: auto;
+.flip-card--returning {
+  .flip-card__front {
     transform: none;
-    backface-visibility: visible;
-    pointer-events: auto;
+    animation: front-return 0.9s ease both;
   }
+  .flip-card__back {
+    opacity: 1;
+    transform: perspective(1400px) rotateY(0deg);
+    animation: back-return 0.9s ease both;
+    pointer-events: none;
+  }
+}
+@keyframes front-return {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes back-return {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.flip-card--unfolded .flip-card__back {
+  animation: none;
+  transition: none;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
 
-  .flip-card__cover {
-    min-height: 0;
-    padding-bottom: 2rem;
+@keyframes hide-front {
+  0% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes reveal-back {
+  0% {
+    opacity: 0;
+  }
+  50%,
+  100% {
+    opacity: 1;
   }
 }

@@ -1,24 +1,47 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { ProjectDetails } from '../../../../shared/projects/components/project-details/project-details';
+import { ProjectCard } from '../../../../shared/projects/components/project-card/project-card';
 import { Project, projectInitials } from '../../../../shared/projects/models/project.model';
 import { CardToggle } from '../../../../shared/ui/card-toggle/card-toggle';
 
-/**
- * Carte de projet qui se retourne : le recto montre l'onglet et le logo, le verso le détail.
- * Elle se retourne au survol, au focus clavier et à l'appui (bascule, `aria-pressed`).
- * Les deux faces restent lues par les lecteurs d'écran ; le lien du verso ne prend le focus
- * que carte retournée. Avec les animations réduites, le verso s'affiche sous le recto.
- */
+/** Folder cover with a shared project card on the back and a fade-only return. */
 @Component({
   selector: 'app-project-flip-card',
-  imports: [NgTemplateOutlet, TranslocoPipe, CardToggle, ProjectDetails],
+  imports: [NgTemplateOutlet, TranslocoPipe, CardToggle, ProjectCard],
   templateUrl: './project-flip-card.html',
   styleUrl: './project-flip-card.scss',
 })
 export class ProjectFlipCard {
   readonly project = input.required<Project>();
+  private readonly toggle = viewChild.required(CardToggle);
+  protected readonly returning = signal(false);
+
+  constructor() {
+    let wasActive = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    inject(DestroyRef).onDestroy(() => clearTimeout(timer));
+    effect(() => {
+      const active = this.toggle().active();
+      clearTimeout(timer);
+      if (wasActive && !active) {
+        this.returning.set(true);
+        timer = setTimeout(() => this.returning.set(false), 900);
+      } else if (active) {
+        this.returning.set(false);
+      }
+      wasActive = active;
+    });
+  }
 
   protected readonly initials = computed(() => projectInitials(this.project().name));
 

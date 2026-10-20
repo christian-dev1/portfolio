@@ -4,17 +4,13 @@
   #toggle="cardToggle"
   [class.flip-card--team]="project().context === 'collaboration'"
   [class.flip-card--flipped]="toggle.active()"
+  [class.flip-card--returning]="returning()"
   [class.flip-card--unfolded]="toggle.reducedMotion()"
 >
-  <p class="flip-card__tab">{{ tabKey() | transloco }}</p>
-
   <div class="flip-card__faces">
-    <div class="flip-card__face flip-card__front glass" [class.brand-pattern]="!project().logoUrl">
-      @if (toggle.reducedMotion()) {
-        <div class="flip-card__cover">
-          <ng-container [ngTemplateOutlet]="emblem" />
-        </div>
-      } @else {
+    @if (!toggle.reducedMotion()) {
+      <div class="flip-card__face flip-card__front brand-pattern">
+        <p class="flip-card__tab">{{ tabKey() | transloco }}</p>
         <button
           type="button"
           class="flip-card__cover flip-card__toggle"
@@ -31,11 +27,11 @@
             </span>
           </span>
         </button>
-      }
-    </div>
+      </div>
+    }
 
-    <div class="flip-card__face flip-card__back glass">
-      <app-project-details
+    <div class="flip-card__face flip-card__back">
+      <app-project-card
         [project]="project()"
         [linksFocusable]="toggle.active() || toggle.reducedMotion()"
       />
