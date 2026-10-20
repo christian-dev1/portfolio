@@ -1,0 +1,59 @@
+/* Calque posé sur tout le hero, sous la photo (z-index 1) : rien ne la masque. */
+:host {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.orbit__stream {
+  position: absolute;
+  inset: 0;
+}
+
+/* Fondu en fin de trajet : le masque ne garde que l'alpha (currentColor = opaque). */
+.orbit__stream--left {
+  mask-image: linear-gradient(to right, currentColor var(--fade-from), transparent var(--fade-to));
+}
+
+.orbit__stream--right {
+  mask-image: linear-gradient(to left, currentColor var(--fade-from), transparent var(--fade-to));
+}
+
+.orbit__logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--orbit-logo-size);
+  height: var(--orbit-logo-size);
+  border-radius: 50%;
+  background-color: var(--color-brand-red-hover);
+  color: var(--color-on-brand);
+  offset-path: var(--orbit-path);
+  offset-anchor: center;
+  /* Les logos restent droits dans les virages. */
+  offset-rotate: 0deg;
+  animation: orbit var(--orbit-duration) linear infinite;
+  /* Pause au survol du hero (voir home-page.scss). */
+  animation-play-state: var(--orbit-state, running);
+}
+
+@keyframes orbit {
+  from {
+    offset-distance: 0%;
+  }
+
+  to {
+    offset-distance: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    display: none;
+  }
+}

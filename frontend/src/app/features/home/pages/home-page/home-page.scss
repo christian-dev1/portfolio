@@ -4,6 +4,15 @@
   display: block;
 }
 
+/* Repère des logos qui circulent sur la bande (app-band-orbit) ; ils s'arrêtent au survol. */
+.hero {
+  position: relative;
+
+  &:hover {
+    --orbit-state: paused;
+  }
+}
+
 /* 1. Zone bleue pleine largeur avec trame de points */
 .hero__banner {
   min-height: 13.75rem;
@@ -80,9 +89,9 @@
   }
 }
 
-/* 4. Identité */
+/* 4. Identité : assez d'air sous la photo pour les logos qui passent sous l'anneau. */
 .hero__brand {
-  margin: 1rem 0 0;
+  margin: 2.5rem 0 0;
   /* Compense l'espace ajouté après la dernière lettre pour un vrai centrage. */
   padding-left: 0.16em;
   font-size: clamp(2.5rem, 7vw, 4rem);
@@ -147,10 +156,6 @@
 .home__status {
   padding: 3rem 1.5rem;
   text-align: center;
-}
-
-.home__marquee {
-  margin-top: 3.5rem;
 }
 
 /* Mobile : pastille et icônes l'une sous l'autre, photo plus petite. */

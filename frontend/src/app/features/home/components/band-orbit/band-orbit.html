@@ -1,0 +1,17 @@
+@for (stream of streams(); track stream.side) {
+  <div
+    class="orbit__stream"
+    [class.orbit__stream--left]="stream.side === 'left'"
+    [class.orbit__stream--right]="stream.side === 'right'"
+    [style.--orbit-path]="stream.path"
+    [style.--orbit-duration.s]="stream.duration"
+    [style.--fade-from.px]="stream.fadeFrom"
+    [style.--fade-to.px]="stream.fadeTo"
+  >
+    @for (logo of stream.logos; track logo.icon.title) {
+      <span class="orbit__logo" [style.animation-delay.s]="logo.delay">
+        <app-brand-icon [icon]="logo.icon" [size]="12" />
+      </span>
+    }
+  </div>
+}

@@ -9,9 +9,10 @@ import { ProfileService } from '../../../../shared/profile/data-access/profile.s
 import { SocialNetwork } from '../../../../shared/profile/models/profile.model';
 import { ProjectService } from '../../../../shared/projects/data-access/project.service';
 import { ToolService } from '../../../../shared/tools/data-access/tool.service';
+import { BRAND_ICONS, isBrandIconSlug } from '../../../../shared/ui/brand-icons';
+import { BandOrbit } from '../../components/band-orbit/band-orbit';
 import { FeaturedProjects } from '../../components/featured-projects/featured-projects';
 import { KeyFigures } from '../../components/key-figures/key-figures';
-import { TechMarquee } from '../../components/tech-marquee/tech-marquee';
 
 /** Réseaux affichés dans la zone bleue ; tous les autres restent dans le footer et sur /contact. */
 const HERO_NETWORKS: readonly SocialNetwork[] = ['linkedin', 'github', 'gitlab', 'email'];
@@ -25,7 +26,7 @@ const HERO_NETWORKS: readonly SocialNetwork[] = ['linkedin', 'github', 'gitlab',
     AvailabilityBadge,
     SocialLinks,
     KeyFigures,
-    TechMarquee,
+    BandOrbit,
     FeaturedProjects,
   ],
   templateUrl: './home-page.html',
@@ -46,6 +47,13 @@ export class HomePage {
   );
   protected readonly projectCount = computed(() => this.projects()?.length);
   protected readonly toolCount = computed(() => this.tools()?.length);
+
+  /** Logos qui circulent sur la bande : seuls les outils qui ont un logo de marque. */
+  protected readonly orbitIcons = computed(() =>
+    (this.tools() ?? []).flatMap((tool) =>
+      tool.icon && isBrandIconSlug(tool.icon) ? [BRAND_ICONS[tool.icon]] : [],
+    ),
+  );
 
   /** Passe à true si la photo ne charge pas : on affiche alors les initiales. */
   protected readonly photoFailed = signal(false);

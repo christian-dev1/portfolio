@@ -44,7 +44,7 @@
       "tools": "outils",
       "founder": "Fondateur"
     },
-    "marquee": {
+    "technologies": {
       "label": "Technologies que j'utilise"
     }
   },
@@ -72,6 +72,10 @@
     }
   },
   "projects": {
+    "flip": {
+      "hintHover": "Survolez pour découvrir le projet",
+      "hintTouch": "Touchez pour découvrir le projet"
+    },
     "title": "Projets",
     "intro": "Les applications que je conçois, développe et teste, en solo sous la bannière B-HER EMPIRE ou en équipe.",
     "loading": "Chargement des projets…",

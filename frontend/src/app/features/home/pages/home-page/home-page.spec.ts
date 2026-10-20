@@ -200,13 +200,27 @@ describe('HomePage', () => {
     expect(compiled.textContent).not.toContain('En ce moment');
   });
 
-  it('should show a ribbon with the visible technologies under the hero', async () => {
+  it('should no longer display the scrolling tech ribbon', async () => {
     const compiled = await setup();
 
-    const names = Array.from(
-      compiled.querySelectorAll('app-tech-marquee ul.visually-hidden li'),
-    ).map((li) => li.textContent!.trim());
+    expect(compiled.querySelector('app-tech-marquee')).toBeNull();
+    expect(compiled.querySelector('.home__marquee')).toBeNull();
+  });
+
+  it('should list the visible technologies for screen readers in the hero', async () => {
+    const compiled = await setup();
+
+    const list = compiled.querySelector('.hero ul.visually-hidden')!;
+    const names = Array.from(list.querySelectorAll('li')).map((li) => li.textContent!.trim());
     expect(names).toEqual(['java', 'docker', 'git']);
+    expect(list.getAttribute('aria-label')).toBe("Technologies que j'utilise");
+  });
+
+  it('should add the decorative orbiting logos to the hero, hidden from screen readers', async () => {
+    const compiled = await setup();
+
+    const orbit = compiled.querySelector('.hero app-band-orbit')!;
+    expect(orbit.getAttribute('aria-hidden')).toBe('true');
   });
 
   it('should only show LinkedIn, GitHub, GitLab and email in the blue zone', async () => {
