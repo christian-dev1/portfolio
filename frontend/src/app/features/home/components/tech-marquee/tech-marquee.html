@@ -1,0 +1,24 @@
+<div class="marquee">
+  <ul class="visually-hidden" [attr.aria-label]="'home.marquee.label' | transloco">
+    @for (item of items(); track item.tool.id) {
+      <li>{{ item.tool.name | localize }}</li>
+    }
+  </ul>
+
+  <div class="marquee__track" aria-hidden="true">
+    @for (copy of copies; track copy) {
+      <ul class="marquee__group">
+        @for (item of items(); track item.tool.id) {
+          <li class="marquee__item">
+            @if (item.icon; as icon) {
+              <app-brand-icon [icon]="icon" [size]="22" />
+            } @else {
+              <span class="marquee__monogram">{{ item.tool.monogram }}</span>
+            }
+            {{ item.tool.name | localize }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

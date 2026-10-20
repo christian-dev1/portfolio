@@ -1,0 +1,21 @@
+<section class="featured" aria-labelledby="featured-title">
+  <div class="featured__intro reveal">
+    <h2 id="featured-title" class="featured__title">{{ 'home.featured.title' | transloco }}</h2>
+    <p class="featured__lead">{{ 'home.featured.intro' | transloco }}</p>
+    <a class="featured__see-all link" routerLink="/projets">
+      {{ 'home.featured.seeAll' | transloco }}
+    </a>
+  </div>
+
+  @if (projects(); as projects) {
+    <div class="featured__grid">
+      @for (project of projects; track project.id) {
+        <app-project-card class="reveal" [project]="project" [headingLevel]="3" />
+      } @empty {
+        <p>{{ 'home.featured.empty' | transloco }}</p>
+      }
+    </div>
+  } @else {
+    <p>{{ 'home.featured.loading' | transloco }}</p>
+  }
+</section>

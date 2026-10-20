@@ -1,0 +1,59 @@
+.featured {
+  display: grid;
+  grid-template-columns: 17rem minmax(0, 1fr);
+  align-items: start;
+  gap: 1.5rem 2.5rem;
+  max-width: var(--content-width);
+  margin: 4.5rem auto 0;
+  padding: 0 var(--content-gutter);
+}
+
+/* La colonne de gauche accompagne le défilement des cartes. */
+.featured__intro {
+  position: sticky;
+  top: 6.5rem;
+}
+
+.featured__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1.15;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 4px;
+    margin-top: 0.875rem;
+    border-radius: 999px;
+    background-color: var(--color-brand-red);
+  }
+}
+
+.featured__lead {
+  margin: 1rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.featured__see-all {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  margin-top: 0.5rem;
+}
+
+.featured__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+  gap: 2rem 1.5rem;
+}
+
+@media (max-width: 1099.98px) {
+  .featured {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .featured__intro {
+    position: static;
+  }
+}
