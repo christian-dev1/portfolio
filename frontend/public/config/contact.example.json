@@ -8,5 +8,10 @@
         "en": "Calls"
       }
     }
-  ]
+  ],
+  "cvPdf": {
+    "fr": "/cv/cv-fr.pdf",
+    "en": "/cv/cv-en.pdf"
+  },
+  "web3formsAccessKey": "00000000-0000-0000-0000-000000000000"
 }

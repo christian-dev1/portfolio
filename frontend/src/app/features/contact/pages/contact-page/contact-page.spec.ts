@@ -9,6 +9,7 @@ import {
   ContactConfig,
   EMPTY_CONTACT_CONFIG,
 } from '../../../../shared/contact-config/models/contact-config.model';
+import { CONTACT_MESSAGE_SENDER } from '../../../../shared/contact-message/models/contact-message.model';
 import { ProfileService } from '../../../../shared/profile/data-access/profile.service';
 import { ContactPage } from './contact-page';
 
@@ -34,6 +35,7 @@ describe('ContactPage', () => {
         { provide: ToolService, useValue: { getPublicTools: () => of([]) } },
         { provide: ProfileService, useValue: { getProfile: () => of(PROFILE_FIXTURE) } },
         { provide: ContactConfigService, useValue: { getContactConfig: () => contactConfig$ } },
+        { provide: CONTACT_MESSAGE_SENDER, useValue: { send: () => of('sent') } },
       ],
     });
 
@@ -117,8 +119,29 @@ describe('ContactPage', () => {
     expect(compiled.querySelector('.contact__feedback')!.getAttribute('aria-live')).toBe('polite');
   });
 
-  it('should not contain any form', () => {
+  it('should not show the message form without a Web3Forms key', () => {
     expect(compiled.querySelector('form')).toBeNull();
+    expect(compiled.querySelector('.contact__email')).not.toBeNull();
+  });
+
+  it('should show the message form right under the email once a key is configured', async () => {
+    contactConfig$.next({
+      ...EMPTY_CONTACT_CONFIG,
+      whatsapp: '237600000000',
+      web3formsAccessKey: '0a1b2c3d-4e5f-6789-abcd-ef0123456789',
+    });
+    await fixture.whenStable();
+
+    const column = Array.from(compiled.querySelector('.contact__direct')!.children).map(
+      (child) =>
+        child.tagName.toLowerCase() + (child.className ? '.' + child.className.split(' ')[0] : ''),
+    );
+    expect(column).toEqual([
+      'section.contact__email',
+      'app-contact-form.reveal',
+      'section.contact__whatsapp',
+    ]);
+    expect(compiled.querySelector('form')).not.toBeNull();
   });
 
   it('should hide the WhatsApp block when there is no contact configuration', () => {
@@ -127,6 +150,7 @@ describe('ContactPage', () => {
 
   it('should show the WhatsApp button, but never any phone number, once configured', async () => {
     contactConfig$.next({
+      ...EMPTY_CONTACT_CONFIG,
       whatsapp: '237600000000',
       phones: [{ number: '+237 600 00 00 00', label: { fr: 'Appels', en: 'Calls' } }],
     });

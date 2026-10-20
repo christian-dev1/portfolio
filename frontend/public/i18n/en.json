@@ -168,6 +168,27 @@
     "whatsapp": "WhatsApp",
     "whatsappLabel": "Message me on WhatsApp (opens in a new tab)",
     "whatsappTitle": "On WhatsApp",
-    "whatsappIntro": "For a quick chat, message me directly on WhatsApp."
+    "whatsappIntro": "For a quick chat, message me directly on WhatsApp.",
+    "form": {
+      "title": "Send a message",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "counter": "{{count}} / {{max}} characters",
+      "botcheck": "Do not fill in this field",
+      "submit": "Send the message",
+      "sending": "Sending…",
+      "notice": "Your message reaches me by email through the Web3Forms service.",
+      "sent": "Thank you, your message has been sent. I will get back to you shortly.",
+      "failed": "Sending failed. Please try again or email me directly at {{email}}.",
+      "errors": {
+        "nameRequired": "Please enter your name.",
+        "nameLength": "Your name must be between 2 and 80 characters long.",
+        "emailRequired": "Please enter your email address.",
+        "emailInvalid": "This email address is not valid (e.g. name@domain.com).",
+        "messageRequired": "Please write your message.",
+        "messageLength": "Your message must be between 10 and 2000 characters long."
+      }
+    }
   }
 }

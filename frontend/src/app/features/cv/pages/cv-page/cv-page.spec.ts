@@ -37,6 +37,7 @@ function tool(id: string, category: Tool['category']): Tool {
 }
 
 const CONTACT_CONFIG: ContactConfig = {
+  ...EMPTY_CONTACT_CONFIG,
   whatsapp: '237600000000',
   phones: [{ number: '+237 600 00 00 00', label: { fr: 'Appels', en: 'Calls' } }],
 };

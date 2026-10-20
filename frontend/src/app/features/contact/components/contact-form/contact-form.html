@@ -1,0 +1,119 @@
+<form
+  class="contact-form glass"
+  aria-labelledby="contact-form-title"
+  novalidate
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <h2 id="contact-form-title">{{ 'contact.form.title' | transloco }}</h2>
+
+  <div class="contact-form__field">
+    <label for="contact-name">{{ 'contact.form.name' | transloco }}</label>
+    <input
+      id="contact-name"
+      type="text"
+      formControlName="name"
+      autocomplete="name"
+      [attr.aria-invalid]="showError(form.controls.name)"
+      [attr.aria-describedby]="showError(form.controls.name) ? 'contact-name-error' : null"
+    />
+    @if (showError(form.controls.name)) {
+      <p class="contact-form__error" id="contact-name-error">
+        {{
+          (form.controls.name.hasError('required')
+            ? 'contact.form.errors.nameRequired'
+            : 'contact.form.errors.nameLength'
+          ) | transloco
+        }}
+      </p>
+    }
+  </div>
+
+  <div class="contact-form__field">
+    <label for="contact-email">{{ 'contact.form.email' | transloco }}</label>
+    <input
+      id="contact-email"
+      type="email"
+      formControlName="email"
+      autocomplete="email"
+      inputmode="email"
+      [attr.aria-invalid]="showError(form.controls.email)"
+      [attr.aria-describedby]="showError(form.controls.email) ? 'contact-email-error' : null"
+    />
+    @if (showError(form.controls.email)) {
+      <p class="contact-form__error" id="contact-email-error">
+        {{
+          (form.controls.email.hasError('required')
+            ? 'contact.form.errors.emailRequired'
+            : 'contact.form.errors.emailInvalid'
+          ) | transloco
+        }}
+      </p>
+    }
+  </div>
+
+  <div class="contact-form__field">
+    <label for="contact-message">{{ 'contact.form.message' | transloco }}</label>
+    <textarea
+      id="contact-message"
+      formControlName="message"
+      rows="6"
+      [attr.aria-invalid]="showError(form.controls.message)"
+      [attr.aria-describedby]="
+        (showError(form.controls.message) ? 'contact-message-error ' : '') +
+        'contact-message-counter'
+      "
+    ></textarea>
+    <p
+      class="contact-form__counter"
+      id="contact-message-counter"
+      [class.contact-form__counter--over]="messageLength().length > messageMax"
+    >
+      {{ 'contact.form.counter' | transloco: { count: messageLength().length, max: messageMax } }}
+    </p>
+    @if (showError(form.controls.message)) {
+      <p class="contact-form__error" id="contact-message-error">
+        {{
+          (form.controls.message.hasError('required')
+            ? 'contact.form.errors.messageRequired'
+            : 'contact.form.errors.messageLength'
+          ) | transloco
+        }}
+      </p>
+    }
+  </div>
+
+  <!-- Champ piège : hors écran, ignoré au clavier et par les lecteurs d'écran. -->
+  <div class="contact-form__trap" aria-hidden="true">
+    <label for="contact-botcheck">{{ 'contact.form.botcheck' | transloco }}</label>
+    <input
+      id="contact-botcheck"
+      type="text"
+      formControlName="botcheck"
+      tabindex="-1"
+      autocomplete="off"
+    />
+  </div>
+
+  <button
+    type="submit"
+    class="button button--primary contact-form__submit"
+    [disabled]="state() === 'sending'"
+  >
+    {{ (state() === 'sending' ? 'contact.form.sending' : 'contact.form.submit') | transloco }}
+  </button>
+  <p class="contact-form__notice">{{ 'contact.form.notice' | transloco }}</p>
+
+  <p
+    class="contact-form__status"
+    [class.contact-form__status--failed]="state() === 'failed'"
+    role="status"
+    aria-live="polite"
+  >
+    @if (state() === 'sent') {
+      {{ 'contact.form.sent' | transloco }}
+    } @else if (state() === 'failed') {
+      {{ 'contact.form.failed' | transloco: { email: email() } }}
+    }
+  </p>
+</form>

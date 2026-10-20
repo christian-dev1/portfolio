@@ -168,6 +168,27 @@
     "whatsapp": "WhatsApp",
     "whatsappLabel": "Écrire sur WhatsApp (nouvel onglet)",
     "whatsappTitle": "Sur WhatsApp",
-    "whatsappIntro": "Pour un échange rapide, écrivez-moi directement sur WhatsApp."
+    "whatsappIntro": "Pour un échange rapide, écrivez-moi directement sur WhatsApp.",
+    "form": {
+      "title": "Par message",
+      "name": "Nom",
+      "email": "E-mail",
+      "message": "Message",
+      "counter": "{{count}} / {{max}} caractères",
+      "botcheck": "Ne pas remplir ce champ",
+      "submit": "Envoyer le message",
+      "sending": "Envoi…",
+      "notice": "Votre message m'est transmis par e-mail via le service Web3Forms.",
+      "sent": "Merci, votre message est bien envoyé. Je vous réponds rapidement.",
+      "failed": "L'envoi a échoué. Réessayez ou écrivez-moi directement à {{email}}.",
+      "errors": {
+        "nameRequired": "Indiquez votre nom.",
+        "nameLength": "Votre nom doit contenir entre 2 et 80 caractères.",
+        "emailRequired": "Indiquez votre adresse e-mail.",
+        "emailInvalid": "Cette adresse e-mail n'est pas valide (ex. nom@domaine.com).",
+        "messageRequired": "Écrivez votre message.",
+        "messageLength": "Votre message doit contenir entre 10 et 2000 caractères."
+      }
+    }
   }
 }
