@@ -27,6 +27,12 @@ describe('ContactForm', () => {
     fixture.componentRef.setInput('email', 'contact@example.com');
     compiled = fixture.nativeElement as HTMLElement;
     await fixture.whenStable();
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
   });
 
   function field(id: 'name' | 'email' | 'message' | 'botcheck'): HTMLInputElement {
@@ -108,6 +114,7 @@ describe('ContactForm', () => {
       expect(error('message')).toBe('Écrivez votre message.');
       expect(document.activeElement).toBe(field('name'));
       expect(send).not.toHaveBeenCalled();
+      expect(status()).toBe('');
     });
 
     it('should count the characters of the message', async () => {
@@ -175,6 +182,49 @@ describe('ContactForm', () => {
       expect(button().textContent!.trim()).toBe('Envoyer le message');
     });
 
+    it.each(['name', 'email', 'message'] as const)(
+      'should clear a success message when %s is edited',
+      async (id) => {
+        await fillValid();
+        await submit();
+        pending.next('sent');
+        await fixture.whenStable();
+        expect(status()).toContain('Merci');
+
+        await type(id, 'A new value');
+
+        expect(status()).toBe('');
+        expect(button().disabled).toBe(false);
+      },
+    );
+
+    it.each(['name', 'email', 'message'] as const)(
+      'should clear a failure message when %s is edited',
+      async (id) => {
+        await fillValid();
+        await submit();
+        pending.next('failed');
+        await fixture.whenStable();
+        expect(status()).toContain('échoué');
+
+        await type(id, 'A new value');
+
+        expect(status()).toBe('');
+        expect(send).toHaveBeenCalledTimes(1);
+      },
+    );
+
+    it('should keep the submission locked if a field changes while sending', async () => {
+      await fillValid();
+      await submit();
+
+      await type('message', 'A different message while waiting.');
+      await submit();
+
+      expect(button().disabled).toBe(true);
+      expect(send).toHaveBeenCalledTimes(1);
+    });
+
     it('should let the visitor try again after a failure', async () => {
       await fillValid();
       await submit();
@@ -197,6 +247,11 @@ describe('ContactForm', () => {
     it('should hide the trap field from people, keyboards and screen readers', () => {
       const trap = field('botcheck');
 
+      expect(trap.type).toBe('checkbox');
+      expect(trap.name).toBe('botcheck');
+      expect(trap.checked).toBe(false);
+      expect(compiled.querySelectorAll('[name="botcheck"]')).toHaveLength(1);
+      expect(compiled.querySelector('input[type="hidden"]')).toBeNull();
       expect(trap.getAttribute('tabindex')).toBe('-1');
       expect(trap.getAttribute('autocomplete')).toBe('off');
       expect(trap.closest('[aria-hidden="true"]')).not.toBeNull();
@@ -204,7 +259,9 @@ describe('ContactForm', () => {
 
     it('should send nothing but pretend it worked when the trap is filled', async () => {
       await fillValid();
-      await type('botcheck', 'https://spam.example');
+      field('botcheck').checked = true;
+      field('botcheck').dispatchEvent(new Event('change'));
+      await fixture.whenStable();
 
       await submit();
 
@@ -212,5 +269,36 @@ describe('ContactForm', () => {
       expect(status()).toContain('Merci, votre message est bien envoyé.');
       expect(field('name').value).toBe('');
     });
+    it('should send normally when autofill changes the checkbox value without checking it', async () => {
+      await fillValid();
+      await type('botcheck', 'autofilled-value');
+
+      await submit();
+
+      expect(send).toHaveBeenCalledTimes(1);
+      expect(status()).toBe('');
+      expect(console.warn).not.toHaveBeenCalled();
+    });
+
+    it.each([true, false])(
+      'should warn for a checked trap only in development: %s',
+      async (development) => {
+        await fillValid();
+        field('botcheck').checked = true;
+        field('botcheck').dispatchEvent(new Event('change'));
+        vi.stubGlobal('ngDevMode', development);
+
+        await submit();
+
+        expect(send).not.toHaveBeenCalled();
+        if (development) {
+          expect(console.warn).toHaveBeenCalledWith(
+            'Contact submission skipped: botcheck is checked.',
+          );
+        } else {
+          expect(console.warn).not.toHaveBeenCalled();
+        }
+      },
+    );
   });
 });

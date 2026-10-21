@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, isDevMode } from '@angular/core';
 import { Observable, catchError, map, of, switchMap, take } from 'rxjs';
 import { ContactConfigService } from '../../contact-config/data-access/contact-config.service';
 import { ContactMessage, ContactMessageSender, SendResult } from '../models/contact-message.model';
@@ -18,10 +18,13 @@ export class Web3FormsSender implements ContactMessageSender {
       take(1),
       switchMap(({ web3formsAccessKey }) => {
         if (!web3formsAccessKey) {
+          if (isDevMode()) {
+            console.warn('Contact submission skipped: Web3Forms access key is missing.');
+          }
           return of<SendResult>('failed');
         }
         return this.http
-          .post<{ success?: boolean }>(
+          .post<{ success?: boolean; message?: string }>(
             WEB3FORMS_URL,
             {
               access_key: web3formsAccessKey,
@@ -31,7 +34,7 @@ export class Web3FormsSender implements ContactMessageSender {
               subject: WEB3FORMS_SUBJECT,
               botcheck: false,
             },
-            { headers: { Accept: 'application/json' } },
+            { headers: { Accept: 'application/json', 'Content-Type': 'application/json' } },
           )
           .pipe(
             map((response): SendResult => (response?.success === true ? 'sent' : 'failed')),

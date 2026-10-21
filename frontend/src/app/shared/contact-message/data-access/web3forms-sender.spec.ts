@@ -38,6 +38,8 @@ describe('Web3FormsSender', () => {
 
   afterEach(() => {
     httpTesting.verify();
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
   });
 
   it('should post the message as JSON with the access key, subject and empty botcheck', async () => {
@@ -50,6 +52,7 @@ describe('Web3FormsSender', () => {
     expect(request.request.method).toBe('POST');
     expect(request.request.url).toBe('https://api.web3forms.com/submit');
     expect(request.request.headers.get('Accept')).toBe('application/json');
+    expect(request.request.headers.get('Content-Type')).toBe('application/json');
     expect(request.request.body).toEqual({
       access_key: KEY,
       name: 'Ada Lovelace',
@@ -61,11 +64,13 @@ describe('Web3FormsSender', () => {
     expect(await result).toBe('sent');
   });
 
-  it('should report a failure when the service refuses the message', async () => {
+  it('should reject HTTP 200 when success is false', async () => {
     setup(KEY);
 
     const result = firstValueFrom(sender.send(MESSAGE));
-    httpTesting.expectOne(WEB3FORMS_URL).flush({ success: false, message: 'Invalid access key' });
+    httpTesting
+      .expectOne(WEB3FORMS_URL)
+      .flush({ success: false, message: 'Invalid access key' }, { status: 200, statusText: 'OK' });
 
     expect(await result).toBe('failed');
   });
@@ -83,6 +88,39 @@ describe('Web3FormsSender', () => {
     httpTesting.expectOne(WEB3FORMS_URL).error(new ProgressEvent('error'));
     expect(await offline).toBe('failed');
   });
+
+  it.each([{}, { success: 'true' }, { success: 1 }, null])(
+    'should reject a malformed success response: %j',
+    async (response) => {
+      setup(KEY);
+      const result = firstValueFrom(sender.send(MESSAGE));
+
+      httpTesting.expectOne(WEB3FORMS_URL).flush(response);
+
+      expect(await result).toBe('failed');
+    },
+  );
+
+  it.each([true, false])(
+    'should warn for a missing key only in development: %s',
+    async (development) => {
+      setup('');
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      vi.stubGlobal('ngDevMode', development);
+
+      const result = await firstValueFrom(sender.send(MESSAGE));
+
+      expect(result).toBe('failed');
+      httpTesting.expectNone(WEB3FORMS_URL);
+      if (development) {
+        expect(warn).toHaveBeenCalledWith(
+          'Contact submission skipped: Web3Forms access key is missing.',
+        );
+      } else {
+        expect(warn).not.toHaveBeenCalled();
+      }
+    },
+  );
 
   it('should not call the service at all without an access key', async () => {
     setup('');

@@ -79,13 +79,8 @@
   color: var(--color-accent-text);
 }
 
-/* Hors écran (et non `display: none`, que certains robots repèrent). */
 .contact-form__trap {
-  position: absolute;
-  left: -10000px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+  display: none;
 }
 
 .contact-form__submit {

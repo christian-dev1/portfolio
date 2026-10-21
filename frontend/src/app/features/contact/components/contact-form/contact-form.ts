@@ -1,5 +1,5 @@
-import { Component, ElementRef, inject, input, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, ElementRef, inject, input, isDevMode, signal } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   NonNullableFormBuilder,
@@ -44,8 +44,8 @@ export class ContactForm {
       '',
       [Validators.required, Validators.minLength(MESSAGE_MIN), Validators.maxLength(MESSAGE_MAX)],
     ],
-    // Champ piège invisible : seul un robot le remplit.
-    botcheck: [''],
+    // A checkbox cannot be filled as text by browser autofill.
+    botcheck: [false],
   });
 
   protected readonly messageMax = MESSAGE_MAX;
@@ -54,6 +54,14 @@ export class ContactForm {
   });
   protected readonly state = signal<FormState>('idle');
   private readonly submitted = signal(false);
+
+  constructor() {
+    this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
+      if (this.state() === 'sent' || this.state() === 'failed') {
+        this.state.set('idle');
+      }
+    });
+  }
 
   /** Erreur visible seulement après interaction (champ quitté) ou tentative d'envoi. */
   protected showError(control: AbstractControl): boolean {
@@ -73,7 +81,10 @@ export class ContactForm {
     }
 
     const { name, email, message, botcheck } = this.form.getRawValue();
-    if (botcheck) {
+    if (botcheck === true) {
+      if (isDevMode()) {
+        console.warn('Contact submission skipped: botcheck is checked.');
+      }
       // Robot : rien n'est envoyé, mais il reçoit la même réponse qu'un humain.
       this.succeed();
       return;
