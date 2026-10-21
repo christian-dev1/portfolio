@@ -4,6 +4,7 @@ import {
   DestroyRef,
   ElementRef,
   afterNextRender,
+  afterRenderEffect,
   computed,
   inject,
   input,
@@ -62,6 +63,34 @@ export class BandOrbit {
 
   constructor() {
     const destroyRef = inject(DestroyRef);
+    afterRenderEffect((onCleanup) => {
+      if (!this.layout() || this.reducedMotion()) return;
+      const period = this.period();
+      const paths = this.host.querySelectorAll('textPath');
+      let offset = -period;
+      let previousTime: number | undefined;
+      const resetTime = () => {
+        previousTime = undefined;
+      };
+      const step = (time: number) => {
+        if (document.visibilityState === 'hidden') {
+          resetTime();
+        } else {
+          if (previousTime !== undefined) {
+            offset = -period + ((offset + period + ((time - previousTime) * 18) / 1000) % period);
+          }
+          previousTime = time;
+          paths.forEach((path) => path.setAttribute('startOffset', String(offset)));
+        }
+        frame = requestAnimationFrame(step);
+      };
+      let frame = requestAnimationFrame(step);
+      document.addEventListener('visibilitychange', resetTime);
+      onCleanup(() => {
+        cancelAnimationFrame(frame);
+        document.removeEventListener('visibilitychange', resetTime);
+      });
+    });
     afterNextRender(() => {
       if (typeof ResizeObserver !== 'function') return;
       const observer = new ResizeObserver(() => this.measure());

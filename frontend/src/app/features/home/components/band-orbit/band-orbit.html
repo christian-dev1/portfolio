@@ -43,15 +43,6 @@
             lengthAdjust="spacingAndGlyphs"
           >
             {{ repeatedText() }}
-            @if (!reducedMotion()) {
-              <animate
-                attributeName="startOffset"
-                [attr.from]="-period()"
-                to="0"
-                [attr.dur]="period() / 18 + 's'"
-                repeatCount="indefinite"
-              />
-            }
           </textPath>
         </text>
       }

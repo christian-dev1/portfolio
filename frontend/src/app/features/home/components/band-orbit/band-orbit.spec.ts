@@ -22,8 +22,16 @@ describe('BandOrbit', () => {
   let fixture: ComponentFixture<Host>;
   let orbit: HTMLElement;
   let resize: () => void;
+  let frames: Map<number, FrameRequestCallback>;
 
   function stubBrowser(options: { offsetPath: boolean; reducedMotion: boolean }): void {
+    frames = new Map();
+    let nextFrame = 0;
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      frames.set(++nextFrame, callback);
+      return nextFrame;
+    });
+    vi.stubGlobal('cancelAnimationFrame', (id: number) => frames.delete(id));
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
     vi.stubGlobal('matchMedia', () => ({ matches: options.reducedMotion }));
     vi.stubGlobal(
@@ -53,8 +61,68 @@ describe('BandOrbit', () => {
   }
 
   afterEach(() => {
+    fixture?.destroy();
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
+  });
+
+  function advanceFrame(time: number): void {
+    const callbacks = [...frames.values()];
+    frames.clear();
+    callbacks.forEach((callback) => callback(time));
+  }
+
+  function offsets(): number[] {
+    return Array.from(orbit.querySelectorAll('textPath'), (path) =>
+      Number(path.getAttribute('startOffset')),
+    );
+  }
+
+  it('should resume at the same speed after returning from a hidden tab', async () => {
+    stubBrowser({ offsetPath: true, reducedMotion: false });
+    await render();
+    advanceFrame(0);
+    advanceFrame(1000);
+    expect(offsets()).toEqual([-982, -982]);
+
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden');
+    document.dispatchEvent(new Event('visibilitychange'));
+    advanceFrame(30000);
+    expect(offsets()).toEqual([-982, -982]);
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    document.dispatchEvent(new Event('visibilitychange'));
+    advanceFrame(31000);
+    expect(offsets()).toEqual([-982, -982]);
+    advanceFrame(32000);
+    expect(offsets()).toEqual([-964, -964]);
+  });
+
+  it('should advance a new orbit after leaving and returning to the page', async () => {
+    stubBrowser({ offsetPath: true, reducedMotion: false });
+    await render();
+    advanceFrame(0);
+    advanceFrame(1000);
+    const previousPaths = Array.from(orbit.querySelectorAll('textPath'));
+    fixture.destroy();
+
+    await render();
+    advanceFrame(31000);
+    advanceFrame(32000);
+
+    expect(offsets()).toEqual([-982, -982]);
+    expect(previousPaths.map((path) => Number(path.getAttribute('startOffset')))).toEqual([
+      -982, -982,
+    ]);
+  });
+
+  it('should keep advancing within one period after thirty minutes', async () => {
+    stubBrowser({ offsetPath: true, reducedMotion: false });
+    await render();
+    advanceFrame(0);
+    advanceFrame(1800000);
+    expect(offsets()).toEqual([-600, -600]);
+    advanceFrame(1801000);
+    expect(offsets()).toEqual([-582, -582]);
   });
 
   it('should be hidden from assistive technologies', async () => {
@@ -70,7 +138,6 @@ describe('BandOrbit', () => {
     await render();
     expect(orbit.querySelectorAll('textPath')).toHaveLength(2);
     expect(orbit.querySelector('clipPath path')!.getAttribute('clip-rule')).toBe('evenodd');
-    expect(orbit.querySelectorAll('animate')).toHaveLength(2);
     expect(orbit.textContent).toContain('DOCKER · GIT');
     expect(orbit.querySelector('app-brand-icon')).toBeNull();
   });
@@ -102,6 +169,9 @@ describe('BandOrbit', () => {
     await render();
     expect(orbit.querySelectorAll('textPath')).toHaveLength(2);
     expect(orbit.querySelector('animate')).toBeNull();
+    advanceFrame(0);
+    advanceFrame(32000);
+    expect(offsets()).toEqual([-1000, -1000]);
   });
 
   it('should recalculate paths when the ring moves', async () => {
