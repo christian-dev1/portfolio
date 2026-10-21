@@ -87,12 +87,14 @@ describe('BandOrbit', () => {
     stubBrowser({ offsetPath: true, reducedMotion: false });
     await render();
     const [left, right] = Array.from(orbit.querySelectorAll('linearGradient'));
-    expect([left.getAttribute('y1'), left.getAttribute('y2')]).toEqual(['94', '100']);
-    expect([right.getAttribute('x1'), right.getAttribute('y1')]).toEqual(['454', '106']);
+    expect([left.getAttribute('y1'), left.getAttribute('y2')]).toEqual(['84.3', '90.1']);
+    expect([right.getAttribute('x1'), right.getAttribute('y1')]).toEqual(['456.8', '115.7']);
     const zone = orbit.querySelector('.band-orbit__fade')!;
-    expect(zone.getAttribute('x')).toBe('540');
-    expect(zone.getAttribute('width')).toBe('12');
+    expect(zone.getAttribute('x')).toBe('522');
+    expect(zone.getAttribute('width')).toBe('48');
     expect(orbit.querySelector('mask rect')!.getAttribute('fill')).toBe('white');
+    expect(orbit.querySelectorAll('mask .band-orbit__gap')).toHaveLength(2);
+    expect(orbit.querySelector('mask .band-orbit__gap')!.getAttribute('fill')).toBe('black');
   });
 
   it('should keep static text visible with reduced motion', async () => {

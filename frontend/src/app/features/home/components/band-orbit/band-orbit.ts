@@ -9,7 +9,7 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { FADE_LENGTH_PX, OrbitLayout, orbitTracks } from './orbit-path';
+import { FADE_LENGTH_PX, GAP_PX, OrbitLayout, orbitTracks } from './orbit-path';
 
 let nextId = 0;
 
@@ -25,8 +25,8 @@ export class BandOrbit {
   readonly band = input.required<HTMLElement>();
   readonly ring = input.required<HTMLElement>();
   protected readonly id = `band-orbit-${nextId++}`;
-  /** Half-size of the square, around each junction, where the fade gradient applies. */
-  protected readonly fadeZone = FADE_LENGTH_PX;
+  /** The local mask covers the fade, gap and full glyph height around the junction. */
+  protected readonly fadeZone = FADE_LENGTH_PX + GAP_PX + 8;
   protected readonly layout = signal<OrbitLayout | null>(null);
   private readonly fontsReady = signal(false);
   protected readonly period = computed(() => {
