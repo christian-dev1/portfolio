@@ -1,3 +1,5 @@
+@use '../../../../shared/ui/motion/page-system' as page;
+
 .projects {
   max-width: var(--content-width);
   margin: 0 auto;
@@ -13,5 +15,21 @@
 @media (max-width: 639.98px) {
   .projects {
     padding-top: 2rem;
+  }
+}
+
+@media screen {
+  :host {
+    @include page.tokens;
+  }
+  .projects {
+    padding-top: var(--page-section-gap);
+  }
+  .projects__grid {
+    row-gap: var(--page-section-gap);
+  }
+  .projects__grid > app-project-flip-card {
+    @include page.reveal;
+    @include page.sequence;
   }
 }

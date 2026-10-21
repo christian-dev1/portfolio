@@ -1,3 +1,5 @@
+@use '../../../../shared/ui/motion/page-system' as page;
+
 .tools {
   max-width: var(--content-width);
   margin: 0 auto;
@@ -131,5 +133,46 @@
 @media (prefers-reduced-motion: reduce) {
   .tools__tile:hover {
     transform: none;
+  }
+}
+
+@media screen {
+  :host {
+    @include page.tokens;
+  }
+  .tools {
+    display: grid;
+    row-gap: var(--page-section-gap);
+    padding-top: var(--page-section-gap);
+  }
+  .tools__rail {
+    grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+    padding: var(--page-panel-padding);
+    border-radius: var(--page-card-radius);
+    background-color: var(--page-surface);
+    @include page.reveal;
+    @include page.sequence;
+
+    & + & {
+      border-top: 0;
+    }
+    &:nth-child(even) {
+      background-color: var(--page-tint);
+    }
+  }
+  .tools__rail-title {
+    @include page.section-title;
+  }
+  .tools__grid {
+    @include page.stagger;
+  }
+  .tools__tile {
+    border-radius: var(--page-card-radius);
+  }
+
+  @media (max-width: 899.98px) {
+    .tools__rail {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 }

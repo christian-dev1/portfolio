@@ -1,3 +1,5 @@
+@use '../../../../shared/ui/motion/page-system' as page;
+
 /* Deux colonnes : e-mail et WhatsApp à gauche, réseaux à droite. */
 .contact {
   display: grid;
@@ -124,5 +126,46 @@
   .contact__email,
   .contact__whatsapp {
     padding: 1.5rem 1rem;
+  }
+}
+
+@media screen {
+  :host {
+    @include page.tokens;
+  }
+  .contact {
+    padding-top: var(--page-section-gap);
+    row-gap: var(--page-section-gap);
+  }
+  .contact h2 {
+    @include page.section-title;
+  }
+  .contact__direct {
+    gap: var(--page-section-gap);
+  }
+  .contact__direct > * {
+    @include page.reveal;
+    @include page.sequence;
+  }
+  .contact__email,
+  .contact__whatsapp {
+    padding: var(--page-panel-padding);
+    border-radius: var(--page-card-radius);
+    background-color: var(--page-surface);
+  }
+  .contact__whatsapp {
+    background-color: var(--page-tint);
+  }
+  .contact > section {
+    padding: var(--page-panel-padding);
+    border-radius: var(--page-card-radius);
+    background-color: var(--page-tint);
+    @include page.reveal;
+  }
+  .contact__tile {
+    border-radius: var(--page-card-radius);
+  }
+  .contact__networks {
+    @include page.stagger;
   }
 }
