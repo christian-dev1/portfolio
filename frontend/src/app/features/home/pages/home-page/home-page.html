@@ -1,158 +1,70 @@
 @if (profile(); as profile) {
-  <section class="hero" aria-labelledby="home-title">
-    <div class="hero__opening">
-      <p class="hero__eyebrow">
-        {{
-          'home.editorial.eyebrow'
-            | transloco: { role: ('home.jobTitle' | transloco), company: profile.company.name }
-        }}
-      </p>
-      <h1 class="hero__slogan" id="home-title">{{ profile.slogan | localize }}</h1>
-      <p class="hero__description">{{ profile.description | localize }}</p>
-      <div class="hero__actions">
-        <a class="button button--primary" routerLink="/projets">{{
-          'home.ctaProjects' | transloco
-        }}</a>
-        @if (cvUrl(); as url) {
-          <a class="hero__cv home-link" [href]="url" download>
-            {{ 'home.editorial.downloadCv' | transloco }} <span aria-hidden="true">›</span>
-          </a>
-        }
-      </div>
-    </div>
-
-    <div class="hero__orbit">
-      <div class="hero__banner brand-pattern" aria-hidden="true"></div>
-      <div class="hero__band" aria-hidden="true" #band></div>
-      <div class="hero__identity">
-        <div class="hero__photo" #photo>
-          @if (photoFailed()) {
-            <span
-              class="hero__initials"
-              role="img"
-              [attr.aria-label]="'home.photoAlt' | transloco"
-              >{{ initials() }}</span
-            >
-          } @else {
-            <img
-              [src]="profile.photoUrl"
-              [alt]="'home.photoAlt' | transloco"
-              width="184"
-              height="184"
-              (error)="photoFailed.set(true)"
-            />
-          }
+  <section class="hero">
+    <div class="hero__banner brand-pattern">
+      <div class="hero__banner-inner">
+        <div class="hero__pills">
+          <p class="hero__founder glass glass--on-brand">{{ 'home.founder' | transloco }}</p>
+          <app-availability-badge [availability]="profile.availability" />
         </div>
-        <p class="hero__full-name">{{ profile.fullName }}</p>
+        <app-social-links [links]="profile.socialLinks" [only]="heroNetworks" />
       </div>
-      @if (tools(); as tools) {
-        <ul class="visually-hidden" [attr.aria-label]="'home.technologies.label' | transloco">
-          @for (tool of tools; track tool.id) {
-            <li>{{ tool.name | localize }}</li>
-          }
-        </ul>
-      }
-      <app-band-orbit [text]="orbitText()" [band]="band" [ring]="photo" />
     </div>
-  </section>
 
-  <section class="manifesto" aria-labelledby="home-manifesto">
-    <h2
-      id="home-manifesto"
-      class="manifesto__text"
-      [attr.aria-label]="'home.editorial.manifesto' | transloco"
-    >
-      @for (word of manifestoWords(); track $index) {
-        <span
-          class="manifesto__word"
-          aria-hidden="true"
-          [style.--word-start]="($index / manifestoWords().length) * 60 + '%'"
-          [style.--word-end]="30 + ($index / manifestoWords().length) * 60 + '%'"
-          >{{ word }}{{ ' ' }}</span
-        >
-      }
-    </h2>
-  </section>
+    <div class="hero__band" aria-hidden="true" #band></div>
 
-  <section class="home-work" aria-labelledby="home-work-title">
-    <h2 id="home-work-title" class="visually-hidden">{{ 'home.featured.title' | transloco }}</h2>
-    @if (featuredProjects(); as projects) {
-      @if (!projects.length) {
-        <p class="home__status">{{ 'home.featured.empty' | transloco }}</p>
-      }
-      <div class="bento" appStagger>
-        @for (tile of tiles(); track tile.kind === 'project' ? tile.project.id : tile.kind) {
-          <article
-            class="bento__tile"
-            [class.bento__project]="tile.kind === 'project'"
-            [class.bento__tile--lead]="tile.kind === 'project' && tile.lead"
-            [class.bento__tile--tools]="tile.kind === 'tools'"
-            [class.bento__tile--availability]="tile.kind === 'availability'"
-            [class.bento__tile--founder]="tile.kind === 'founder'"
-          >
-            @switch (tile.kind) {
-              @case ('project') {
-                <div class="bento__project-top">
-                  @if (tile.project.logoUrl; as logo) {
-                    <img
-                      class="bento__logo"
-                      [src]="logo"
-                      [alt]="tile.project.name"
-                      width="64"
-                      height="64"
-                      loading="lazy"
-                    />
-                  } @else {
-                    <span class="bento__initials" aria-hidden="true">{{
-                      projectInitials(tile.project.name)
-                    }}</span>
-                  }
-                  <span class="bento__badge">{{
-                    'projects.tab.' + tile.project.context | transloco
-                  }}</span>
-                </div>
-                <h3>{{ tile.project.name }}</h3>
-                <p class="bento__summary">{{ tile.project.summary | localize }}</p>
-                <a
-                  class="home-link"
-                  routerLink="/projets"
-                  [attr.aria-label]="
-                    tile.project.name + ' — ' + ('home.editorial.projectLink' | transloco)
-                  "
-                >
-                  {{ 'home.editorial.projectLink' | transloco }} <span aria-hidden="true">›</span>
-                </a>
-              }
-              @case ('tools') {
-                <h3>{{ 'home.figures.tools' | transloco }}</h3>
-                @if (tools(); as tools) {
-                  <strong class="bento__count" [appCountUp]="tools.length"></strong>
-                } @else {
-                  <p>{{ 'tools.loading' | transloco }}</p>
-                }
-              }
-              @case ('availability') {
-                <h3>{{ 'home.editorial.availability' | transloco }}</h3>
-                <app-availability-badge [availability]="profile.availability" />
-              }
-              @case ('founder') {
-                <h3>{{ 'home.figures.founder' | transloco }}</h3>
-                <p class="bento__company">{{ profile.company.name }}</p>
-              }
-            }
-          </article>
+    <div class="hero__identity">
+      <div class="hero__photo" #photo>
+        @if (photoFailed()) {
+          <span class="hero__initials" role="img" [attr.aria-label]="'home.photoAlt' | transloco">
+            {{ initials() }}
+          </span>
+        } @else {
+          <img
+            [src]="profile.photoUrl"
+            [alt]="'home.photoAlt' | transloco"
+            width="184"
+            height="184"
+            (error)="photoFailed.set(true)"
+          />
         }
       </div>
-    } @else {
-      <p class="home__status" role="status">{{ 'home.featured.loading' | transloco }}</p>
-    }
-  </section>
 
-  <section class="home-contact" aria-labelledby="home-contact-title">
-    <h2 id="home-contact-title">{{ 'home.editorial.contactTitle' | transloco }}</h2>
-    <p>{{ 'home.editorial.contactIntro' | transloco }}</p>
-    <a class="button button--primary" routerLink="/contact">{{ 'nav.contact' | transloco }}</a>
+      <h1 class="hero__brand">{{ profile.brand }}</h1>
+      <p class="hero__full-name">{{ profile.fullName }}</p>
+      <p class="hero__badge">{{ 'home.jobTitle' | transloco }}</p>
+
+      <p class="hero__slogan">
+        <span class="hero__quote" aria-hidden="true">“</span>{{ profile.slogan | localize }}
+      </p>
+      <p class="hero__description">{{ profile.description | localize }}</p>
+
+      <div class="hero__actions">
+        <a class="button button--primary" routerLink="/projets">
+          {{ 'home.ctaProjects' | transloco }}
+        </a>
+        <app-cv-download-button class="hero__cv" />
+      </div>
+
+      <app-key-figures
+        class="hero__figures"
+        [projectCount]="projectCount()"
+        [toolCount]="toolCount()"
+        [companyName]="profile.company.name"
+      />
+    </div>
+
+    @if (tools(); as tools) {
+      <ul class="visually-hidden" [attr.aria-label]="'home.technologies.label' | transloco">
+        @for (tool of tools; track tool.id) {
+          <li>{{ tool.name | localize }}</li>
+        }
+      </ul>
+    }
+
+    <app-band-orbit [text]="orbitText()" [band]="band" [ring]="photo" />
   </section>
 } @else {
-  <p class="home__status" role="status">{{ 'home.loading' | transloco }}</p>
+  <p class="home__status">{{ 'home.loading' | transloco }}</p>
 }
+
+<app-featured-projects [projects]="featuredProjects()" />

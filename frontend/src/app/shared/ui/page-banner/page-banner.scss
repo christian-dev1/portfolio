@@ -1,5 +1,3 @@
-@use '../motion/page-system' as page;
-
 :host {
   display: block;
 }
@@ -116,20 +114,5 @@
 @media (prefers-reduced-motion: reduce) {
   .page-banner__ticker {
     animation: none;
-  }
-}
-
-@media screen {
-  :host {
-    @include page.tokens;
-  }
-  .page-banner {
-    padding-block: var(--page-section-gap);
-  }
-  .page-banner__title {
-    font-size: clamp(40px, 6vw, 72px);
-    line-height: 1.02;
-    letter-spacing: -0.03em;
-    font-weight: 500;
   }
 }

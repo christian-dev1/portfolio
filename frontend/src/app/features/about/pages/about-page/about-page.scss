@@ -1,5 +1,3 @@
-@use '../../../../shared/ui/motion/page-system' as page;
-
 /* Deux colonnes : identité fixe à gauche, contenu qui défile à droite. */
 .about {
   display: grid;
@@ -147,47 +145,5 @@
 
   .about__company {
     padding: 1.5rem;
-  }
-}
-
-@media screen {
-  :host {
-    @include page.tokens;
-  }
-  .about {
-    padding-top: var(--page-section-gap);
-  }
-  .about h2 {
-    @include page.section-title;
-  }
-  .about__identity,
-  .about__value {
-    border-radius: var(--page-card-radius);
-  }
-  .about__content {
-    gap: var(--page-section-gap);
-  }
-  .about__content > section {
-    padding: var(--page-panel-padding);
-    border-radius: var(--page-card-radius);
-    background-color: var(--page-surface);
-    @include page.reveal;
-    @include page.sequence;
-
-    &:nth-child(even) {
-      background-color: var(--page-tint);
-    }
-  }
-  .about__values {
-    @include page.stagger;
-  }
-  .about__company h2 {
-    letter-spacing: -0.025em;
-  }
-
-  @media (max-width: 899.98px) {
-    .about {
-      row-gap: var(--page-section-gap);
-    }
   }
 }

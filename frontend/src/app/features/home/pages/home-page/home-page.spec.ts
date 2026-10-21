@@ -1,8 +1,7 @@
 import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslocoService } from '@jsverse/transloco';
-import { NEVER, Observable, Subject, of } from 'rxjs';
+import { NEVER, Observable, of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
 import { PROFILE_FIXTURE } from '../../../../../testing/profile.fixture';
 import { Lang, LanguageService } from '../../../../core/i18n/language.service';
@@ -56,7 +55,6 @@ async function setup(
     lang?: 'fr' | 'en';
     /** PDF existants par langue (ce que renvoie `CvPdfService`). */
     cvPdf?: LocalizedText;
-    cvPdf$?: Partial<Record<Lang, Observable<string>>>;
   } = {},
 ): Promise<HTMLElement> {
   TestBed.configureTestingModule({
@@ -79,15 +77,11 @@ async function setup(
       },
       {
         provide: CvPdfService,
-        useValue: {
-          getAvailableUrl: (lang: Lang) =>
-            options.cvPdf$?.[lang] ?? of(options.cvPdf?.[lang] ?? ''),
-        },
+        useValue: { getAvailableUrl: (lang: Lang) => of(options.cvPdf?.[lang] ?? '') },
       },
     ],
   });
 
-  TestBed.inject(TranslocoService).config.reRenderOnLangChange = true;
   TestBed.inject(LanguageService).lang.set(options.lang ?? 'fr');
   const fixture = TestBed.createComponent(HomePage);
   await fixture.whenStable();
@@ -95,163 +89,192 @@ async function setup(
 }
 
 describe('HomePage', () => {
-  it('should use the profile slogan as the only h1', async () => {
-    const page = await setup();
-    expect(page.querySelectorAll('h1')).toHaveLength(1);
-    expect(page.querySelector('h1')!.textContent).toContain('Slogan en français.');
-    expect(page.querySelector('.hero__description')!.textContent).toContain(
+  it('should have exactly one h1 displaying the brand', async () => {
+    const compiled = await setup();
+
+    const titles = compiled.querySelectorAll('h1');
+    expect(titles.length).toBe(1);
+    expect(titles[0].textContent).toContain('LUCHRIST');
+  });
+
+  it('should display the full name and the job title', async () => {
+    const compiled = await setup();
+
+    expect(compiled.textContent).toContain('Noutchom Noumbiap Christian Luther');
+    expect(compiled.textContent).toContain('Développeur Backend & QA');
+  });
+
+  it('should display the founder pill', async () => {
+    const compiled = await setup();
+
+    expect(compiled.querySelector('.hero__founder')!.textContent).toContain(
+      'Fondateur · B-HER EMPIRE',
+    );
+  });
+
+  it('should display the slogan and the description from the profile', async () => {
+    const compiled = await setup();
+
+    expect(compiled.querySelector('.hero__slogan')!.textContent).toContain('Slogan en français.');
+    expect(compiled.querySelector('.hero__description')!.textContent).toContain(
       'Description en français.',
     );
-    expect(page.querySelector('.hero__eyebrow')!.textContent).toContain(
-      'Développeur Backend & QA · Fondateur de B-HER EMPIRE',
-    );
   });
 
-  it.each(['fr', 'en'] as const)(
-    'should translate the manifesto and final contact in %s',
-    async (lang) => {
-      const page = await setup({ lang });
-      const text = page.textContent!.replace(/\s+/g, ' ');
-      expect(text).toContain(
-        lang === 'fr'
-          ? "Je ne dis pas “je ne peux pas”. J'ose, et je rêve grand."
-          : "I never say “I can't”. I dare, and I dream big.",
-      );
-      expect(text).toContain(lang === 'fr' ? 'Parlons-en.' : "Let's talk.");
-      expect(text).toContain(
-        lang === 'fr'
-          ? 'Un message, WhatsApp, ou le CV en un clic.'
-          : 'A message, WhatsApp, or the CV in one click.',
-      );
-      const contact = page.querySelector('.home-contact a')!;
-      expect(contact.getAttribute('href')).toBe('/contact');
-      expect(contact.textContent!.trim()).toBe('Contact');
-    },
-  );
+  it('should display the slogan and the description in English when the language is English', async () => {
+    const compiled = await setup({ lang: 'en' });
 
-  it('should keep projects as the only primary action in the opening', async () => {
-    const page = await setup();
-    const buttons = page.querySelectorAll('.hero__opening .button');
-    expect(buttons).toHaveLength(1);
-    expect(buttons[0].getAttribute('href')).toBe('/projets');
-    expect(buttons[0].textContent).toContain('Voir mes projets');
+    expect(compiled.textContent).toContain('Slogan in English.');
+    expect(compiled.textContent).toContain('Description in English.');
+    expect(compiled.textContent).toContain('Founder · B-HER EMPIRE');
   });
 
-  it('should leave all social links out of the opening', async () => {
-    const page = await setup({ profile: WITH_ALL_NETWORKS });
-    expect(page.querySelector('app-social-links')).toBeNull();
-    expect(page.querySelector('.hero__opening a[href^="https://"]')).toBeNull();
+  it('should link to GitLab, GitHub and the email address from the profile', async () => {
+    const compiled = await setup();
+
+    const banner = compiled.querySelector('.hero__banner')!;
+    expect(banner.querySelector('a[href="https://gitlab.com/example"]')).not.toBeNull();
+    expect(banner.querySelector('a[href="https://github.com/example"]')).not.toBeNull();
+    expect(banner.querySelector('a[href="mailto:contact@example.com"]')).not.toBeNull();
   });
 
-  it('should reuse the portrait, its fallback and decorative orbit below the opening', async () => {
-    const page = await setup();
-    const photo = page.querySelector('.hero__photo img')!;
+  it('should display the photo with a translated alt text and explicit dimensions', async () => {
+    const compiled = await setup();
+
+    const photo = compiled.querySelector('.hero__photo img')!;
     expect(photo.getAttribute('src')).toBe('/images/photo-test.jpg');
     expect(photo.getAttribute('alt')).toBe('Photo de Christian Luther');
     expect(photo.getAttribute('width')).toBe('184');
-    expect(page.querySelector('.hero__orbit app-band-orbit')!.getAttribute('aria-hidden')).toBe(
-      'true',
-    );
-    expect(page.querySelector('.hero__full-name')!.textContent).toContain(
-      'Noutchom Noumbiap Christian Luther',
-    );
-    const names = Array.from(page.querySelectorAll('.hero__orbit ul.visually-hidden li'), (li) =>
-      li.textContent!.trim(),
-    );
-    expect(names).toEqual(['java', 'docker', 'git']);
+    expect(photo.getAttribute('height')).toBe('184');
+  });
+
+  it('should display the initials when the photo cannot be loaded', async () => {
+    const compiled = await setup();
+    const photo = compiled.querySelector('.hero__photo img')!;
+
     photo.dispatchEvent(new Event('error'));
     await TestBed.inject(ApplicationRef).whenStable();
-    expect(page.querySelector('.hero__initials')!.textContent!.trim()).toBe('CL');
+
+    expect(compiled.querySelector('.hero__photo img')).toBeNull();
+    expect(compiled.querySelector('.hero__initials')!.textContent!.trim()).toBe('CL');
   });
 
-  it('should render only featured projects with service data, logos and context badges', async () => {
-    const team = {
-      ...featuredProject,
-      id: 'team',
-      name: 'Team',
-      context: 'collaboration' as const,
-      logoUrl: '/team.png',
-    };
-    const page = await setup({ projects$: of([featuredProject, team, otherProject]) });
-    const projects = page.querySelectorAll('.bento__project');
-    expect(projects).toHaveLength(2);
-    expect(projects[0].classList).toContain('bento__tile--lead');
-    expect(projects[0].textContent).toContain('WIMO');
-    expect(projects[0].textContent).toContain('Transfert d’argent.');
-    expect(projects[0].textContent).toContain('B-HER EMPIRE');
-    expect(projects[0].querySelector('a')!.getAttribute('href')).toBe('/projets');
-    expect(projects[1].querySelector('img')!.getAttribute('src')).toBe('/team.png');
-    expect(projects[1].textContent).toContain('Projet en équipe');
-    expect(page.querySelector('.bento')!.textContent).not.toContain('Other');
+  it('should link the main button to the projects page', async () => {
+    const compiled = await setup();
+
+    const cta = compiled.querySelector('.hero__actions .button--primary')!;
+    expect(cta.getAttribute('href')).toBe('/projets');
+    expect(cta.textContent).toContain('Voir mes projets');
   });
 
-  it('should compute the tools count and display availability and company data in tiles', async () => {
-    const profile = {
-      ...PROFILE_FIXTURE,
-      company: { ...PROFILE_FIXTURE.company, name: 'Example Company' },
-    };
-    const page = await setup({ profile });
-    expect(
-      page.querySelector('.bento__tile--tools .bento__count')!.getAttribute('data-value'),
-    ).toBe('03');
-    expect(
-      page.querySelector('.bento__tile--availability app-availability-badge')!.textContent,
-    ).toContain('Disponible à distance');
-    expect(page.querySelector('.bento__tile--founder')!.textContent).toContain('Example Company');
-    expect(page.querySelector('.hero__eyebrow')!.textContent).toContain('Example Company');
+  it('should display the featured projects as cards with level 3 headings', async () => {
+    const compiled = await setup();
+
+    const cards = compiled.querySelectorAll('.featured app-project-card');
+    expect(cards.length).toBe(1);
+    expect(cards[0].querySelector('h3')!.textContent).toContain('WIMO');
   });
 
-  it('should preserve loading and empty project states', async () => {
-    const page = await setup({ projects$: NEVER });
-    expect(page.querySelector('.home-work')!.textContent).toContain('Chargement des projets');
+  it('should display a message when there is no featured project', async () => {
+    const compiled = await setup({ projects$: of([otherProject]) });
+
+    expect(compiled.textContent).toContain('Aucun projet mis en avant pour le moment.');
   });
 
-  it('should keep the supporting tiles when there are no featured projects', async () => {
-    const page = await setup({ projects$: of([otherProject]) });
-    expect(page.textContent).toContain('Aucun projet mis en avant pour le moment.');
-    expect(page.querySelectorAll('.bento__project')).toHaveLength(0);
-    expect(page.querySelectorAll('.bento > article')).toHaveLength(3);
+  it('should display a loading message while featured projects are loading', async () => {
+    const compiled = await setup({ projects$: NEVER });
+
+    expect(compiled.querySelector('.featured')!.textContent).toContain('Chargement des projets');
   });
 
-  it('should hide the CV link when the current language has no available PDF', async () => {
-    const page = await setup({ cvPdf: { fr: '', en: '/cv/cv-en.pdf' } });
-    expect(page.querySelector('.hero__cv')).toBeNull();
+  it('should link to all projects from the featured section', async () => {
+    const compiled = await setup();
+
+    const seeAll = compiled.querySelector('.featured__see-all')!;
+    expect(seeAll.getAttribute('href')).toBe('/projets');
   });
 
-  it('should update the manifesto and hide the previous CV while checking a new language', async () => {
-    const englishPdf = new Subject<string>();
-    const page = await setup({
-      cvPdf: { fr: '/cv/cv-fr.pdf', en: '' },
-      cvPdf$: { en: englishPdf },
-    });
-    expect(page.querySelector('.hero__cv')!.getAttribute('href')).toBe('/cv/cv-fr.pdf');
+  it('should display the availability badge in the blue zone', async () => {
+    const compiled = await setup();
 
-    TestBed.inject(LanguageService).lang.set('en');
-    await TestBed.inject(ApplicationRef).whenStable();
+    const badge = compiled.querySelector('.hero__banner app-availability-badge')!;
+    expect(badge.textContent).toContain('Disponible à distance');
+  });
 
-    expect(page.querySelector('.hero__cv')).toBeNull();
-    expect(page.querySelector('.manifesto__text')!.getAttribute('aria-label')).toBe(
-      "I never say “I can't”. I dare, and I dream big.",
+  it('should no longer display a "current focus" line', async () => {
+    const compiled = await setup();
+
+    expect(compiled.querySelector('.hero__focus')).toBeNull();
+    expect(compiled.textContent).not.toContain('En ce moment');
+  });
+
+  it('should no longer display the scrolling tech ribbon', async () => {
+    const compiled = await setup();
+
+    expect(compiled.querySelector('app-tech-marquee')).toBeNull();
+    expect(compiled.querySelector('.home__marquee')).toBeNull();
+  });
+
+  it('should list the visible technologies for screen readers in the hero', async () => {
+    const compiled = await setup();
+
+    const list = compiled.querySelector('.hero ul.visually-hidden')!;
+    const names = Array.from(list.querySelectorAll('li')).map((li) => li.textContent!.trim());
+    expect(names).toEqual(['java', 'docker', 'git']);
+    expect(list.getAttribute('aria-label')).toBe("Technologies que j'utilise");
+  });
+
+  it('should add the decorative orbiting logos to the hero, hidden from screen readers', async () => {
+    const compiled = await setup();
+
+    const orbit = compiled.querySelector('.hero app-band-orbit')!;
+    expect(orbit.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('should only show LinkedIn, GitHub, GitLab and email in the blue zone', async () => {
+    const compiled = await setup({ profile: WITH_ALL_NETWORKS });
+
+    const hrefs = Array.from(compiled.querySelectorAll('.hero__banner app-social-links a')).map(
+      (link) => link.getAttribute('href'),
     );
-    expect(page.querySelector('.manifesto__text')!.textContent!.replace(/\s+/g, ' ').trim()).toBe(
-      "I never say “I can't”. I dare, and I dream big.",
-    );
-    expect(page.querySelector('h1')!.textContent).toContain('Slogan in English.');
-
-    englishPdf.next('/cv/cv-en.pdf');
-    await TestBed.inject(ApplicationRef).whenStable();
-    expect(page.querySelector('.hero__cv')!.getAttribute('href')).toBe('/cv/cv-en.pdf');
+    expect(hrefs).toEqual([
+      'https://example.com/linkedin',
+      'https://github.com/example',
+      'https://gitlab.com/example',
+      'mailto:contact@example.com',
+    ]);
   });
 
-  it.each(['fr', 'en'] as const)(
-    'should link directly to the available %s PDF as a text link',
-    async (lang) => {
-      const page = await setup({ lang, cvPdf: { fr: '/cv/cv-fr.pdf', en: '/cv/cv-en.pdf' } });
-      const cv = page.querySelector('.hero__cv')!;
-      expect(cv.getAttribute('href')).toBe(`/cv/cv-${lang}.pdf`);
-      expect(cv.hasAttribute('download')).toBe(true);
-      expect(cv.classList).not.toContain('button');
-      expect(cv.textContent).toContain(lang === 'fr' ? 'Télécharger le CV' : 'Download the CV');
-    },
-  );
+  it('should compute the key figures from the visible projects and tools', async () => {
+    const compiled = await setup();
+
+    const figures = compiled.querySelector('app-key-figures')!.textContent!.replace(/\s+/g, ' ');
+    expect(figures).toContain('02 projets');
+    expect(figures).toContain('03 outils');
+    expect(figures).toContain('B-HER EMPIRE');
+  });
+
+  it('should only show featured projects in the featured section', async () => {
+    const compiled = await setup();
+
+    const names = Array.from(compiled.querySelectorAll('.featured h3')).map((h3) =>
+      h3.textContent!.trim(),
+    );
+    expect(names).toEqual(['WIMO']);
+  });
+
+  it('should hide the CV download button while there is no PDF for the current language', async () => {
+    const compiled = await setup({ cvPdf: { fr: '', en: '/cv/cv-en.pdf' } });
+
+    expect(compiled.querySelector('.hero__cv a')).toBeNull();
+  });
+
+  it('should offer to download the CV of the current language when there is one', async () => {
+    const compiled = await setup({ cvPdf: { fr: '/cv/cv-fr.pdf', en: '' } });
+
+    const button = compiled.querySelector('.hero__cv a')!;
+    expect(button.getAttribute('href')).toBe('/cv/cv-fr.pdf');
+    expect(button.hasAttribute('download')).toBe(true);
+    expect(button.textContent).toContain('Télécharger mon CV');
+  });
 });

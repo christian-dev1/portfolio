@@ -1,5 +1,3 @@
-@use '../../../../shared/ui/motion/page-system' as page;
-
 .cv {
   max-width: var(--content-width);
   margin: 0 auto;
@@ -241,50 +239,5 @@
   .cv__box .cv__phones {
     padding-left: 0;
     list-style: none;
-  }
-}
-
-@media screen {
-  :host {
-    @include page.tokens;
-  }
-  .cv {
-    padding-top: var(--page-section-gap);
-  }
-  .cv h2 {
-    @include page.section-title;
-  }
-  .cv__header {
-    padding: var(--page-panel-padding);
-    border-radius: var(--page-card-radius);
-    @include page.reveal;
-  }
-  .cv__layout {
-    margin-top: var(--page-section-gap);
-  }
-  .cv__main,
-  .cv__side {
-    gap: var(--page-section-gap);
-  }
-  .cv__main > section,
-  .cv__side > section {
-    padding: var(--page-panel-padding);
-    border-radius: var(--page-card-radius);
-    background-color: var(--page-surface);
-    @include page.reveal;
-    @include page.sequence;
-
-    &:nth-child(even) {
-      background-color: var(--page-tint);
-    }
-  }
-  .cv__box h2 {
-    font-size: clamp(24px, 2.5vw, 32px);
-  }
-
-  @media (max-width: 899.98px) {
-    .cv__layout {
-      row-gap: var(--page-section-gap);
-    }
   }
 }

@@ -25,15 +25,6 @@
     "contact": "LUCHRIST — Contact"
   },
   "home": {
-    "editorial": {
-      "eyebrow": "{{role}} · Founder of {{company}}",
-      "downloadCv": "Download the CV",
-      "manifesto": "I never say “I can't”. I dare, and I dream big.",
-      "projectLink": "View the project",
-      "availability": "Availability",
-      "contactTitle": "Let's talk.",
-      "contactIntro": "A message, WhatsApp, or the CV in one click."
-    },
     "jobTitle": "Backend Developer & QA",
     "founder": "Founder · B-HER EMPIRE",
     "photoAlt": "Photo of Christian Luther",

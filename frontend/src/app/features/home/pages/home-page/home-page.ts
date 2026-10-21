@@ -1,23 +1,22 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
-import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { startWith, switchMap } from 'rxjs';
 import { LanguageService } from '../../../../core/i18n/language.service';
-import { CvPdfService } from '../../../../shared/contact-config/data-access/cv-pdf.service';
+import { Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { CvDownloadButton } from '../../../../shared/contact-config/components/cv-download-button/cv-download-button';
 import { LocalizePipe } from '../../../../shared/i18n/localize.pipe';
 import { AvailabilityBadge } from '../../../../shared/profile/components/availability-badge/availability-badge';
+import { SocialLinks } from '../../../../shared/profile/components/social-links/social-links';
 import { ProfileService } from '../../../../shared/profile/data-access/profile.service';
+import { SocialNetwork } from '../../../../shared/profile/models/profile.model';
 import { ProjectService } from '../../../../shared/projects/data-access/project.service';
-import { Project, projectInitials } from '../../../../shared/projects/models/project.model';
 import { ToolService } from '../../../../shared/tools/data-access/tool.service';
-import { CountUp } from '../../../../shared/ui/count-up/count-up';
-import { Stagger } from '../../../../shared/ui/stagger/stagger';
 import { BandOrbit } from '../../components/band-orbit/band-orbit';
+import { FeaturedProjects } from '../../components/featured-projects/featured-projects';
+import { KeyFigures } from '../../components/key-figures/key-figures';
 
-type HomeTile =
-  | { kind: 'project'; project: Project; lead: boolean }
-  | { kind: 'tools' | 'availability' | 'founder' };
+/** Réseaux affichés dans la zone bleue ; tous les autres restent dans le footer et sur /contact. */
+const HERO_NETWORKS: readonly SocialNetwork[] = ['linkedin', 'github', 'gitlab', 'email'];
 
 @Component({
   selector: 'app-home-page',
@@ -26,51 +25,43 @@ type HomeTile =
     TranslocoPipe,
     LocalizePipe,
     AvailabilityBadge,
+    SocialLinks,
+    KeyFigures,
     BandOrbit,
-    CountUp,
-    Stagger,
+    FeaturedProjects,
+    CvDownloadButton,
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })
 export class HomePage {
-  protected readonly profile = toSignal(inject(ProfileService).getProfile());
-  private readonly projects = toSignal(inject(ProjectService).getPublicProjects());
-  protected readonly tools = toSignal(inject(ToolService).getPublicTools());
-  private readonly language = inject(LanguageService);
-  private readonly cvPdf = inject(CvPdfService);
-  private readonly manifesto = toSignal(
-    inject(TranslocoService).selectTranslate('home.editorial.manifesto'),
-  );
+  private readonly profileService = inject(ProfileService);
+  private readonly projectService = inject(ProjectService);
+  private readonly toolService = inject(ToolService);
+
+  protected readonly heroNetworks = HERO_NETWORKS;
+  protected readonly profile = toSignal(this.profileService.getProfile());
+  private readonly projects = toSignal(this.projectService.getPublicProjects());
+  protected readonly tools = toSignal(this.toolService.getPublicTools());
 
   protected readonly featuredProjects = computed(() =>
     this.projects()?.filter((project) => project.featured),
   );
-  protected readonly tiles = computed<HomeTile[]>(() => {
-    const [first, ...others] = this.featuredProjects() ?? [];
-    return [
-      ...(first ? [{ kind: 'project' as const, project: first, lead: true }] : []),
-      { kind: 'tools' },
-      ...others.map((project) => ({ kind: 'project' as const, project, lead: false })),
-      { kind: 'availability' },
-      { kind: 'founder' },
-    ];
-  });
-  protected readonly projectInitials = projectInitials;
-  protected readonly manifestoWords = computed(() => this.manifesto()?.split(/\s+/) ?? []);
-  protected readonly cvUrl = toSignal(
-    toObservable(this.language.lang).pipe(
-      switchMap((lang) => this.cvPdf.getAvailableUrl(lang).pipe(startWith(''))),
-    ),
-    { initialValue: '' },
-  );
+  protected readonly projectCount = computed(() => this.projects()?.length);
+  protected readonly toolCount = computed(() => this.tools()?.length);
+
+  private readonly language = inject(LanguageService);
   protected readonly orbitText = computed(
     () =>
       (this.tools() ?? [])
         .map((tool) => tool.name[this.language.lang()].toUpperCase())
         .join(' · ') + ' · ',
   );
+
+  /** Passe à true si la photo ne charge pas : on affiche alors les initiales. */
   protected readonly photoFailed = signal(false);
+
+  /** Initiales du prénom usuel : « … Christian Luther » → « CL ». */
   protected readonly initials = computed(() =>
     (this.profile()?.fullName ?? '')
       .split(' ')
