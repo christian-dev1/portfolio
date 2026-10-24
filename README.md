@@ -74,3 +74,57 @@ Le formulaire utilise le contrat `ContactMessageSender` et une implémentation W
 Une implémentation appelant une API pourra remplacer le fournisseur sans changer le formulaire.
 Les données publiques sont dans `frontend/public/data/`, les traductions dans
 `frontend/public/i18n/` et les composants partagés dans `frontend/src/app/shared/`.
+
+## Lancer le site avec Docker
+
+Le frontend est servi par **nginx** dans un conteneur. Le build Angular se fait dans l'image : aucune installation de Node n'est nécessaire sur la machine.
+
+### Prérequis
+
+- Docker et Docker Compose v2
+
+### Démarrage
+
+~~~bash
+cp .env.example .env      # puis remplir les valeurs
+docker compose up -d --build
+~~~
+
+Le site est disponible sur **http://localhost:8080** (ou sur le port défini par `FRONTEND_PORT`).
+
+### Variables d'environnement (`.env`, jamais commité)
+
+| Variable | Rôle | Obligatoire |
+|---|---|---|
+| `WHATSAPP_NUMBER` | Numéro WhatsApp, chiffres uniquement avec l'indicatif | Non (bouton masqué si vide) |
+| `WEB3FORMS_ACCESS_KEY` | Clé du formulaire de contact | Non (formulaire désactivé si vide) |
+| `CV_PDF_FR` / `CV_PDF_EN` | Chemins des PDF du CV | Non (défaut `/cv/cv-fr.pdf`, `/cv/cv-en.pdf`) |
+| `FRONTEND_PORT` | Port local exposé | Non (défaut `8080`) |
+
+Au démarrage, le conteneur génère `/config/contact.json` à partir de ces variables. Aucun numéro de téléphone ni aucune clé ne se trouve dans l'image ou dans Git, et aucun numéro d'appel n'est publié en ligne.
+
+### CV en PDF
+
+Les PDF publics (`cv-fr.pdf`, `cv-en.pdf`) se placent dans `frontend/public/cv/`. Ce dossier est ignoré par Git et monté en lecture seule dans le conteneur : un PDF remplacé est servi immédiatement, sans reconstruire l'image.
+
+### Commandes utiles
+
+| Commande | Effet |
+|---|---|
+| `docker compose ps` | État du conteneur (`healthy` attendu) |
+| `docker compose logs -f frontend` | Journaux en direct |
+| `docker compose up -d --build` | Reconstruire après une modification |
+| `docker compose down` | Arrêter et supprimer le conteneur |
+
+### Structure
+
+~~~
+PORTFOLIO/
+├── docker-compose.yml        # orchestre les services (frontend aujourd'hui, API en V2)
+├── .env.example              # modèle des variables
+└── frontend/
+    ├── Dockerfile            # build Angular (Node 22) puis service nginx
+    ├── nginx.conf            # routes Angular, cache, en-têtes de sécurité
+    ├── docker-entrypoint.sh  # génère contact.json au démarrage
+    └── .dockerignore
+~~~
