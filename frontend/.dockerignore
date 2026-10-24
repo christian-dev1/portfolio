@@ -1,0 +1,21 @@
+# Dépendances et builds : réinstallés et reconstruits dans le conteneur
+node_modules
+dist
+.angular
+coverage
+
+# Données privées : jamais dans l'image
+public/config/contact.json
+public/cv
+.env
+.env.*
+
+# Fichiers Docker eux-mêmes et éléments inutiles
+Dockerfile
+.dockerignore
+.git
+.gitignore
+.vscode
+.idea
+*.log
+npm-debug.log*

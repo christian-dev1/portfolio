@@ -1,0 +1,25 @@
+name: luchrist-portfolio
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    image: luchrist-portfolio-frontend:latest
+    container_name: luchrist-frontend
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"
+    volumes:
+      - ./frontend/public/cv:/usr/share/nginx/html/cv:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # V2 : l'API Spring Boot et PostgreSQL viendront ici
+  # backend:
+  #   build: ./backend
+  # database:
+  #   image: postgres:16
