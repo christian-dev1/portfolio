@@ -69,7 +69,7 @@ CREATE TABLE spoken_language (
     position  SMALLINT    NOT NULL UNIQUE
 );
 
--- ---------- OUTILS ----------
+-- ---------- OUTILS ---------- 
 CREATE TABLE tool (
     id        BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     slug      VARCHAR(60)  NOT NULL UNIQUE CHECK (slug ~ '^[a-z0-9-]+$'),
