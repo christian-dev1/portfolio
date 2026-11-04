@@ -1,6 +1,10 @@
 package com.luchrist.portfolio.tool;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.luchrist.portfolio.common.LocalizedText;
+import com.luchrist.portfolio.project.Project;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
@@ -9,6 +13,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
 @Entity
@@ -39,6 +45,11 @@ public class Tool {
     private boolean visible;
     private Short position;
 
+    // L'autre côté de la relation : les projets qui utilisent cet outil
+    @ManyToMany(mappedBy = "tools")
+    @OrderBy("position ASC")
+    private List<Project> projects = new ArrayList<>();
+
     protected Tool() {
     }
 
@@ -51,4 +62,5 @@ public class Tool {
     public LocalizedText getUsageNote() { return usageNote; }
     public boolean isVisible() { return visible; }
     public Short getPosition() { return position; }
+    public List<Project> getProjects() { return projects; }
 }
