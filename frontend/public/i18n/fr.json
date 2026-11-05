@@ -197,5 +197,9 @@
         "messageLength": "Votre message doit contenir entre 10 et 2000 caractères."
       }
     }
+  },
+  "unavailable": {
+    "message": "Ce contenu est momentanément indisponible. Réessayez dans quelques instants.",
+    "retry": "Réessayer"
   }
 }

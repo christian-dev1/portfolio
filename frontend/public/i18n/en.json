@@ -197,5 +197,9 @@
         "messageLength": "Your message must be between 10 and 2000 characters long."
       }
     }
+  },
+  "unavailable": {
+    "message": "This content is temporarily unavailable. Please try again in a moment.",
+    "retry": "Try again"
   }
 }
