@@ -8,6 +8,7 @@ import { toSocialLinkViews } from '../../../../shared/profile/models/social-link
 import { BrandIcon } from '../../../../shared/ui/brand-icon/brand-icon';
 import { PageBanner } from '../../../../shared/ui/page-banner/page-banner';
 import { Stagger } from '../../../../shared/ui/stagger/stagger';
+import { loadable } from '../../../../shared/ui/content-unavailable/loadable';
 import { ContactForm } from '../../components/contact-form/contact-form';
 
 type CopyState = 'idle' | 'copied' | 'failed';
@@ -25,7 +26,10 @@ export class ContactPage {
   private readonly document = inject(DOCUMENT);
   private feedbackTimer?: ReturnType<typeof setTimeout>;
 
-  protected readonly profile = toSignal(inject(ProfileService).getProfile());
+  private readonly profileLoad = loadable(inject(ProfileService).getProfile());
+  protected readonly profile = this.profileLoad.value;
+  /** Sans profil, la page reste utilisable : formulaire et WhatsApp ne dépendent pas de l'API. */
+  protected readonly profileFailed = this.profileLoad.failed;
   /** Numéro WhatsApp hors Git ; le bloc est masqué si la configuration est vide. */
   protected readonly contactConfig = toSignal(inject(ContactConfigService).getContactConfig());
   protected readonly networks = computed(() => {

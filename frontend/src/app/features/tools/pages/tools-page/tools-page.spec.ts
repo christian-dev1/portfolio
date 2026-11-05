@@ -1,3 +1,5 @@
+import { ApplicationRef } from '@angular/core';
+import { failingOnce } from '../../../../../testing/failing-once';
 import { TestBed } from '@angular/core/testing';
 import { NEVER, Observable, of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
@@ -191,5 +193,21 @@ describe('ToolsPage', () => {
 
     const text = compiled.querySelector('.tools__text')!.textContent!.replace(/\s+/g, ' ');
     expect(text.trim()).toBe('java WIMO');
+  });
+
+  it('should offer a retry when tools cannot be loaded, then display them', async () => {
+    const { source, calls } = failingOnce(AI_TOOLS_FIXTURE);
+    const compiled = await setup(source);
+
+    const unavailable = compiled.querySelector('app-content-unavailable [role="status"]');
+    expect(unavailable!.textContent).toContain('Ce contenu est momentanément indisponible');
+
+    const callsBeforeRetry = calls();
+    unavailable!.querySelector('button')!.click();
+    await TestBed.inject(ApplicationRef).whenStable();
+
+    expect(calls()).toBe(callsBeforeRetry + 1);
+    expect(compiled.querySelector('app-content-unavailable')).toBeNull();
+    expect(compiled.querySelectorAll('.tools__tile').length).toBe(AI_TOOLS_FIXTURE.length);
   });
 });

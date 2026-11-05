@@ -3,15 +3,18 @@ import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ProjectCard } from '../../../../shared/projects/components/project-card/project-card';
 import { Project } from '../../../../shared/projects/models/project.model';
+import { ContentUnavailable } from '../../../../shared/ui/content-unavailable/content-unavailable';
 
 /** « Projets mis en avant » : titre et intro dans une colonne à gauche, cartes à droite (bureau). */
 @Component({
   selector: 'app-featured-projects',
-  imports: [RouterLink, TranslocoPipe, ProjectCard],
+  imports: [RouterLink, TranslocoPipe, ProjectCard, ContentUnavailable],
   templateUrl: './featured-projects.html',
   styleUrl: './featured-projects.scss',
 })
 export class FeaturedProjects {
   /** `undefined` pendant le chargement. */
   readonly projects = input<Project[]>();
+  /** `true` si les projets n'ont pas pu être chargés. */
+  readonly failed = input(false);
 }

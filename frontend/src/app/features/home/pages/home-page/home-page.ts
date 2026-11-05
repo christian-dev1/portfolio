@@ -1,6 +1,5 @@
 import { LanguageService } from '../../../../core/i18n/language.service';
 import { Component, computed, inject, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { CvDownloadButton } from '../../../../shared/contact-config/components/cv-download-button/cv-download-button';
@@ -11,6 +10,8 @@ import { ProfileService } from '../../../../shared/profile/data-access/profile.s
 import { SocialNetwork } from '../../../../shared/profile/models/profile.model';
 import { ProjectService } from '../../../../shared/projects/data-access/project.service';
 import { ToolService } from '../../../../shared/tools/data-access/tool.service';
+import { ContentUnavailable } from '../../../../shared/ui/content-unavailable/content-unavailable';
+import { loadable } from '../../../../shared/ui/content-unavailable/loadable';
 import { BandOrbit } from '../../components/band-orbit/band-orbit';
 import { FeaturedProjects } from '../../components/featured-projects/featured-projects';
 import { KeyFigures } from '../../components/key-figures/key-figures';
@@ -30,6 +31,7 @@ const HERO_NETWORKS: readonly SocialNetwork[] = ['linkedin', 'github', 'gitlab',
     BandOrbit,
     FeaturedProjects,
     CvDownloadButton,
+    ContentUnavailable,
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
@@ -40,9 +42,13 @@ export class HomePage {
   private readonly toolService = inject(ToolService);
 
   protected readonly heroNetworks = HERO_NETWORKS;
-  protected readonly profile = toSignal(this.profileService.getProfile());
-  private readonly projects = toSignal(this.projectService.getPublicProjects());
-  protected readonly tools = toSignal(this.toolService.getPublicTools());
+  private readonly profileLoad = loadable(this.profileService.getProfile());
+  private readonly projectsLoad = loadable(this.projectService.getPublicProjects());
+  protected readonly profile = this.profileLoad.value;
+  protected readonly profileFailed = this.profileLoad.failed;
+  private readonly projects = this.projectsLoad.value;
+  protected readonly projectsFailed = this.projectsLoad.failed;
+  protected readonly tools = loadable(this.toolService.getPublicTools()).value;
 
   protected readonly featuredProjects = computed(() =>
     this.projects()?.filter((project) => project.featured),

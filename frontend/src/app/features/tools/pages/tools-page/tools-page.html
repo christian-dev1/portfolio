@@ -48,6 +48,8 @@
     } @empty {
       <p>{{ 'tools.empty' | transloco }}</p>
     }
+  } @else if (failed()) {
+    <app-content-unavailable />
   } @else {
     <p>{{ 'tools.loading' | transloco }}</p>
   }

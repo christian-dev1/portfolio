@@ -1,6 +1,6 @@
 import { ToolService } from '../../../../shared/tools/data-access/tool.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
 import { PROFILE_FIXTURE } from '../../../../../testing/profile.fixture';
 import { LanguageService } from '../../../../core/i18n/language.service';
@@ -159,5 +159,38 @@ describe('ContactPage', () => {
     expect(button.getAttribute('href')).toBe('https://wa.me/237600000000');
     expect(compiled.textContent).not.toContain('+237');
     expect(compiled.querySelector('a[href^="tel:"]')).toBeNull();
+  });
+});
+
+describe('ContactPage without profile', () => {
+  it('should still display the page and its message form when the profile cannot be loaded', async () => {
+    TestBed.configureTestingModule({
+      imports: [ContactPage, provideTranslocoForTests()],
+      providers: [
+        { provide: ToolService, useValue: { getPublicTools: () => of([]) } },
+        {
+          provide: ProfileService,
+          useValue: { getProfile: () => throwError(() => new Error('API unavailable')) },
+        },
+        {
+          provide: ContactConfigService,
+          useValue: {
+            getContactConfig: () => of({ ...EMPTY_CONTACT_CONFIG, whatsapp: '237600000000' }),
+          },
+        },
+        { provide: CONTACT_MESSAGE_SENDER, useValue: { send: () => of('sent') } },
+      ],
+    });
+
+    TestBed.inject(LanguageService).lang.set('fr');
+    const fixture = TestBed.createComponent(ContactPage);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    expect(compiled.querySelector('h1')).not.toBeNull();
+    expect(compiled.querySelector('app-contact-form form')).not.toBeNull();
+    expect(compiled.querySelector('app-whatsapp-button')).not.toBeNull();
+    expect(compiled.querySelector('.contact__status')).toBeNull();
+    expect(compiled.querySelector('app-content-unavailable')).toBeNull();
   });
 });

@@ -1,4 +1,6 @@
 import { ToolService } from '../../../../shared/tools/data-access/tool.service';
+import { ApplicationRef } from '@angular/core';
+import { failingOnce } from '../../../../../testing/failing-once';
 import { TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
@@ -99,5 +101,22 @@ describe('AboutPage', () => {
     expect(compiled.querySelector('app-career-timeline .timeline__title')!.textContent).toContain(
       'Formation',
     );
+  });
+
+  it('should offer a retry when the career cannot be loaded, then display it', async () => {
+    const { source, calls } = failingOnce(CAREER);
+    const compiled = await setup(source);
+
+    const unavailable = compiled.querySelector('app-content-unavailable [role="status"]');
+    expect(unavailable!.textContent).toContain('Ce contenu est momentanément indisponible');
+
+    const callsBeforeRetry = calls();
+    unavailable!.querySelector('button')!.click();
+    await TestBed.inject(ApplicationRef).whenStable();
+
+    expect(calls()).toBe(callsBeforeRetry + 1);
+    expect(compiled.querySelector('app-content-unavailable')).toBeNull();
+    expect(compiled.querySelector('app-career-timeline')).not.toBeNull();
+    expect(compiled.querySelector('.about__bio')).not.toBeNull();
   });
 });

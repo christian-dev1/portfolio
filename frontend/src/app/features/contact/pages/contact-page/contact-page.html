@@ -6,7 +6,7 @@
   [count]="networks()?.length"
 />
 
-@if (profile()) {
+@if (profile() || profileFailed()) {
   <div class="contact">
     <div class="contact__direct">
       @if (email(); as email) {

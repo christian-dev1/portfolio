@@ -127,6 +127,12 @@
   text-align: center;
 }
 
+.about__unavailable {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 3rem var(--content-gutter) 0;
+}
+
 @media (max-width: 899.98px) {
   .about {
     grid-template-columns: minmax(0, 1fr);
