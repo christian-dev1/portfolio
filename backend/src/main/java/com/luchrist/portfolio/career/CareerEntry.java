@@ -44,13 +44,39 @@ public class CareerEntry {
     protected CareerEntry() {
     }
 
-    public String getSlug() { return slug; }
-    public String getType() { return type; }
-    public Short getStartYear() { return startYear; }
-    public Short getEndYear() { return endYear; }
-    public LocalizedText getTitle() { return title; }
-    public String getPlace() { return place; }
-    public LocalizedText getDescription() { return description; }
-    public boolean isVisible() { return visible; }
-    public Short getPosition() { return position; }
+    public String getSlug() {
+        return slug;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public Short getStartYear() {
+        return startYear;
+    }
+
+    public Short getEndYear() {
+        return endYear;
+    }
+
+    public LocalizedText getTitle() {
+        return title;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public LocalizedText getDescription() {
+        return description;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public Short getPosition() {
+        return position;
+    }
 }

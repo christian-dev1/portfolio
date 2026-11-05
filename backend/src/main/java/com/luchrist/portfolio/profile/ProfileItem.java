@@ -29,6 +29,11 @@ public class ProfileItem {
     protected ProfileItem() {
     }
 
-    public String getKind() { return kind; }
-    public LocalizedText getLabel() { return label; }
+    public String getKind() {
+        return kind;
+    }
+
+    public LocalizedText getLabel() {
+        return label;
+    }
 }

@@ -26,5 +26,7 @@ public class BioParagraph {
     protected BioParagraph() {
     }
 
-    public LocalizedText getText() { return text; }
+    public LocalizedText getText() {
+        return text;
+    }
 }

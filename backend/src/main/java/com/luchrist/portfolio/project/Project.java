@@ -81,20 +81,67 @@ public class Project {
     protected Project() {
     }
 
-    public Long getId() { return id; }
-    public String getSlug() { return slug; }
-    public String getName() { return name; }
-    public LocalizedText getSummary() { return summary; }
-    public LocalizedText getCoverTagline() { return coverTagline; }
-    public String getContext() { return context; }
-    public String getStatus() { return status; }
-    public String getRepositoryUrl() { return repositoryUrl; }
-    public String getLogoUrl() { return logoUrl; }
-    public String getCoverUrl() { return coverUrl; }
-    public boolean isVisible() { return visible; }
-    public boolean isFeatured() { return featured; }
-    public Short getPosition() { return position; }
-    public List<ProjectHighlight> getHighlights() { return highlights; }
-    public Set<String> getRoles() { return roles; }
-    public List<Tool> getTools() { return tools; }
+    public Long getId() {
+        return id;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LocalizedText getSummary() {
+        return summary;
+    }
+
+    public LocalizedText getCoverTagline() {
+        return coverTagline;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getRepositoryUrl() {
+        return repositoryUrl;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public boolean isFeatured() {
+        return featured;
+    }
+
+    public Short getPosition() {
+        return position;
+    }
+
+    public List<ProjectHighlight> getHighlights() {
+        return highlights;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public List<Tool> getTools() {
+        return tools;
+    }
 }

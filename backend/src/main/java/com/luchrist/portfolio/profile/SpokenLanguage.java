@@ -31,6 +31,11 @@ public class SpokenLanguage {
     protected SpokenLanguage() {
     }
 
-    public LocalizedText getName() { return name; }
-    public LocalizedText getLevel() { return level; }
+    public LocalizedText getName() {
+        return name;
+    }
+
+    public LocalizedText getLevel() {
+        return level;
+    }
 }

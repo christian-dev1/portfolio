@@ -18,6 +18,11 @@ public class SocialLink {
     protected SocialLink() {
     }
 
-    public String getNetwork() { return network; }
-    public String getUrl() { return url; }
+    public String getNetwork() {
+        return network;
+    }
+
+    public String getUrl() {
+        return url;
+    }
 }

@@ -53,14 +53,43 @@ public class Tool {
     protected Tool() {
     }
 
-    public Long getId() { return id; }
-    public String getSlug() { return slug; }
-    public LocalizedText getName() { return name; }
-    public String getIcon() { return icon; }
-    public String getMonogram() { return monogram; }
-    public String getCategory() { return category; }
-    public LocalizedText getUsageNote() { return usageNote; }
-    public boolean isVisible() { return visible; }
-    public Short getPosition() { return position; }
-    public List<Project> getProjects() { return projects; }
+    public Long getId() {
+        return id;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public LocalizedText getName() {
+        return name;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public String getMonogram() {
+        return monogram;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public LocalizedText getUsageNote() {
+        return usageNote;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public Short getPosition() {
+        return position;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
 }

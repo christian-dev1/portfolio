@@ -19,7 +19,7 @@ class ContactMailDeliveryTests {
     @SuppressWarnings("unchecked")
     private final ObjectProvider<JavaMailSender> provider = mock(ObjectProvider.class);
     private final ContactProperties properties = new ContactProperties(3, 5, Duration.ofHours(1),
-            Duration.ofDays(180), "contact@example.com", "portfolio@example.com");
+            Duration.ofDays(180), 5, Duration.ofHours(24), "contact@example.com", "portfolio@example.com");
 
     @Test void marksFailedAndCountsSmtpFailure() {
         ContactMessage message = new ContactMessage("Example Visitor", "visitor@example.com", "A delivery test message.");
@@ -39,7 +39,7 @@ class ContactMailDeliveryTests {
 
     @Test void skipsDeliveryWhenRecipientMissing() {
         ContactProperties missingRecipient = new ContactProperties(3, 5, Duration.ofHours(1),
-                Duration.ofDays(180), "", "portfolio@example.com");
+                Duration.ofDays(180), 5, Duration.ofHours(24), "", "portfolio@example.com");
         new ContactMailDelivery(messages, missingRecipient, provider,
                 new MockEnvironment().withProperty("spring.mail.host", "localhost")).deliver(1L);
         verifyNoInteractions(messages, provider, sender);

@@ -36,7 +36,15 @@ public class ProjectHighlight {
     protected ProjectHighlight() {
     }
 
-    public Long getId() { return id; }
-    public LocalizedText getText() { return text; }
-    public Short getPosition() { return position; }
+    public Long getId() {
+        return id;
+    }
+
+    public LocalizedText getText() {
+        return text;
+    }
+
+    public Short getPosition() {
+        return position;
+    }
 }

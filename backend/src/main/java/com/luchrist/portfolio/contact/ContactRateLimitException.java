@@ -8,5 +8,7 @@ public class ContactRateLimitException extends RuntimeException {
         this.retryAfter = Math.max(1, retryAfter);
     }
 
-    public long getRetryAfter() { return retryAfter; }
+    public long getRetryAfter() {
+        return retryAfter;
+    }
 }

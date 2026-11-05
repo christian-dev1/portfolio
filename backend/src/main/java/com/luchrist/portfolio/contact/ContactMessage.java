@@ -1,13 +1,13 @@
 package com.luchrist.portfolio.contact;
 
+import java.time.OffsetDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
-import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "contact_message")
@@ -40,15 +40,43 @@ public class ContactMessage {
         this.createdAt = OffsetDateTime.now();
     }
 
-    void startAttempt() { sendAttempts++; }
-    void markSent() { status = "sent"; }
-    void markFailed() { status = "failed"; }
-    public short getSendAttempts() { return sendAttempts; }
+    void startAttempt() {
+        sendAttempts++;
+    }
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getEmail() { return email; }
-    public String getMessage() { return message; }
-    public String getStatus() { return status; }
-    public OffsetDateTime getCreatedAt() { return createdAt; }
+    void markSent() {
+        status = "sent";
+    }
+
+    void markFailed() {
+        status = "failed";
+    }
+
+    public short getSendAttempts() {
+        return sendAttempts;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

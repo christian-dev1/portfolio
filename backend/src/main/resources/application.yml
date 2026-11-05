@@ -53,6 +53,8 @@ portfolio:
     ip-limit: 5
     window: 1h
     retention: 180d
+    max-attempts: 5
+    retry-max-age: 24h
     to: ${CONTACT_TO:}
     from: ${CONTACT_FROM:noreply@example.com}
 

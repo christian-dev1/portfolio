@@ -1,6 +1,7 @@
 package com.luchrist.portfolio.contact;
 
 import java.time.OffsetDateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,7 +26,8 @@ public class ContactMaintenance {
     @Transactional(readOnly = true)
     public void retry() {
         OffsetDateTime now = OffsetDateTime.now();
-        messages.findRetryCandidates(now.minusHours(24), now.minusMinutes(5)).forEach(delivery::deliver);
+        messages.findRetryCandidates(now.minus(properties.retryMaxAge()), now.minusMinutes(5),
+                properties.maxAttempts()).forEach(delivery::deliver);
     }
 
     @Scheduled(cron = "0 15 3 * * *", zone = "Africa/Douala")

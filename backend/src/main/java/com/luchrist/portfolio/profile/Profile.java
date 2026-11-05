@@ -59,16 +59,51 @@ public class Profile {
     protected Profile() {
     }
 
-    public String getFullName() { return fullName; }
-    public String getBrand() { return brand; }
-    public String getPhotoUrl() { return photoUrl; }
-    public String getWebsiteUrl() { return websiteUrl; }
-    public LocalizedText getLocation() { return location; }
-    public String getAvailabilityStatus() { return availabilityStatus; }
-    public LocalizedText getAvailabilityLabel() { return availabilityLabel; }
-    public LocalizedText getSlogan() { return slogan; }
-    public LocalizedText getDescription() { return description; }
-    public String getCompanyName() { return companyName; }
-    public LocalizedText getCompanyRole() { return companyRole; }
-    public LocalizedText getCompanyDescription() { return companyDescription; }
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public String getWebsiteUrl() {
+        return websiteUrl;
+    }
+
+    public LocalizedText getLocation() {
+        return location;
+    }
+
+    public String getAvailabilityStatus() {
+        return availabilityStatus;
+    }
+
+    public LocalizedText getAvailabilityLabel() {
+        return availabilityLabel;
+    }
+
+    public LocalizedText getSlogan() {
+        return slogan;
+    }
+
+    public LocalizedText getDescription() {
+        return description;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public LocalizedText getCompanyRole() {
+        return companyRole;
+    }
+
+    public LocalizedText getCompanyDescription() {
+        return companyDescription;
+    }
 }

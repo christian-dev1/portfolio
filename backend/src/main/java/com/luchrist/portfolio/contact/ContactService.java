@@ -1,7 +1,12 @@
 package com.luchrist.portfolio.contact;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.Locale;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,10 +18,10 @@ public class ContactService {
     private final ContactMessageRepository messages;
     private final ContactProperties properties;
     private final ContactIpLimiter ipLimiter;
-    private final org.springframework.context.ApplicationEventPublisher events;
+    private final ApplicationEventPublisher events;
 
     public ContactService(ContactMessageRepository messages, ContactProperties properties,
-                          ContactIpLimiter ipLimiter, org.springframework.context.ApplicationEventPublisher events) {
+                          ContactIpLimiter ipLimiter, ApplicationEventPublisher events) {
         this.messages = messages;
         this.properties = properties;
         this.ipLimiter = ipLimiter;
@@ -39,16 +44,18 @@ public class ContactService {
         String email = request.email();
         int separator = email.lastIndexOf('@');
         email = email.substring(0, separator + 1)
-                + email.substring(separator + 1).toLowerCase(java.util.Locale.ROOT);
+                + email.substring(separator + 1).toLowerCase(Locale.ROOT);
         messages.lockEmail(email);
-        java.time.OffsetDateTime now = java.time.OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now();
         var recent = messages.findByEmailAndCreatedAtAfterOrderByCreatedAtAsc(
                 email, now.minus(properties.window()));
         if (recent.size() >= properties.emailLimit()) {
-            throw new ContactRateLimitException(java.time.Duration.between(now,
+            throw new ContactRateLimitException(Duration.between(now,
                     recent.getFirst().getCreatedAt().plus(properties.window())).toSeconds() + 1);
         }
-        if (remoteAddress != null) ipLimiter.acquire(remoteAddress);
+        if (remoteAddress != null) {
+            ipLimiter.acquire(remoteAddress);
+        }
         ContactMessage message = messages.save(new ContactMessage(request.name(), email, request.message()));
         events.publishEvent(new ContactReceived(message.getId()));
     }

@@ -33,7 +33,15 @@ public class ProfileValue {
     protected ProfileValue() {
     }
 
-    public String getSlug() { return slug; }
-    public LocalizedText getTitle() { return title; }
-    public LocalizedText getText() { return text; }
+    public String getSlug() {
+        return slug;
+    }
+
+    public LocalizedText getTitle() {
+        return title;
+    }
+
+    public LocalizedText getText() {
+        return text;
+    }
 }

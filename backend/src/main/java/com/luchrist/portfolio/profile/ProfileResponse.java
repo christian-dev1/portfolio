@@ -1,9 +1,9 @@
 package com.luchrist.portfolio.profile;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.luchrist.portfolio.common.LocalizedText;
-
-import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ProfileResponse(

@@ -1,15 +1,19 @@
 package com.luchrist.portfolio.contact;
 
-import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.springframework.http.ProblemDetail;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,12 +45,14 @@ public class ContactController {
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void send(@Valid @RequestBody ContactRequest request,
-                     org.springframework.validation.BindingResult validation,
-                     jakarta.servlet.http.HttpServletRequest servletRequest)
-            throws org.springframework.validation.BindException {
-        if (request.isRobot()) return;
+                     BindingResult validation,
+                     HttpServletRequest servletRequest)
+            throws BindException {
+        if (request.isRobot()) {
+            return;
+        }
         if (validation.hasErrors()) {
-            throw new org.springframework.validation.BindException(validation);
+            throw new BindException(validation);
         }
         contactService.receive(request, servletRequest.getRemoteAddr());
     }

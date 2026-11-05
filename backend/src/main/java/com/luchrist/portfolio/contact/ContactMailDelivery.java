@@ -3,6 +3,9 @@ package com.luchrist.portfolio.contact;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+
+import jakarta.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -29,7 +32,7 @@ public class ContactMailDelivery {
         this.environment = environment;
     }
 
-    @jakarta.annotation.PostConstruct
+    @PostConstruct
     void checkConfiguration() {
         if (!isConfigured()) {
             log.warn("Contact mail delivery disabled: SMTP host or recipient missing");
@@ -42,10 +45,14 @@ public class ContactMailDelivery {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deliver(Long id) {
-        if (!isConfigured()) return;
+        if (!isConfigured()) {
+            return;
+        }
         ContactMessage message = messages.findForDelivery(id).orElse(null);
-        if (message == null || "sent".equals(message.getStatus()) || message.getSendAttempts() >= 5
-                || message.getCreatedAt().isBefore(OffsetDateTime.now().minusHours(24))) return;
+        if (message == null || "sent".equals(message.getStatus()) || message.getSendAttempts() >= properties.maxAttempts()
+                || message.getCreatedAt().isBefore(OffsetDateTime.now().minus(properties.retryMaxAge()))) {
+            return;
+        }
         message.startAttempt();
         try {
             SimpleMailMessage mail = new SimpleMailMessage();
