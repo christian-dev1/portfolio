@@ -5,6 +5,7 @@ import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
 import { PROFILE_FIXTURE } from '../../../../../testing/profile.fixture';
+import { AI_TOOLS_FIXTURE } from '../../../../../testing/catalog.fixture';
 import { LanguageService } from '../../../../core/i18n/language.service';
 import { CareerService } from '../../../../shared/career/data-access/career.service';
 import { ContactConfigService } from '../../../../shared/contact-config/data-access/contact-config.service';
@@ -52,6 +53,7 @@ async function setup(
   profile: Profile = PROFILE_FIXTURE,
   contactConfig: ContactConfig = EMPTY_CONTACT_CONFIG,
   location: PageLocation = PUBLIC_LOCATION,
+  tools?: Tool[],
 ): Promise<HTMLElement> {
   TestBed.configureTestingModule({
     imports: [CvPage, provideTranslocoForTests()],
@@ -67,11 +69,13 @@ async function setup(
         provide: ToolService,
         useValue: {
           getPublicTools: () =>
-            of([
-              tool('Java', 'languages'),
-              tool('Docker', 'environment'),
-              tool('Git', 'environment'),
-            ]),
+            of(
+              tools ?? [
+                tool('Java', 'languages'),
+                tool('Docker', 'environment'),
+                tool('Git', 'environment'),
+              ],
+            ),
         },
       },
     ],
@@ -144,6 +148,19 @@ describe('CvPage', () => {
     expect(side).toContain('Travail en équipe');
     expect(side).toContain('Français — Courant');
     expect(side).toContain('Football');
+  });
+
+  it('should include the additional category automatically in compact skills', async () => {
+    const compiled = await setup(PROFILE_FIXTURE, EMPTY_CONTACT_CONFIG, PUBLIC_LOCATION, [
+      ...AI_TOOLS_FIXTURE,
+      tool('Java', 'languages'),
+    ]);
+
+    const skills = Array.from(compiled.querySelectorAll('.cv__skills dd')).map((dd) =>
+      dd.textContent!.replace(/\s+/g, ' ').trim(),
+    );
+    expect(skills).toEqual(['Java', AI_TOOLS_FIXTURE.map((item) => item.name.fr).join(', ')]);
+    expect(compiled.querySelector('.tools__category-description')).toBeNull();
   });
 
   it('should hide the direct contact block when there is no contact configuration', async () => {

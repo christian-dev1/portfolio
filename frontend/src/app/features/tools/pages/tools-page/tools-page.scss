@@ -96,6 +96,11 @@
   min-width: 0;
 }
 
+.tools__category-description {
+  margin: 0;
+}
+
+.tools__category-description,
 .tools__used-in {
   font-size: 0.8125rem;
   color: var(--color-text-muted);
@@ -114,7 +119,12 @@
   .tools__rail-head {
     flex-direction: row;
     align-items: baseline;
+    flex-wrap: wrap;
     gap: 0.75rem;
+  }
+
+  .tools__category-description {
+    flex-basis: 100%;
   }
 
   .tools__rail-count {

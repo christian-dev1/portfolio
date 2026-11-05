@@ -5,6 +5,7 @@ import { LanguageService } from '../../../../core/i18n/language.service';
 import { ToolsPage } from './tools-page';
 import { ToolService } from '../../../../shared/tools/data-access/tool.service';
 import { Tool } from '../../../../shared/tools/models/tool.model';
+import { AI_TOOLS_FIXTURE } from '../../../../../testing/catalog.fixture';
 
 function tool(id: string, category: Tool['category']): Tool {
   return {
@@ -29,6 +30,37 @@ async function setup(tools$: Observable<Tool[]>, lang: 'fr' | 'en' = 'fr'): Prom
 }
 
 describe('ToolsPage', () => {
+  it('should append all four tools in their own category with one description', async () => {
+    const compiled = await setup(of([...AI_TOOLS_FIXTURE, tool('java', 'languages')]));
+
+    const rails = compiled.querySelectorAll('.tools__rail');
+    const lastRail = rails[rails.length - 1];
+    expect(lastRail.getAttribute('aria-labelledby')).toBe('tools-ai');
+    expect(lastRail.querySelector('.tools__rail-count')!.textContent).toBe('04');
+    expect(
+      Array.from(lastRail.querySelectorAll('.tools__name')).map((name) => name.textContent!.trim()),
+    ).toEqual(AI_TOOLS_FIXTURE.map((item) => item.name.fr));
+    expect(
+      Array.from(lastRail.querySelectorAll('.tools__monogram')).map((monogram) =>
+        monogram.textContent!.trim(),
+      ),
+    ).toEqual(['CL', 'GP', 'PE', 'N8']);
+    const description = lastRail.querySelector('.tools__category-description')!;
+    expect(lastRail.querySelector('h2')!.textContent).toContain('IA & automatisation');
+    expect(description.textContent).toContain("Intégration de l'IA dans les méthodes de travail");
+    expect(description.previousElementSibling?.tagName).toBe('H2');
+    expect(compiled.querySelectorAll('.tools__category-description').length).toBe(1);
+  });
+
+  it('should translate the additional category and description in English', async () => {
+    const compiled = await setup(of(AI_TOOLS_FIXTURE), 'en');
+
+    expect(compiled.querySelector('h2')!.textContent).toContain('AI & Automation');
+    expect(compiled.querySelector('.tools__category-description')!.textContent).toContain(
+      'Bringing AI into everyday workflows',
+    );
+  });
+
   it('should display one title per category that has tools', async () => {
     const compiled = await setup(of([tool('java', 'languages'), tool('docker', 'environment')]));
 
