@@ -1,5 +1,4 @@
 import { Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { LocalizePipe } from '../../../../shared/i18n/localize.pipe';
 import { BrandIcon } from '../../../../shared/ui/brand-icon/brand-icon';
@@ -10,6 +9,8 @@ import {
 } from '../../../../shared/ui/brand-icons';
 import { Stagger } from '../../../../shared/ui/stagger/stagger';
 import { PageBanner } from '../../../../shared/ui/page-banner/page-banner';
+import { ContentUnavailable } from '../../../../shared/ui/content-unavailable/content-unavailable';
+import { loadable } from '../../../../shared/ui/content-unavailable/loadable';
 import { ToolService } from '../../../../shared/tools/data-access/tool.service';
 import { Tool, ToolCategory, TOOL_CATEGORIES } from '../../../../shared/tools/models/tool.model';
 
@@ -29,13 +30,15 @@ interface ToolGroup {
 
 @Component({
   selector: 'app-tools-page',
-  imports: [TranslocoPipe, LocalizePipe, BrandIcon, PageBanner, Stagger],
+  imports: [TranslocoPipe, LocalizePipe, BrandIcon, PageBanner, Stagger, ContentUnavailable],
   templateUrl: './tools-page.html',
   styleUrl: './tools-page.scss',
 })
 export class ToolsPage {
   private readonly toolService = inject(ToolService);
-  private readonly tools = toSignal(this.toolService.getPublicTools());
+  private readonly toolsLoad = loadable(this.toolService.getPublicTools());
+  private readonly tools = this.toolsLoad.value;
+  protected readonly failed = this.toolsLoad.failed;
 
   protected readonly toolCount = computed(() => this.tools()?.length);
 

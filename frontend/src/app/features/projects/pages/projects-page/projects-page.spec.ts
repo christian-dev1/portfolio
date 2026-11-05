@@ -1,5 +1,6 @@
 import { ToolService } from '../../../../shared/tools/data-access/tool.service';
-import { Component, input } from '@angular/core';
+import { ApplicationRef, Component, input } from '@angular/core';
+import { failingOnce } from '../../../../../testing/failing-once';
 import { ProjectFlipCard } from '../../components/project-flip-card/project-flip-card';
 import { TestBed } from '@angular/core/testing';
 import { NEVER, Observable, of } from 'rxjs';
@@ -104,5 +105,21 @@ describe('ProjectsPage', () => {
     const compiled = await setup(of(projects));
 
     expect(compiled.querySelector('.page-banner__count')!.textContent).toBe('02');
+  });
+
+  it('should offer a retry when projects cannot be loaded, then display them', async () => {
+    const { source, calls } = failingOnce(projects);
+    const compiled = await setup(source);
+
+    const unavailable = compiled.querySelector('app-content-unavailable [role="status"]');
+    expect(unavailable!.textContent).toContain('Ce contenu est momentanément indisponible');
+
+    const callsBeforeRetry = calls();
+    unavailable!.querySelector('button')!.click();
+    await TestBed.inject(ApplicationRef).whenStable();
+
+    expect(calls()).toBe(callsBeforeRetry + 1);
+    expect(compiled.querySelector('app-content-unavailable')).toBeNull();
+    expect(compiled.querySelectorAll('app-project-flip-card').length).toBe(2);
   });
 });

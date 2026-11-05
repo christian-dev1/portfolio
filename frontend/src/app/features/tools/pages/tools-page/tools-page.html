@@ -15,6 +15,11 @@
           <h2 class="tools__rail-title" [id]="'tools-' + group.category">
             {{ group.labelKey | transloco }}
           </h2>
+          @if (group.category === 'ai') {
+            <p class="tools__category-description">
+              {{ 'tools.categoryDescription.ai' | transloco }}
+            </p>
+          }
         </div>
 
         <ul class="tools__grid" appStagger>
@@ -43,6 +48,8 @@
     } @empty {
       <p>{{ 'tools.empty' | transloco }}</p>
     }
+  } @else if (failed()) {
+    <app-content-unavailable />
   } @else {
     <p>{{ 'tools.loading' | transloco }}</p>
   }

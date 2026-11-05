@@ -1,4 +1,4 @@
-import projects from '../../../public/data/projects.json';
+import { PROJECTS_FIXTURE as projects } from '../catalog.fixture';
 import { PROJECT_CONTEXTS, PROJECT_STATUSES } from '../../app/shared/projects/models/project.model';
 import {
   HTTPS_URL,
@@ -8,7 +8,7 @@ import {
   expectOneOf,
 } from './contract-helpers';
 
-describe('Data contract: projects.json', () => {
+describe('API response fixture contract: projects', () => {
   it('should have unique lowercase kebab-case ids', () => {
     expectUniqueKebabCaseIds(projects);
   });
@@ -54,13 +54,6 @@ describe('Data contract: projects.json', () => {
         expect(url, `${project.id}.repositoryUrl`).toMatch(HTTPS_URL);
       }
     }
-  });
-
-  it('should show Sekouh as in progress and SuperApp as a pilot', () => {
-    const statuses = Object.fromEntries(projects.map((project) => [project.id, project.status]));
-
-    expect(statuses['sekouh']).toBe('in-progress');
-    expect(statuses['superapp']).toBe('pilot');
   });
 
   it('should have boolean visible and featured flags', () => {

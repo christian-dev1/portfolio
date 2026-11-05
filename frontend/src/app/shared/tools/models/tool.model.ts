@@ -9,6 +9,7 @@ export const TOOL_CATEGORIES = [
   'database',
   'testing',
   'environment',
+  'ai',
 ] as const;
 export type ToolCategory = (typeof TOOL_CATEGORIES)[number];
 

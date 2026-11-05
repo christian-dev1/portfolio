@@ -1,8 +1,8 @@
-import career from '../../../public/data/career.json';
+import { CAREER_FIXTURE as career } from '../catalog.fixture';
 import { CAREER_ENTRY_TYPES } from '../../app/shared/career/models/career.model';
 import { expectUniqueKebabCaseIds, expectLocalizedText, expectOneOf } from './contract-helpers';
 
-describe('Data contract: career.json', () => {
+describe('API response fixture contract: career', () => {
   it('should have unique lowercase kebab-case ids', () => {
     expectUniqueKebabCaseIds(career);
   });

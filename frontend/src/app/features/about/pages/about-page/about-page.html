@@ -49,11 +49,17 @@
         <h2 id="about-career-title">{{ 'about.careerTitle' | transloco }}</h2>
         @if (career(); as entries) {
           <app-career-timeline [entries]="entries" />
+        } @else if (careerFailed()) {
+          <app-content-unavailable />
         } @else {
           <p>{{ 'about.loading' | transloco }}</p>
         }
       </section>
     </div>
+  </div>
+} @else if (profileFailed()) {
+  <div class="about__unavailable">
+    <app-content-unavailable />
   </div>
 } @else {
   <p class="about about__status">{{ 'about.loading' | transloco }}</p>

@@ -1,10 +1,12 @@
 import { ApplicationRef } from '@angular/core';
+import { failingOnce } from '../../../../../testing/failing-once';
 import { TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { provideTranslocoForTests } from '../../../../../testing/transloco-testing';
 import { PROFILE_FIXTURE } from '../../../../../testing/profile.fixture';
+import { AI_TOOLS_FIXTURE } from '../../../../../testing/catalog.fixture';
 import { LanguageService } from '../../../../core/i18n/language.service';
 import { CareerService } from '../../../../shared/career/data-access/career.service';
 import { ContactConfigService } from '../../../../shared/contact-config/data-access/contact-config.service';
@@ -52,13 +54,15 @@ async function setup(
   profile: Profile = PROFILE_FIXTURE,
   contactConfig: ContactConfig = EMPTY_CONTACT_CONFIG,
   location: PageLocation = PUBLIC_LOCATION,
+  tools?: Tool[],
+  projects$: Observable<Project[]> = of([PROJECT]),
 ): Promise<HTMLElement> {
   TestBed.configureTestingModule({
     imports: [CvPage, provideTranslocoForTests()],
     providers: [
       provideRouter([]),
       { provide: ProfileService, useValue: { getProfile: () => of(profile) } },
-      { provide: ProjectService, useValue: { getPublicProjects: () => of([PROJECT]) } },
+      { provide: ProjectService, useValue: { getPublicProjects: () => projects$ } },
       { provide: CareerService, useValue: { getCareer: () => of([]) } },
       { provide: ContactConfigService, useValue: { getContactConfig: () => of(contactConfig) } },
       { provide: CvPdfService, useValue: { getAvailableUrl: () => of('') } },
@@ -67,11 +71,13 @@ async function setup(
         provide: ToolService,
         useValue: {
           getPublicTools: () =>
-            of([
-              tool('Java', 'languages'),
-              tool('Docker', 'environment'),
-              tool('Git', 'environment'),
-            ]),
+            of(
+              tools ?? [
+                tool('Java', 'languages'),
+                tool('Docker', 'environment'),
+                tool('Git', 'environment'),
+              ],
+            ),
         },
       },
     ],
@@ -144,6 +150,19 @@ describe('CvPage', () => {
     expect(side).toContain('Travail en équipe');
     expect(side).toContain('Français — Courant');
     expect(side).toContain('Football');
+  });
+
+  it('should include the additional category automatically in compact skills', async () => {
+    const compiled = await setup(PROFILE_FIXTURE, EMPTY_CONTACT_CONFIG, PUBLIC_LOCATION, [
+      ...AI_TOOLS_FIXTURE,
+      tool('Java', 'languages'),
+    ]);
+
+    const skills = Array.from(compiled.querySelectorAll('.cv__skills dd')).map((dd) =>
+      dd.textContent!.replace(/\s+/g, ' ').trim(),
+    );
+    expect(skills).toEqual(['Java', AI_TOOLS_FIXTURE.map((item) => item.name.fr).join(', ')]);
+    expect(compiled.querySelector('.tools__category-description')).toBeNull();
   });
 
   it('should hide the direct contact block when there is no contact configuration', async () => {
@@ -263,5 +282,28 @@ describe('CvPage', () => {
       expect(title.getTitle()).toBe('Resume — Christian Luther Noutchom Noumbiap');
       window.dispatchEvent(new Event('afterprint'));
     });
+  });
+
+  it('should offer a retry when projects cannot be loaded, then display them', async () => {
+    const { source, calls } = failingOnce([PROJECT]);
+    const compiled = await setup(
+      PROFILE_FIXTURE,
+      EMPTY_CONTACT_CONFIG,
+      PUBLIC_LOCATION,
+      undefined,
+      source,
+    );
+
+    const unavailable = compiled.querySelector('app-content-unavailable [role="status"]');
+    expect(unavailable!.textContent).toContain('Ce contenu est momentanément indisponible');
+
+    const callsBeforeRetry = calls();
+    unavailable!.querySelector('button')!.click();
+    await TestBed.inject(ApplicationRef).whenStable();
+
+    expect(calls()).toBe(callsBeforeRetry + 1);
+    expect(compiled.querySelector('app-content-unavailable')).toBeNull();
+    expect(compiled.querySelector('app-cv-projects')).not.toBeNull();
+    expect(compiled.querySelector('.cv__name')).not.toBeNull();
   });
 });

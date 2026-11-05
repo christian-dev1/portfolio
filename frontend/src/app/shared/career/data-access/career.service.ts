@@ -6,7 +6,7 @@ import { CareerEntry } from '../models/career.model';
 @Injectable({ providedIn: 'root' })
 export class CareerService {
   private readonly http = inject(HttpClient);
-  private readonly url = '/data/career.json';
+  private readonly url = '/api/career';
 
   // Lu par À propos et le CV : une seule requête, partagée.
   private readonly entries$ = this.http.get<CareerEntry[]>(this.url).pipe(shareReplay(1));

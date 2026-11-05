@@ -69,6 +69,8 @@
           <h2 id="cv-projects-title">{{ 'cv.projects' | transloco }}</h2>
           @if (projects(); as projects) {
             <app-cv-projects [projects]="projects" />
+          } @else if (projectsFailed()) {
+            <app-content-unavailable />
           }
         </section>
 
@@ -76,6 +78,8 @@
           <h2 id="cv-career-title">{{ 'cv.career' | transloco }}</h2>
           @if (career(); as entries) {
             <app-career-timeline [entries]="entries" />
+          } @else if (careerFailed()) {
+            <app-content-unavailable />
           }
         </section>
       </div>
@@ -94,6 +98,8 @@
                 </dd>
               }
             </dl>
+          } @else if (skillsFailed()) {
+            <app-content-unavailable />
           }
           <a class="cv__more link" routerLink="/outils">{{ 'cv.skillsLink' | transloco }}</a>
         </section>
@@ -161,6 +167,10 @@
         }
       </aside>
     </div>
+  </div>
+} @else if (profileFailed()) {
+  <div class="cv">
+    <app-content-unavailable />
   </div>
 } @else {
   <p class="cv cv__status">{{ 'cv.loading' | transloco }}</p>

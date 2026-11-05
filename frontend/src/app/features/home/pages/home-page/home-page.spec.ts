@@ -1,4 +1,5 @@
 import { ApplicationRef } from '@angular/core';
+import { failingOnce } from '../../../../../testing/failing-once';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { NEVER, Observable, of } from 'rxjs';
@@ -276,5 +277,22 @@ describe('HomePage', () => {
     expect(button.getAttribute('href')).toBe('/cv/cv-fr.pdf');
     expect(button.hasAttribute('download')).toBe(true);
     expect(button.textContent).toContain('Télécharger mon CV');
+  });
+
+  it('should offer a retry when projects cannot be loaded, then display them', async () => {
+    const { source, calls } = failingOnce([featuredProject, otherProject]);
+    const compiled = await setup({ projects$: source });
+
+    const unavailable = compiled.querySelector('app-content-unavailable [role="status"]');
+    expect(unavailable!.textContent).toContain('Ce contenu est momentanément indisponible');
+
+    const callsBeforeRetry = calls();
+    unavailable!.querySelector('button')!.click();
+    await TestBed.inject(ApplicationRef).whenStable();
+
+    expect(calls()).toBe(callsBeforeRetry + 1);
+    expect(compiled.querySelector('app-content-unavailable')).toBeNull();
+    expect(compiled.querySelectorAll('app-project-card').length).toBe(1);
+    expect(compiled.querySelector('h1')).not.toBeNull();
   });
 });

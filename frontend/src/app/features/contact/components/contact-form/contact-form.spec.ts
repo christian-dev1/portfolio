@@ -182,6 +182,23 @@ describe('ContactForm', () => {
       expect(button().textContent!.trim()).toBe('Envoyer le message');
     });
 
+    it('should keep the fields and explain the rate limit with a fallback email', async () => {
+      await fillValid();
+      await submit();
+
+      pending.next('rate-limited');
+      await fixture.whenStable();
+
+      expect(status()).toBe(
+        'Vous avez envoyé plusieurs messages en peu de temps. Réessayez un peu plus tard ou écrivez-moi directement à contact@example.com.',
+      );
+      expect(field('message').value).toBe('Bonjour, parlons de votre projet.');
+      expect(button().disabled).toBe(false);
+
+      await type('message', 'Un nouveau message de contact.');
+      expect(status()).toBe('');
+    });
+
     it.each(['name', 'email', 'message'] as const)(
       'should clear a success message when %s is edited',
       async (id) => {

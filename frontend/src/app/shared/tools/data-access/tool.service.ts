@@ -6,7 +6,7 @@ import { Tool } from '../models/tool.model';
 @Injectable({ providedIn: 'root' })
 export class ToolService {
   private readonly http = inject(HttpClient);
-  private readonly url = '/data/tools.json';
+  private readonly url = '/api/tools';
 
   // Lu par plusieurs pages (accueil, liste, CV) : une seule requête, partagée.
   private readonly tools$ = this.http.get<Tool[]>(this.url).pipe(shareReplay(1));

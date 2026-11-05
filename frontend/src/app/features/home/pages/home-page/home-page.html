@@ -63,8 +63,12 @@
 
     <app-band-orbit [text]="orbitText()" [band]="band" [ring]="photo" />
   </section>
+} @else if (profileFailed()) {
+  <div class="home__status">
+    <app-content-unavailable />
+  </div>
 } @else {
   <p class="home__status">{{ 'home.loading' | transloco }}</p>
 }
 
-<app-featured-projects [projects]="featuredProjects()" />
+<app-featured-projects [projects]="featuredProjects()" [failed]="projectsFailed()" />

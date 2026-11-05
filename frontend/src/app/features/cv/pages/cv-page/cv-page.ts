@@ -15,6 +15,8 @@ import { ProjectService } from '../../../../shared/projects/data-access/project.
 import { ToolService } from '../../../../shared/tools/data-access/tool.service';
 import { TOOL_CATEGORIES } from '../../../../shared/tools/models/tool.model';
 import { PageBanner } from '../../../../shared/ui/page-banner/page-banner';
+import { ContentUnavailable } from '../../../../shared/ui/content-unavailable/content-unavailable';
+import { loadable } from '../../../../shared/ui/content-unavailable/loadable';
 import { CvProjects } from '../../components/cv-projects/cv-projects';
 import { PAGE_LOCATION, isCompleteCv } from '../../data-access/complete-cv';
 
@@ -34,6 +36,7 @@ export function shortUrl(url: string): string {
     CvProjects,
     WhatsappButton,
     CvDownloadButton,
+    ContentUnavailable,
   ],
   templateUrl: './cv-page.html',
   styleUrl: './cv-page.scss',
@@ -43,10 +46,18 @@ export function shortUrl(url: string): string {
   },
 })
 export class CvPage {
-  protected readonly profile = toSignal(inject(ProfileService).getProfile());
-  protected readonly projects = toSignal(inject(ProjectService).getPublicProjects());
-  protected readonly career = toSignal(inject(CareerService).getCareer());
-  private readonly tools = toSignal(inject(ToolService).getPublicTools());
+  private readonly profileLoad = loadable(inject(ProfileService).getProfile());
+  private readonly projectsLoad = loadable(inject(ProjectService).getPublicProjects());
+  private readonly careerLoad = loadable(inject(CareerService).getCareer());
+  private readonly toolsLoad = loadable(inject(ToolService).getPublicTools());
+  protected readonly profile = this.profileLoad.value;
+  protected readonly profileFailed = this.profileLoad.failed;
+  protected readonly projects = this.projectsLoad.value;
+  protected readonly projectsFailed = this.projectsLoad.failed;
+  protected readonly career = this.careerLoad.value;
+  protected readonly careerFailed = this.careerLoad.failed;
+  private readonly tools = this.toolsLoad.value;
+  protected readonly skillsFailed = this.toolsLoad.failed;
   /** Coordonnées personnelles hors Git ; vides si le fichier de configuration est absent. */
   protected readonly contactConfig = toSignal(inject(ContactConfigService).getContactConfig());
   /** Numéros affichés seulement en local avec `?complet=1` : le CV public n'en contient jamais. */

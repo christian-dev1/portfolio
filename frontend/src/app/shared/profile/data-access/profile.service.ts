@@ -6,7 +6,7 @@ import { Profile } from '../models/profile.model';
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
   private readonly http = inject(HttpClient);
-  private readonly url = '/data/profile.json';
+  private readonly url = '/api/profile';
 
   // Le profil est lu par l'accueil et le footer : une seule requête, partagée.
   private readonly profile$ = this.http.get<Profile>(this.url).pipe(shareReplay(1));

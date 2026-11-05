@@ -1,9 +1,9 @@
-import { toSignal } from '@angular/core/rxjs-interop';
 import { ToolService } from '../../tools/data-access/tool.service';
 import { LanguageService } from '../../../core/i18n/language.service';
 import { Component, computed, inject, input } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { CountUp } from '../count-up/count-up';
+import { loadable } from '../content-unavailable/loadable';
 
 /** Bandeau des pages intérieures : zone bleue à points, h1, bande rouge et grand compteur. */
 @Component({
@@ -13,7 +13,7 @@ import { CountUp } from '../count-up/count-up';
   styleUrl: './page-banner.scss',
 })
 export class PageBanner {
-  private readonly tools = toSignal(inject(ToolService).getPublicTools());
+  private readonly tools = loadable(inject(ToolService).getPublicTools()).value;
   private readonly language = inject(LanguageService);
   protected readonly technologyText = computed(
     () =>

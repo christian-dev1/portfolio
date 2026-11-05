@@ -6,7 +6,7 @@
   [count]="networks()?.length"
 />
 
-@if (profile()) {
+@if (profile() || profileFailed()) {
   <div class="contact">
     <div class="contact__direct">
       @if (email(); as email) {
@@ -31,10 +31,7 @@
         </section>
       }
 
-      <!-- Formulaire seulement avec une clé Web3Forms valide ; sinon e-mail et WhatsApp suffisent. -->
-      @if (contactConfig()?.web3formsAccessKey) {
-        <app-contact-form class="reveal" [email]="email()" />
-      }
+      <app-contact-form class="reveal" [email]="email()" />
 
       @if (contactConfig()?.whatsapp; as whatsapp) {
         <section class="contact__whatsapp glass reveal" aria-labelledby="contact-whatsapp-title">

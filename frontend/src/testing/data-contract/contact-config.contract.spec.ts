@@ -2,7 +2,6 @@ import example from '../../../public/config/contact.example.json';
 import {
   INTERNATIONAL_PHONE,
   LOCAL_PDF_PATH,
-  UUID,
   WHATSAPP_NUMBER,
   toContactConfig,
 } from '../../app/shared/contact-config/models/contact-config.model';
@@ -42,8 +41,4 @@ describe('Data contract: config/contact.example.json', () => {
     }
   });
 
-  it('should only contain a dummy Web3Forms access key in UUID format', () => {
-    expect(example.web3formsAccessKey).toMatch(UUID);
-    expect(example.web3formsAccessKey).toBe('00000000-0000-0000-0000-000000000000');
-  });
 });

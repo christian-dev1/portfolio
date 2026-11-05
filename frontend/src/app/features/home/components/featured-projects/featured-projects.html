@@ -20,6 +20,8 @@
         <p>{{ 'home.featured.empty' | transloco }}</p>
       }
     </div>
+  } @else if (failed()) {
+    <app-content-unavailable />
   } @else {
     <p>{{ 'home.featured.loading' | transloco }}</p>
   }

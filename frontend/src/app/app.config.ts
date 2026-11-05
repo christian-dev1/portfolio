@@ -5,7 +5,7 @@ import { provideTransloco } from '@jsverse/transloco';
 
 import { routes } from './app.routes';
 import { CONTACT_MESSAGE_SENDER } from './shared/contact-message/models/contact-message.model';
-import { Web3FormsSender } from './shared/contact-message/data-access/web3forms-sender';
+import { ApiContactSender } from './shared/contact-message/data-access/api-contact-sender';
 import { TranslocoHttpLoader } from './core/i18n/transloco-loader';
 import { TranslatedTitleStrategy } from './core/i18n/translated-title.strategy';
 
@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withViewTransitions({ skipInitialTransition: true })),
     { provide: TitleStrategy, useClass: TranslatedTitleStrategy },
     provideHttpClient(),
-    { provide: CONTACT_MESSAGE_SENDER, useClass: Web3FormsSender },
+    { provide: CONTACT_MESSAGE_SENDER, useClass: ApiContactSender },
     provideTransloco({
       config: {
         availableLangs: ['fr', 'en'],

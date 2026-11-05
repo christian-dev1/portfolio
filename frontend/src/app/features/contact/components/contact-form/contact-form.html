@@ -108,12 +108,14 @@
 
   <p
     class="contact-form__status"
-    [class.contact-form__status--failed]="state() === 'failed'"
+    [class.contact-form__status--failed]="state() === 'failed' || state() === 'rate-limited'"
     role="status"
     aria-live="polite"
   >
     @if (state() === 'sent') {
       {{ 'contact.form.sent' | transloco }}
+    } @else if (state() === 'rate-limited') {
+      {{ 'contact.form.rateLimited' | transloco: { email: email() } }}
     } @else if (state() === 'failed') {
       {{ 'contact.form.failed' | transloco: { email: email() } }}
     }

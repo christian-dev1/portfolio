@@ -1,0 +1,76 @@
+spring:
+  application:
+    name: portfolio-api
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/portfolio}
+    username: ${DB_USER:portfolio}
+    password: ${DB_PASSWORD:portfolio}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_batch_fetch_size: 16
+
+  mvc:
+    problemdetails:
+      enabled: true
+
+  mail:
+    host: ${SMTP_HOST:}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${SMTP_AUTH:true}
+      mail.smtp.starttls.enable: ${SMTP_STARTTLS_ENABLED:true}
+      mail.smtp.connectiontimeout: 5000
+      mail.smtp.timeout: 5000
+      mail.smtp.writetimeout: 5000
+
+  flyway:
+    enabled: true
+
+server:
+  port: ${SERVER_PORT:8081}
+  shutdown: graceful
+  forward-headers-strategy: native
+  tomcat:
+    remoteip:
+      remote-ip-header: X-Forwarded-For
+      protocol-header: X-Forwarded-Proto
+      host-header: X-Forwarded-Host
+      # Réseaux privés et loopback : les deux proxys sont parcourus de droite à gauche.
+      internal-proxies: '10\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}|127\.\d{1,3}\.\d{1,3}\.\d{1,3}|::1|0:0:0:0:0:0:0:1|[fF][cCdD][0-9a-fA-F]{2}:.*|[fF][eE][89aAbB][0-9a-fA-F]:.*'
+
+management:
+  endpoints:
+    web:
+      base-path: /api
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+portfolio:
+  contact:
+    email-limit: 3
+    ip-limit: 5
+    window: 1h
+    retention: 180d
+    max-attempts: 5
+    retry-max-age: 24h
+    to: ${CONTACT_TO:}
+    from: ${CONTACT_FROM:noreply@example.com}
+
+springdoc:
+  api-docs:
+    path: /api/docs
+    enabled: ${API_DOCS_ENABLED:true}
+  swagger-ui:
+    path: /api/docs/ui
+    enabled: ${API_DOCS_ENABLED:true}

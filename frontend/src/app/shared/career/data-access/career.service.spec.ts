@@ -37,7 +37,7 @@ describe('CareerService', () => {
   it('should request the career with a GET', async () => {
     const result = firstValueFrom(service.getCareer());
 
-    const request = httpTesting.expectOne('/data/career.json');
+    const request = httpTesting.expectOne('/api/career');
     expect(request.request.method).toBe('GET');
     request.flush([]);
 
@@ -48,7 +48,7 @@ describe('CareerService', () => {
     const result = firstValueFrom(service.getCareer());
 
     httpTesting
-      .expectOne('/data/career.json')
+      .expectOne('/api/career')
       .flush([entry('old', 2018), entry('hidden', 2025, 2024, false), entry('recent', 2026, 2024)]);
 
     expect((await result).map((e) => e.id)).toEqual(['recent', 'old']);
@@ -57,20 +57,18 @@ describe('CareerService', () => {
   it('should put the most recently started entry first when two end the same year', async () => {
     const result = firstValueFrom(service.getCareer());
 
-    httpTesting
-      .expectOne('/data/career.json')
-      .flush([entry('job', 2023, 2022), entry('diploma', 2023)]);
+    httpTesting.expectOne('/api/career').flush([entry('job', 2023, 2022), entry('diploma', 2023)]);
 
     expect((await result).map((e) => e.id)).toEqual(['diploma', 'job']);
   });
 
   it('should request the career only once when several pages read it', async () => {
     const first = firstValueFrom(service.getCareer());
-    httpTesting.expectOne('/data/career.json').flush([]);
+    httpTesting.expectOne('/api/career').flush([]);
     await first;
 
     await firstValueFrom(service.getCareer());
 
-    httpTesting.expectNone('/data/career.json');
+    httpTesting.expectNone('/api/career');
   });
 });
