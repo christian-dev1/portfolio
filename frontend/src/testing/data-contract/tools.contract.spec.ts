@@ -1,9 +1,9 @@
-import tools from '../../../public/data/tools.json';
+import { TOOLS_FIXTURE as tools } from '../catalog.fixture';
 import { TOOL_CATEGORIES } from '../../app/shared/tools/models/tool.model';
 import { isBrandIconSlug } from '../../app/shared/ui/brand-icons';
 import { expectUniqueKebabCaseIds, expectLocalizedText, expectOneOf } from './contract-helpers';
 
-describe('Data contract: tools.json', () => {
+describe('API response fixture contract: tools', () => {
   it('should have unique lowercase kebab-case ids', () => {
     expectUniqueKebabCaseIds(tools);
   });

@@ -1,4 +1,4 @@
-import profile from '../../../public/data/profile.json';
+import { PROFILE_FIXTURE as profile } from '../profile.fixture';
 import {
   AVAILABILITY_STATUSES,
   SOCIAL_NETWORKS,
@@ -11,7 +11,7 @@ import {
   expectOneOf,
 } from './contract-helpers';
 
-describe('Data contract: profile.json', () => {
+describe('API response fixture contract: profile', () => {
   it('should have a non-empty full name and brand', () => {
     expect(profile.fullName.trim()).not.toBe('');
     expect(profile.brand.trim()).not.toBe('');
@@ -78,14 +78,6 @@ describe('Data contract: profile.json', () => {
       expectLocalizedText(language.name, `profile.languages[${index}].name`);
       expectLocalizedText(language.level, `profile.languages[${index}].level`);
     });
-  });
-
-  it('should list French as fluent and English as basic', () => {
-    const levels = Object.fromEntries(
-      profile.languages.map((language) => [language.name.en, language.level.en]),
-    );
-
-    expect(levels).toEqual({ French: 'Fluent', English: 'Basic' });
   });
 
   it('should describe the company in French and English', () => {

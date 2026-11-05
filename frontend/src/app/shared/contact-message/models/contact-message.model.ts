@@ -7,14 +7,11 @@ export interface ContactMessage {
   message: string;
 }
 
-export type SendResult = 'sent' | 'failed';
+export type SendResult = 'sent' | 'rate-limited' | 'failed';
 
-/**
- * Envoi d'un message du formulaire de contact. L'implémentation actuelle passe par
- * Web3Forms ; en V2, une implémentation appelant l'API Spring Boot la remplacera.
- */
+/** Envoi d'un message du formulaire de contact. */
 export interface ContactMessageSender {
-  /** N'échoue jamais : une erreur réseau ou un refus du service donne `'failed'`. */
+  /** N'échoue jamais : les refus et erreurs sont représentés par un résultat. */
   send(message: ContactMessage): Observable<SendResult>;
 }
 

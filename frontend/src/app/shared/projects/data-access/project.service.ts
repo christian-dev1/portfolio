@@ -6,7 +6,7 @@ import { Project } from '../models/project.model';
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
   private readonly http = inject(HttpClient);
-  private readonly url = '/data/projects.json';
+  private readonly url = '/api/projects';
 
   // Lu par plusieurs pages (accueil, liste, CV) : une seule requête, partagée.
   private readonly projects$ = this.http.get<Project[]>(this.url).pipe(shareReplay(1));

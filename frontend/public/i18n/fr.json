@@ -110,7 +110,11 @@
       "frontend": "Frontend",
       "database": "Base de données",
       "testing": "Tests & QA",
-      "environment": "Environnement & outils"
+      "environment": "Environnement & outils",
+      "ai": "IA & automatisation"
+    },
+    "categoryDescription": {
+      "ai": "Intégration de l'IA dans les méthodes de travail : automatisations internes, prompt engineering et assistants IA."
     },
     "eyebrow": "Stack technique & QA",
     "countLabel": "technologies"
@@ -180,7 +184,8 @@
       "botcheck": "Ne pas remplir ce champ",
       "submit": "Envoyer le message",
       "sending": "Envoi…",
-      "notice": "Votre message m'est transmis par e-mail via le service Web3Forms.",
+      "notice": "Votre message m'est transmis directement par e-mail.",
+      "rateLimited": "Vous avez envoyé plusieurs messages en peu de temps. Réessayez un peu plus tard ou écrivez-moi directement à {{email}}.",
       "sent": "Merci, votre message est bien envoyé. Je vous réponds rapidement.",
       "failed": "L'envoi a échoué. Réessayez ou écrivez-moi directement à {{email}}.",
       "errors": {

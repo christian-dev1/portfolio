@@ -19,7 +19,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 /** Champs visibles, dans l'ordre du formulaire (le premier invalide reçoit le focus). */
 const FIELDS = ['name', 'email', 'message'] as const;
 
-type FormState = 'idle' | 'sending' | 'sent' | 'failed';
+type FormState = 'idle' | 'sending' | 'sent' | 'rate-limited' | 'failed';
 
 @Component({
   selector: 'app-contact-form',
@@ -57,7 +57,7 @@ export class ContactForm {
 
   constructor() {
     this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
-      if (this.state() === 'sent' || this.state() === 'failed') {
+      if (this.state() === 'sent' || this.state() === 'failed' || this.state() === 'rate-limited') {
         this.state.set('idle');
       }
     });
@@ -97,7 +97,7 @@ export class ContactForm {
         if (result === 'sent') {
           this.succeed();
         } else {
-          this.state.set('failed');
+          this.state.set(result);
         }
       });
   }

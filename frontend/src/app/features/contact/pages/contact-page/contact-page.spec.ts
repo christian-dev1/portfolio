@@ -119,16 +119,15 @@ describe('ContactPage', () => {
     expect(compiled.querySelector('.contact__feedback')!.getAttribute('aria-live')).toBe('polite');
   });
 
-  it('should not show the message form without a Web3Forms key', () => {
-    expect(compiled.querySelector('form')).toBeNull();
+  it('should show the message form without local contact configuration', () => {
+    expect(compiled.querySelector('form')).not.toBeNull();
     expect(compiled.querySelector('.contact__email')).not.toBeNull();
   });
 
-  it('should show the message form right under the email once a key is configured', async () => {
+  it('should keep the message form right under the email when WhatsApp is configured', async () => {
     contactConfig$.next({
       ...EMPTY_CONTACT_CONFIG,
       whatsapp: '237600000000',
-      web3formsAccessKey: '0a1b2c3d-4e5f-6789-abcd-ef0123456789',
     });
     await fixture.whenStable();
 

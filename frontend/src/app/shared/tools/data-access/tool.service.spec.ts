@@ -42,7 +42,7 @@ describe('ToolService', () => {
   it('should request the tools with a GET', async () => {
     const result = firstValueFrom(service.getPublicTools());
 
-    const request = httpTesting.expectOne('/data/tools.json');
+    const request = httpTesting.expectOne('/api/tools');
     expect(request.request.method).toBe('GET');
     request.flush(tools);
 
@@ -52,7 +52,7 @@ describe('ToolService', () => {
   it('should return only visible tools', async () => {
     const result = firstValueFrom(service.getPublicTools());
 
-    httpTesting.expectOne('/data/tools.json').flush(tools);
+    httpTesting.expectOne('/api/tools').flush(tools);
 
     const visibleTools = await result;
     expect(visibleTools.map((tool) => tool.id)).toEqual(['java']);

@@ -9,7 +9,6 @@ const VALID = {
   whatsapp: '237600000000',
   phones: [{ number: '+237 600 00 00 00', label: { fr: 'Appels', en: 'Calls' } }],
   cvPdf: { fr: '/cv/cv-fr.pdf', en: '/cv/cv-en.pdf' },
-  web3formsAccessKey: '0a1b2c3d-4e5f-6789-abcd-ef0123456789',
 };
 
 describe('ContactConfigService', () => {
@@ -68,13 +67,12 @@ describe('ContactConfigService', () => {
         { number: '+237 600 00 00 01', label: { fr: 'Sans anglais' } },
       ],
       cvPdf: { fr: 'https://example.com/cv.pdf', en: '/cv/cv-en.docx' },
-      web3formsAccessKey: 'not-a-uuid',
     });
 
     expect(await result).toEqual({ ...EMPTY_CONTACT_CONFIG, phones: VALID.phones });
   });
 
-  it('should treat the CV links and the form key as optional', async () => {
+  it('should treat the CV links as optional', async () => {
     const result = firstValueFrom(service.getContactConfig());
 
     httpTesting

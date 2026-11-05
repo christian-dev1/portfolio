@@ -80,7 +80,7 @@ describe('ProjectService', () => {
   it('should request the projects with a GET', async () => {
     const result = firstValueFrom(service.getPublicProjects());
 
-    const request = httpTesting.expectOne('/data/projects.json');
+    const request = httpTesting.expectOne('/api/projects');
     expect(request.request.method).toBe('GET');
     request.flush(projects);
 
@@ -90,7 +90,7 @@ describe('ProjectService', () => {
   it('should return only visible projects', async () => {
     const result = firstValueFrom(service.getPublicProjects());
 
-    httpTesting.expectOne('/data/projects.json').flush(projects);
+    httpTesting.expectOne('/api/projects').flush(projects);
 
     const visibleProjects = await result;
     expect(visibleProjects.map((project) => project.id)).toEqual([
@@ -102,7 +102,7 @@ describe('ProjectService', () => {
   it('should return only projects that are both visible and featured', async () => {
     const result = firstValueFrom(service.getFeaturedProjects());
 
-    httpTesting.expectOne('/data/projects.json').flush(projects);
+    httpTesting.expectOne('/api/projects').flush(projects);
 
     const featuredProjects = await result;
     expect(featuredProjects.map((project) => project.id)).toEqual(['featured-project']);

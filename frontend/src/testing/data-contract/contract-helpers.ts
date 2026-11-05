@@ -1,8 +1,4 @@
-/**
- * Les types TypeScript ne vérifient pas les fichiers JSON chargés au runtime :
- * les tests `*.contract.spec.ts` garantissent que chaque ressource de `public/data/`
- * (un futur endpoint de l'API) respecte le contrat attendu par les modèles.
- */
+/** Shared checks for representative API response fixtures. */
 
 export const KEBAB_CASE_ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 export const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

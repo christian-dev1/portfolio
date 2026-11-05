@@ -25,7 +25,7 @@ describe('ProfileService', () => {
   it('should request the profile with a GET', async () => {
     const result = firstValueFrom(service.getProfile());
 
-    const request = httpTesting.expectOne('/data/profile.json');
+    const request = httpTesting.expectOne('/api/profile');
     expect(request.request.method).toBe('GET');
     request.flush(PROFILE_FIXTURE);
 
@@ -34,12 +34,12 @@ describe('ProfileService', () => {
 
   it('should request the profile only once when several components read it', async () => {
     const first = firstValueFrom(service.getProfile());
-    httpTesting.expectOne('/data/profile.json').flush(PROFILE_FIXTURE);
+    httpTesting.expectOne('/api/profile').flush(PROFILE_FIXTURE);
     await first;
 
     const second = await firstValueFrom(service.getProfile());
 
-    httpTesting.expectNone('/data/profile.json');
+    httpTesting.expectNone('/api/profile');
     expect(second.brand).toBe('LUCHRIST');
   });
 });
