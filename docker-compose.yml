@@ -1,25 +1,107 @@
 name: luchrist-portfolio
 
 services:
+  database:
+    image: postgres:18-alpine
+    container_name: luchrist-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: portfolio
+      POSTGRES_USER: ${DB_USER:?DB_USER doit être défini et non vide}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD doit être défini et non vide}
+    volumes:
+      - database-data:/var/lib/postgresql
+    networks:
+      - database
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    image: luchrist-portfolio-backend:latest
+    container_name: luchrist-backend
+    restart: unless-stopped
+    mem_limit: 512m
+    stop_grace_period: 40s
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://database:5432/portfolio
+      DB_USER: ${DB_USER:?DB_USER doit être défini et non vide}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD doit être défini et non vide}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_AUTH: ${SMTP_AUTH:-true}
+      SMTP_STARTTLS_ENABLED: ${SMTP_STARTTLS_ENABLED:-true}
+      CONTACT_TO: ${CONTACT_TO:-}
+      CONTACT_FROM: ${CONTACT_FROM:-noreply@example.com}
+      API_DOCS_ENABLED: ${API_DOCS_ENABLED:-false}
+    networks:
+      - database
+      - web
+
   frontend:
     build:
       context: ./frontend
     image: luchrist-portfolio-frontend:latest
     container_name: luchrist-frontend
     restart: unless-stopped
-    env_file: .env
+    environment:
+      WHATSAPP_NUMBER: ${WHATSAPP_NUMBER:-}
+      CV_PDF_FR: ${CV_PDF_FR:-/cv/cv-fr.pdf}
+      CV_PDF_EN: ${CV_PDF_EN:-/cv/cv-en.pdf}
     ports:
       - "127.0.0.1:${FRONTEND_PORT:-8080}:80"
     volumes:
       - ./frontend/public/cv:/usr/share/nginx/html/cv:ro
+    networks:
+      - web
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
       interval: 30s
       timeout: 5s
       retries: 3
 
-  # V2 : l'API Spring Boot et PostgreSQL viendront ici
-  # backend:
-  #   build: ./backend
-  # database:
-  #   image: postgres:16
+  backup:
+    build: ./ops/backup
+    image: luchrist-portfolio-backup:latest
+    container_name: luchrist-backup
+    user: "0:0"
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      PGHOST: database
+      PGDATABASE: portfolio
+      PGUSER: ${DB_USER:?DB_USER doit être défini et non vide}
+      PGPASSWORD: ${DB_PASSWORD:?DB_PASSWORD doit être défini et non vide}
+      TZ: Africa/Douala
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-7}
+    volumes:
+      - ./backups:/backups
+    networks:
+      - database
+
+  mailpit:
+    image: axllent/mailpit:latest
+    profiles: ["local-mail"]
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8025:8025"
+    networks:
+      - web
+
+volumes:
+  database-data:
+
+networks:
+  database:
+    internal: true
+  web:
