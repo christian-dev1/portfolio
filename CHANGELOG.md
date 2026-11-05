@@ -7,6 +7,9 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et la nu
 
 ### Ajouté
 
+- Orchestration Docker complète : frontend, API Java 21, PostgreSQL 18 et profil Mailpit local.
+- Sauvegardes quotidiennes à 02:30 (Africa/Douala), rétention configurable et restauration documentée.
+
 - Frontend branché sur les endpoints de l’API, avec proxy local de développement.
 - Formulaire de contact transmis à l’API, avec retour dédié à la limite d’envois.
 - Catégorie « IA & automatisation » dans la boîte à outils et le CV.
