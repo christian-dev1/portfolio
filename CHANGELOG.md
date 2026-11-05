@@ -3,6 +3,17 @@
 Toutes les évolutions notables du portfolio LUCHRIST sont consignées ici.
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et la numérotation suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
+## [Unreleased]
+
+### Ajouté
+
+- API V2 : lecture du profil, des projets, des outils et du parcours.
+- Contact avec validation, honeypot et erreurs au format ProblemDetail.
+- Limitation des envois par e-mail et par adresse réseau.
+- Envoi SMTP après enregistrement, suivi des tentatives et relance automatique.
+- Purge quotidienne des messages après 180 jours.
+- Documentation OpenAPI et interface Swagger configurables.
+
 ## [1.0.0] — 2026-10-24
 
 ### Ajouté
