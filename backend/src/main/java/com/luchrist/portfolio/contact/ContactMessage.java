@@ -22,6 +22,9 @@ public class ContactMessage {
     private String message;
     private String status;
 
+    @Column(name = "send_attempts")
+    private short sendAttempts;
+
     @Column(name = "created_at")
     private OffsetDateTime createdAt;
 
@@ -36,6 +39,11 @@ public class ContactMessage {
         this.status = "received";
         this.createdAt = OffsetDateTime.now();
     }
+
+    void startAttempt() { sendAttempts++; }
+    void markSent() { status = "sent"; }
+    void markFailed() { status = "failed"; }
+    public short getSendAttempts() { return sendAttempts; }
 
     public Long getId() { return id; }
     public String getName() { return name; }
