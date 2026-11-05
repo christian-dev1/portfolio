@@ -7,6 +7,10 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et la nu
 
 ### Ajouté
 
+- Frontend branché sur les endpoints de l’API, avec proxy local de développement.
+- Formulaire de contact transmis à l’API, avec retour dédié à la limite d’envois.
+- Catégorie « IA & automatisation » dans la boîte à outils et le CV.
+
 - API V2 : lecture du profil, des projets, des outils et du parcours.
 - Contact avec validation, honeypot et erreurs au format ProblemDetail.
 - Limitation des envois par e-mail et par adresse réseau.

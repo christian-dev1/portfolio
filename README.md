@@ -5,13 +5,28 @@ Frontend Angular 21 standalone, français/anglais et thèmes clair/sombre. Hébe
 
 ## Développement
 
-Commandes depuis la racine `PORTFOLIO/`, avec Node 22 et les dépendances installées dans `frontend/` :
+Commandes depuis la racine `PORTFOLIO/`, avec Node 22, Java 21, Docker actif
+et les dépendances installées dans `frontend/`.
+
+Dans un premier terminal, lancer le backend avec PostgreSQL et Mailpit :
 
 ```bash
-(cd frontend && npx ng serve)
+cd backend
+./mvnw spring-boot:test-run
 ```
 
-Le site est disponible sur `http://localhost:4300/`.
+L’API écoute sur `http://localhost:8081/`. L’URL de l’interface Mailpit est affichée
+au démarrage pour consulter les messages reçus.
+
+Dans un second terminal, lancer le frontend :
+
+```bash
+(cd frontend && npx ng serve --port 4300)
+```
+
+Le site est disponible sur `http://localhost:4300/`. La cible `serve` utilise
+`frontend/proxy.conf.json` pour transmettre les requêtes `/api` au backend local.
+Le backend doit rester démarré pendant la navigation et les envois du formulaire.
 
 ```bash
 (cd frontend && npx ng test --watch=false)
@@ -29,7 +44,6 @@ Le fichier réel est ignoré par Git. Le déploiement doit fournir ce fichier su
 Les champs facultatifs absents ou invalides masquent les fonctions correspondantes.
 
 - `whatsapp` et `phones` : coordonnées privées ; aucun numéro affiché sur le CV public.
-- `web3formsAccessKey` : clé de soumission du formulaire ; sans clé valide, le formulaire reste masqué.
 - `cvPdf` : chemins des PDF publics, par langue :
 
 ```json
@@ -70,9 +84,11 @@ que le fonctionnement du site nécessite.
 
 ## Architecture
 
-Le formulaire utilise le contrat `ContactMessageSender` et une implémentation Web3Forms.
-Une implémentation appelant une API pourra remplacer le fournisseur sans changer le formulaire.
-Les données publiques sont dans `frontend/public/data/`, les traductions dans
+Le formulaire utilise le contrat `ContactMessageSender` et l’implémentation `ApiContactSender`
+pour appeler `POST /api/contact`. L’API accepte les messages avec une réponse 202 et
+les transmet par e-mail après enregistrement ; une réponse 429 indique une limite d’envois.
+Le formulaire ne dépend pas de la configuration locale des coordonnées.
+Les données publiques sont lues depuis l’API. Les traductions sont dans
 `frontend/public/i18n/` et les composants partagés dans `frontend/src/app/shared/`.
 
 ## Lancer le site avec Docker
@@ -97,7 +113,6 @@ Le site est disponible sur **http://localhost:8080** (ou sur le port défini par
 | Variable | Rôle | Obligatoire |
 |---|---|---|
 | `WHATSAPP_NUMBER` | Numéro WhatsApp, chiffres uniquement avec l'indicatif | Non (bouton masqué si vide) |
-| `WEB3FORMS_ACCESS_KEY` | Clé du formulaire de contact | Non (formulaire désactivé si vide) |
 | `CV_PDF_FR` / `CV_PDF_EN` | Chemins des PDF du CV | Non (défaut `/cv/cv-fr.pdf`, `/cv/cv-en.pdf`) |
 | `FRONTEND_PORT` | Port local exposé | Non (défaut `8080`) |
 
