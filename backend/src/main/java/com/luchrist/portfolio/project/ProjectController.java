@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,7 @@ public class ProjectController {
     }
 
     @Operation(summary = "List visible projects")
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ProjectResponse> listVisibleProjects() {
         return projectService.findVisibleProjects();
     }
@@ -39,7 +40,7 @@ public class ProjectController {
                     content = @Content(mediaType = "application/problem+json",
                             schema = @Schema(implementation = ProblemDetail.class)))
     })
-    @GetMapping("/{id}")
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProjectResponse getProject(@Parameter(description = "Project slug, e.g. wimo") @PathVariable String id) {
         return projectService.findVisibleProject(id);
     }
